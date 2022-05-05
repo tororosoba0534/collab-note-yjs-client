@@ -1,3 +1,7 @@
 .ProseMirror {
-    background-color: lightpink
+    background-color: lightpink;
+}
+
+p {
+    margin: 10px;
 }
