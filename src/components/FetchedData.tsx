@@ -7,7 +7,7 @@ interface MessageJson {
 export const FetchedData = () => {
   const [message, setMessage] = useState("Now Fetching...");
 
-  const url = "/api";
+  const url = "http://localhost:3002";
 
   const fetchData = useCallback(() => {
     fetch(url)
