@@ -22,7 +22,6 @@ export const TiptapEditor = () => {
         document: ydoc,
       }),
     ],
-    content: "<p>Hello World!</p>",
   });
 
   return <EditorContent editor={editor} />;
