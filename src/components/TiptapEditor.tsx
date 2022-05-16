@@ -8,7 +8,7 @@ import { WebsocketProvider } from "y-websocket";
 import config from "../config";
 
 const ydoc = new Y.Doc();
-const provider = new WebsocketProvider(config.wsserver.url, 'global-room', ydoc)
+const provider = new WebsocketProvider(config.wsserver.URL, 'global-room', ydoc)
 
 export const TiptapEditor = () => {
   const editor = useEditor({
