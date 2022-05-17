@@ -5,8 +5,8 @@ const config = {
         // url: process.env.NODE_ENV === "production" ? "wss://collab-note-yjs-backend.herokuapp.com" : "ws://localhost:3001",
         // url: "ws://collab-note-yjs-backend.herokuapp.com"
         URL: process.env.NODE_ENV === "production" 
-            ? "wss://collab-note-yjs-backend.herokuapp.com" 
-            : "ws://localhost:3001"
+            ? "wss://collab-note-yjs-backend.herokuapp.com/editor" 
+            : "ws://localhost:3001/editor"
     },
     server: {
         ORIGIN: process.env.NODE_ENV === "production"
