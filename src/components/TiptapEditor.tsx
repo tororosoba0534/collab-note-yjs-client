@@ -6,11 +6,21 @@ import Collaboration from "@tiptap/extension-collaboration";
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
 import config from "../config";
+import { useMemo } from "react";
+import { useAuth } from "../auths/useAuth";
 
-const ydoc = new Y.Doc();
-const provider = new WebsocketProvider(config.wsserver.URL, 'global-room', ydoc)
 
-export const TiptapEditor = () => {
+
+
+export const TiptapEditor = ({username}: {username: string}) => {
+  const {logout} = useAuth()
+  
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const ydoc = useMemo(() => new Y.Doc(), [username])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const provider = useMemo(() => new WebsocketProvider(config.wsserver.URL, username, ydoc), [username, ydoc])
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -24,5 +34,8 @@ export const TiptapEditor = () => {
     ],
   });
 
-  return <EditorContent editor={editor} />;
+  return <div>
+    <button onClick={() => logout()}>logout</button>
+    <EditorContent editor={editor} />
+  </div> 
 };

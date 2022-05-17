@@ -1,18 +1,19 @@
-import {  useCallback, useRef, useState } from "react";
+import {  useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../config";
+import { UserContext } from "./userProvider";
 
 
 
 export const useAuth = () => {
-    const username = useRef<string | null>(null)
+    const {setUsername} = useContext(UserContext)
 
     const [status, setStatus] = useState<"loading" | "ok" | "failed">("loading")
 
     const navigate = useNavigate()
 
     const checkAuth = useCallback( async () => {
-        username.current = null
+        setUsername("")
         setStatus("loading")
         const result: boolean = await fetch(config.server.ORIGIN + "/check-auth", {
             credentials: "include"
@@ -28,7 +29,7 @@ export const useAuth = () => {
             }
 
             if (data?.authed) {
-                username.current = data?.username
+                setUsername(data?.username)
                 return true
             }
 
@@ -37,10 +38,10 @@ export const useAuth = () => {
 
         setStatus(() => result ? "ok" : "failed")
         return result
-    }, [])
+    }, [setUsername])
 
     const login = useCallback( async (u: string, p: string) => {
-        username.current = null
+        setUsername("")
         setStatus("loading")
         const result: boolean = await fetch(config.server.ORIGIN + "/login", {
             method: "POST",
@@ -62,7 +63,7 @@ export const useAuth = () => {
             if (data?.username === u && data?.authed === true) {
                 console.log("authentication succeeded!")
 
-                username.current = u
+                setUsername(u)
                 return true
             }
 
@@ -70,7 +71,7 @@ export const useAuth = () => {
             return false
         })
         return result
-    }, [])
+    }, [setUsername])
 
     const logout = useCallback(async () => {
         const result = await fetch(config.server.ORIGIN + "/logout", {
@@ -89,7 +90,6 @@ export const useAuth = () => {
 
     return {
         status,
-        username,
         checkAuth,
         login,
         logout

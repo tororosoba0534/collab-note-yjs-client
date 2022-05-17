@@ -14,6 +14,8 @@ const RequireAuth = ({children}: {children: JSX.Element}) => {
 
     }, [checkAuth, ])
 
+    
+
     if (status === "loading") return <Loading />
 
     if (status === "ok") return children
