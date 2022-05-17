@@ -1,6 +1,8 @@
-import { useCallback, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import config from "../config"
+import {  useCallback, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import config from "../config";
+
+
 
 export const useAuth = () => {
     const username = useRef<string | null>(null)
@@ -18,17 +20,15 @@ export const useAuth = () => {
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            const user = data?.user
-            const authed = data?.authed
             
-            if (typeof user !== "string" || typeof authed !== "boolean") {
+            if (typeof data?.username !== "string" || typeof data?.authed !== "boolean") {
                 console.log("response data type invalid.")
                 
                 return false
             }
 
-            if (authed) {
-                username.current = user
+            if (data?.authed) {
+                username.current = data?.username
                 return true
             }
 
@@ -49,17 +49,17 @@ export const useAuth = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user: u,
+                username: u,
                 password: p
             }),
         })
         .then(res => res.json())
         .then(data => {
-            if (typeof data?.user !== "string" || typeof data?.authed !== "boolean") {
+            if (typeof data?.username !== "string" || typeof data?.authed !== "boolean") {
                 console.log("response type invalid.")
                 return false
             }
-            if (data?.user === u && data?.authed === true) {
+            if (data?.username === u && data?.authed === true) {
                 console.log("authentication succeeded!")
 
                 username.current = u
@@ -85,7 +85,7 @@ export const useAuth = () => {
         })
 
         if (result) navigate("/login")
-    }, [])
+    }, [navigate])
 
     return {
         status,
