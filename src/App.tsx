@@ -4,6 +4,7 @@ import "./App.css";
 import RequireAuth from "./auths/RequireAuth";
 import { UserContext } from "./auths/userProvider";
 import Login from "./components/Login";
+import Register from "./components/Register";
 import { TiptapEditor } from "./components/TiptapEditor";
 import config from "./config";
 
@@ -20,6 +21,7 @@ function App() {
           </RequireAuth >
         } />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </div>
   );

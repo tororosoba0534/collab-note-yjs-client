@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../auths/useAuth"
 
@@ -31,6 +32,7 @@ const Login = () => {
     return (
         <div>
             <p>Login rendered</p>
+            <Link to="/register">to Register page</Link>
             <form onSubmit={ e => handleSubmit(e)}>
                 <label>
                     Name:
