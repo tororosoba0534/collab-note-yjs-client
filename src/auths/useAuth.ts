@@ -1,9 +1,10 @@
 import {  useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../config";
+import { SESSION_ID_KEY } from "../localStorage";
 import { UserContext } from "./userProvider";
 
-const SESSION_ID_KEY = "sessionID"
+
 
 
 export const useAuth = () => {
