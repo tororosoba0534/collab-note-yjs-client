@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import config from "../config";
 import { UserContext } from "./userProvider";
 
+const SESSION_ID_KEY = "sessionID"
 
 
 export const useAuth = () => {
@@ -13,10 +14,24 @@ export const useAuth = () => {
     const navigate = useNavigate()
 
     const checkAuth = useCallback( async () => {
+        const sessionID = localStorage.getItem(SESSION_ID_KEY)
+        if (!sessionID) {
+            console.log("sessionID does NOT exist in localStorage.")
+            setStatus("failed")
+            return false
+        }
+
         setUsername("")
         setStatus("loading")
         const result: boolean = await fetch(config.server.ORIGIN + "/check-auth", {
-            credentials: "include"
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sessionID
+            }),
         })
         .then(response => response.json())
         .then(data => {
@@ -40,8 +55,7 @@ export const useAuth = () => {
         return result
     }, [setUsername])
 
-    const login = useCallback( async (u: string, p: string) => {
-        setUsername("")
+    const login = useCallback( async (username: string, password: string) => {
         setStatus("loading")
         const result: boolean = await fetch(config.server.ORIGIN + "/login", {
             method: "POST",
@@ -50,20 +64,20 @@ export const useAuth = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: u,
-                password: p
+                username,
+                password
             }),
         })
         .then(res => res.json())
         .then(data => {
-            if (typeof data?.username !== "string" || typeof data?.authed !== "boolean") {
+            if (typeof data?.sessionID !== "string" || typeof data?.authed !== "boolean") {
                 console.log("response type invalid.")
                 return false
             }
-            if (data?.username === u && data?.authed === true) {
-                console.log("authentication succeeded!")
-
-                setUsername(u)
+            if (data?.sessionID && data?.authed === true) {
+                console.log("login succeeded!")
+                localStorage.setItem(SESSION_ID_KEY, data.sessionID)
+                
                 return true
             }
 
@@ -71,22 +85,37 @@ export const useAuth = () => {
             return false
         })
         return result
-    }, [setUsername])
+    }, [])
 
     const logout = useCallback(async () => {
+        setUsername("")
+        const sessionID = localStorage.getItem(SESSION_ID_KEY)
         const result = await fetch(config.server.ORIGIN + "/logout", {
-            credentials: "include"
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sessionID
+            }),
         })
-        .then(response => {
-            if (response.ok) {
+        .then(res => res.json())
+        .then(data => {
+            if (typeof data?.logoutStatus !== "boolean") {
+                console.log("response datatype invalid")
+                return false
+            }
+            if (data.logoutStatus) {
+                console.log("logout succeeded.")
                 return true
             }
-
+            console.log("logout failed.")
             return false
         })
 
         if (result) navigate("/login")
-    }, [navigate])
+    }, [navigate, setUsername])
 
     return {
         status,
