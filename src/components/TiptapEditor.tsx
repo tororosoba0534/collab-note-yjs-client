@@ -34,12 +34,22 @@ export const TiptapEditor = ({username}: {username: string}) => {
     ],
   });
 
-  return <div>
-    <button onClick={() => logout()}>logout</button>
-    <button onClick={() => {
-      // CSS can be applied to .ProseMirror-selectednode class
-      editor?.chain().focus().selectParentNode().run()
-      }}>selectParentNode</button>
-    <EditorContent editor={editor} />
+  return <div className="editor-page">
+    <div className="editor-main" >
+      <button onClick={() => logout()}>logout</button>
+      <button onClick={() => {
+        // CSS can be applied to .ProseMirror-selectednode class
+        editor?.chain().focus().selectParentNode().run()
+        }}>selectParentNode</button>
+      <EditorContent editor={editor} />
+    </div>
+    <div className="editor-menu" >
+      <button className="editor-menu-title">HERE COMES MENU</button>
+      <div className="editor-menu-inner">
+        <button >pseudo Logout</button>
+        <button >pseudo Account Setting</button>
+      </div>
+    </div>
+    
   </div> 
 };

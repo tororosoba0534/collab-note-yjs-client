@@ -16,12 +16,18 @@ function App() {
       <h2>Welcome to React-Router!</h2>
       <Routes>
         <Route path="/" element={
-          <RequireAuth >
-            <TiptapEditor username={username}/>
-          </RequireAuth >
+          // <RequireAuth >
+          //   <TiptapEditor username={username}/>
+          // </RequireAuth >
+          <TiptapEditor username={username} />
         } />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        {/* <Route path="account" element={<RequireAuth ><Account /></RequireAuth>} >
+          <Route path="change-username" element={<RequireAuth><ChangeUsername /></RequireAuth>} />
+          <Route path="change-password" element={<RequireAuth><ChangePassword /></RequireAuth>} />
+          <Route path="delete-account" element={<RequireAuth><DeleteAccount /></RequireAuth>} />
+        </Route> */}
       </Routes>
     </div>
   );

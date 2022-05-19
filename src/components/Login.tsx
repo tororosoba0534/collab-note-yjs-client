@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../auths/useAuth"
+import "./Login.css"
 
 const Login = () => {
     const [name, setName] = useState("")
@@ -30,28 +31,31 @@ const Login = () => {
 
 
     return (
-        <div>
+        <div className="login">
             <p>Login rendered</p>
             <Link to="/register">to Register page</Link>
             <form onSubmit={ e => handleSubmit(e)}>
-                <label>
-                    Name:
-                    <input 
-                        type="text" 
-                        name="user" 
-                        value={name} 
-                        onChange={e => setName(e.currentTarget.value)}
-                    />
-                </label>
-                <label>
-                    Password:
-                    <input 
-                        type="password" 
-                        name="password" 
-                        value={password} 
-                        onChange={e => setPassword(e.currentTarget.value)} 
-                    />
-                </label>
+                <div className="inputs">
+                    <label>
+                        Name:
+                        <input 
+                            type="text" 
+                            name="user" 
+                            value={name} 
+                            onChange={e => setName(e.currentTarget.value)}
+                        />
+                    </label>
+                    <label>
+                        Password:
+                        <input 
+                            type="password" 
+                            name="password" 
+                            value={password} 
+                            onChange={e => setPassword(e.currentTarget.value)} 
+                        />
+                    </label>
+                </div>
+                
                 <input type="submit" value="Submit" />
             </form>
         </div>

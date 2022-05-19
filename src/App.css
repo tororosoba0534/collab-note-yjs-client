@@ -1,1 +1,48 @@
+.editor-page {
+    display: grid;
+    grid-template: 
+        "editor-main editor-menu" 1fr
+        / 1fr 200px;
+}
 
+.editor-main {
+    grid-area: editor-main;
+}
+
+.editor-menu {
+    grid-area: editor-menu;
+    background-color: blueviolet;
+}
+
+@media screen and (max-width:520px) {
+    .editor-page {
+        grid-template:
+        "editor-menu" 50px
+        "editor-main" 1fr
+        / 1fr;
+    }
+    .editor-menu {
+        border-radius: 10px;
+        position: relative
+
+    }
+    .editor-menu-inner {
+        position: absolute;
+        right: 0;
+        top: calc(100% + .5rem);
+        background-color: white;
+        padding: .75rem;
+        border-radius: .25rem;
+        box-shadow: 0 2px 15px 0 rgba(0, 0, 0, .1);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+    }
+    .editor-menu > .editor-menu-title:focus + .editor-menu-inner {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+    
+}
