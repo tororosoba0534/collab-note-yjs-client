@@ -36,6 +36,10 @@ export const TiptapEditor = ({username}: {username: string}) => {
 
   return <div>
     <button onClick={() => logout()}>logout</button>
+    <button onClick={() => {
+      // CSS can be applied to .ProseMirror-selectednode class
+      editor?.chain().focus().selectParentNode().run()
+      }}>selectParentNode</button>
     <EditorContent editor={editor} />
   </div> 
 };

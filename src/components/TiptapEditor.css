@@ -5,3 +5,7 @@
 p {
     margin: 10px;
 }
+
+.ProseMirror-selectednode {
+    background-color: aquamarine;
+}
