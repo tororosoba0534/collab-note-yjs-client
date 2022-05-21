@@ -21,7 +21,7 @@ const Login = () => {
         login(name, password).then(result => {
             console.log(`login result: ${result}`)
             if (result) {
-                navigate("/")
+                navigate("/personal")
             }
             setName("")
             setPassword("")

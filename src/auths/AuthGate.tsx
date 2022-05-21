@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom"
 import Loading from "../components/Loading"
 import { useAuth } from "./useAuth"
 
-const RequireAuth = ({children}: {children: JSX.Element}) => {
+const AuthGate = ({children}: {children: JSX.Element}) => {
 
     console.log("RequireAuth rendered")
 
@@ -25,4 +25,4 @@ const RequireAuth = ({children}: {children: JSX.Element}) => {
     
 }
 
-export default RequireAuth
+export default AuthGate

@@ -1,10 +1,16 @@
 import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import RequireAuth from "./auths/RequireAuth";
 import { UserContext } from "./auths/userProvider";
+import ChangePassword from "./components/ChangePassword";
+import ChangeUsername from "./components/ChangeUsername";
+import DeleteAccount from "./components/DeleteAccount";
+import HomePage from "./components/HomePage";
 import Login from "./components/Login";
+import PersonalLayout from "./components/PersonalLayout";
 import Register from "./components/Register";
+import SettingsLayout from "./components/SettingsLayout";
+import TestLinks from "./components/TestLinks";
 import { TiptapEditor } from "./components/TiptapEditor";
 import config from "./config";
 
@@ -15,19 +21,18 @@ function App() {
     <div className="App">
       <h2>Welcome to React-Router!</h2>
       <Routes>
-        <Route path="/" element={
-          // <RequireAuth >
-          //   <TiptapEditor username={username}/>
-          // </RequireAuth >
-          <TiptapEditor username={username} />
-        } />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        {/* <Route path="account" element={<RequireAuth ><Account /></RequireAuth>} >
-          <Route path="change-username" element={<RequireAuth><ChangeUsername /></RequireAuth>} />
-          <Route path="change-password" element={<RequireAuth><ChangePassword /></RequireAuth>} />
-          <Route path="delete-account" element={<RequireAuth><DeleteAccount /></RequireAuth>} />
-        </Route> */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/personal" element={<PersonalLayout />} >
+          <Route index element={<TiptapEditor username={username} />} />
+          <Route path="settings" element={<SettingsLayout />} >
+            <Route path="delete-account" element={<DeleteAccount />} />
+            <Route path="change-username" element={<ChangeUsername />} />
+            <Route path="change-password" element={<ChangePassword />} />
+          </Route>
+        </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/test" element={<TestLinks />} />
       </Routes>
     </div>
   );
