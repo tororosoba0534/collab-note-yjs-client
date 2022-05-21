@@ -6,6 +6,8 @@ import Loading from "./Loading"
 
 const PersonalLayout = () => {
 
+    const {logout} = useAuth()
+
     return (
         <div className="personal">
             <div className="personal-menu">
@@ -14,11 +16,11 @@ const PersonalLayout = () => {
                         Menu
                     </div>
                     <div className="personal-menu-contents">
-                        <button >pseudo Logout</button>
-                        <button >pseudo Account Setting</button>
-                        <Link className="link" to="/test">return to TestLinks</Link>
-                        <Link to="/personal/settings" >to Settings</Link>
-                        <Link to="/personal/settings/delete-account">to DeleteAccount</Link>
+                        
+                        <Link to="/personal/settings" >Settings</Link>
+
+                        <Link to="/personal">Editor</Link>
+                        <button onClick={() => logout()}>Logout</button>
                     </div>
                 </div>
                 

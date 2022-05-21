@@ -1,8 +1,8 @@
 .personal {
     display: grid;
     grid-template: 
-        "body menu" 1fr
-        / 1fr 200px;
+        "body . menu" 1fr
+        / 1fr 10px 200px;
 }
 
 .personal-body {
@@ -15,6 +15,19 @@
     z-index: 10;
 }
 
+.personal-menu-column {
+    position: relative;
+    right: 0px;
+    width: 200px;
+    height: 300px;
+
+    display: grid;
+    grid-template: 
+        "menu-icon" 50px
+        "menu-contents" 1fr
+        / 1fr;
+}
+
 
 
 .personal-menu-icon {
@@ -24,6 +37,13 @@
     background-color: blanchedalmond;
 }
 
+.personal-menu-contents {
+    grid-area: menu-contents;
+    display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+}
+
 @media screen and (max-width:520px) {
     .personal {
         grid-template:
@@ -31,6 +51,7 @@
         "body" 1fr
         / 1fr;
     }
+    
 
 
     .personal-menu-column {
@@ -48,7 +69,6 @@
     
 
     .personal-menu-contents {
-        position: absolute;
         
         display: flex;
         flex-direction: column;

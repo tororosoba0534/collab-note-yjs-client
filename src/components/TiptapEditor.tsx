@@ -7,13 +7,11 @@ import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
 import config from "../config";
 import { useMemo } from "react";
-import { useAuth } from "../auths/useAuth";
 
 
 
 
 export const TiptapEditor = ({username}: {username: string}) => {
-  const {logout} = useAuth()
   
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,7 +34,6 @@ export const TiptapEditor = ({username}: {username: string}) => {
 
   return <div className="editor-page">
     <div className="editor-main" >
-      <button onClick={() => logout()}>logout</button>
       <button onClick={() => {
         // CSS can be applied to .ProseMirror-selectednode class
         editor?.chain().focus().selectParentNode().run()
