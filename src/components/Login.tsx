@@ -32,28 +32,38 @@ const Login = () => {
 
     return (
         <div className="login">
-            <p>Login rendered</p>
-            <Link to="/register">to Register page</Link>
-            <form onSubmit={ e => handleSubmit(e)}>
-                <div className="inputs">
+            <div className="p-4 bg-green-300">
+                <p>Login rendered</p>
+                <Link to="/register">to Register page</Link>
+            </div>
+            
+            <form  
+                className="px-10 py-4 flex flex-col gap-10"
+                onSubmit={ e => handleSubmit(e)}
+                >
+                <div className="border-gray-300 border-b-4">
                     <label>
-                        Name:
-                        <input 
-                            type="text" 
-                            name="user" 
-                            value={name} 
-                            onChange={e => setName(e.currentTarget.value)}
-                        />
+                        Name:    
                     </label>
+                    <input 
+                        type="text" 
+                        name="user" 
+                        value={name} 
+                        onChange={e => setName(e.currentTarget.value)}
+                    />
+                    
+                </div>
+                
+                <div className="border-gray-300 border-b-4">
                     <label>
-                        Password:
-                        <input 
-                            type="password" 
-                            name="password" 
-                            value={password} 
-                            onChange={e => setPassword(e.currentTarget.value)} 
-                        />
+                        Password:    
                     </label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        value={password} 
+                        onChange={e => setPassword(e.currentTarget.value)} 
+                    />
                 </div>
                 
                 <input type="submit" value="Submit" />
