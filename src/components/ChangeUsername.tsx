@@ -1,7 +1,5 @@
 const ChangeUsername = () => {
-    return <div>
-        Change Username Page
-    </div>
-}
+  return <div>Change Username Page</div>;
+};
 
-export default ChangeUsername
+export default ChangeUsername;

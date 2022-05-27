@@ -1,28 +1,22 @@
-import { useEffect } from "react"
-import { Navigate } from "react-router-dom"
-import Loading from "../components/Loading"
-import { useAuth } from "./useAuth"
+import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import Loading from "../components/Loading";
+import { useAuth } from "./useAuth";
 
-const AuthGate = ({children}: {children: JSX.Element}) => {
+const AuthGate = ({ children }: { children: JSX.Element }) => {
+  console.log("RequireAuth rendered");
 
-    console.log("RequireAuth rendered")
+  const { status, checkAuth } = useAuth();
 
-    const {status, checkAuth} = useAuth()
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
-    useEffect(() => {
-        checkAuth()
+  if (status === "loading") return <Loading />;
 
-    }, [checkAuth, ])
+  if (status === "ok") return children;
 
-    
+  return <Navigate to="/login" replace />;
+};
 
-    if (status === "loading") return <Loading />
-
-    if (status === "ok") return children
-
-    return <Navigate to="/login" replace />
-
-    
-}
-
-export default AuthGate
+export default AuthGate;

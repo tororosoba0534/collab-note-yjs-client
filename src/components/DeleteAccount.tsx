@@ -1,7 +1,5 @@
 const DeleteAccount = () => {
-    return <div>
-        Delete Account Page
-    </div>
-}
+  return <div>Delete Account Page</div>;
+};
 
-export default DeleteAccount
+export default DeleteAccount;

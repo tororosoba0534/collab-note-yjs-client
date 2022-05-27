@@ -1,87 +1,79 @@
 .personal {
-    display: grid;
-    grid-template: 
-        "body . menu" 1fr
-        / 1fr 10px 200px;
+  display: grid;
+  grid-template:
+    "body . menu" 1fr
+    / 1fr 10px 200px;
 }
 
 .personal-body {
-    grid-area: body;
+  grid-area: body;
 }
 
 .personal-menu {
-    grid-area: menu;
-    background-color: blueviolet;
-    z-index: 10;
+  grid-area: menu;
+  background-color: blueviolet;
+  z-index: 10;
 }
 
 .personal-menu-column {
-    position: relative;
-    right: 0px;
-    width: 200px;
-    height: 300px;
+  position: relative;
+  right: 0px;
+  width: 200px;
+  height: 300px;
 
-    display: grid;
-    grid-template: 
-        "menu-icon" 50px
-        "menu-contents" 1fr
-        / 1fr;
+  display: grid;
+  grid-template:
+    "menu-icon" 50px
+    "menu-contents" 1fr
+    / 1fr;
 }
 
-
-
 .personal-menu-icon {
-    grid-area: menu-icon;
-    height: 50px;
-    width: 200px;
-    background-color: blanchedalmond;
+  grid-area: menu-icon;
+  height: 50px;
+  width: 200px;
+  background-color: blanchedalmond;
 }
 
 .personal-menu-contents {
-    grid-area: menu-contents;
-    display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+  grid-area: menu-contents;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
-@media screen and (max-width:520px) {
-    .personal {
-        grid-template:
-        "menu" 50px
-        "body" 1fr
-        / 1fr;
-    }
-    
+@media screen and (max-width: 520px) {
+  .personal {
+    grid-template:
+      "menu" 50px
+      "body" 1fr
+      / 1fr;
+  }
 
+  .personal-menu-column {
+    position: absolute;
+    right: 0px;
+    width: 200px;
+  }
 
-    .personal-menu-column {
-        position: absolute;
-        right: 0px;
-        width: 200px;
-    }
+  .personal-menu-column:hover .personal-menu-contents {
+    opacity: 1;
+    visibility: visible;
+  }
 
-    .personal-menu-column:hover  .personal-menu-contents {
-        opacity: 1;
-        visibility: visible;
-    }
+  .personal-menu-contents {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: aquamarine;
+    width: 200px;
+    height: 300px;
 
+    opacity: 0;
+    visibility: hidden;
+  }
 
-    
-
-    .personal-menu-contents {
-        
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        background-color: aquamarine;
-        width: 200px;
-        height: 300px;
-
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    /* .personal-menu {
+  /* .personal-menu {
         border-radius: 10px;
         position: relative
 
@@ -111,7 +103,4 @@
         pointer-events: auto;
         transform: translateY(0);
     } */
-
-
-    
 }

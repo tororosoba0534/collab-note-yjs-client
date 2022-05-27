@@ -1,11 +1,11 @@
 .ProseMirror {
-    background-color: lightpink;
+  background-color: lightpink;
 }
 
 .ProseMirror p {
-    margin: 10px;
+  margin: 10px;
 }
 
 .ProseMirror-selectednode {
-    background-color: aquamarine;
+  background-color: aquamarine;
 }

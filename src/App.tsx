@@ -15,16 +15,16 @@ import { TiptapEditor } from "./components/TiptapEditor";
 import config from "./config";
 
 function App() {
-  console.log(`url: ${config.wsserver.URL}`)
-  const {username} = useContext(UserContext)
+  console.log(`url: ${config.wsserver.URL}`);
+  const { username } = useContext(UserContext);
   return (
     <div className="App">
       <h2>Welcome to React-Router!</h2>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/personal" element={<PersonalLayout />} >
+        <Route path="/personal" element={<PersonalLayout />}>
           <Route index element={<TiptapEditor username={username} />} />
-          <Route path="settings" element={<SettingsLayout />} >
+          <Route path="settings" element={<SettingsLayout />}>
             <Route path="delete-account" element={<DeleteAccount />} />
             <Route path="change-username" element={<ChangeUsername />} />
             <Route path="change-password" element={<ChangePassword />} />

@@ -1,7 +1,5 @@
 const ChangePassword = () => {
-    return <div>
-        Change Password Page
-    </div>
-}
+  return <div>Change Password Page</div>;
+};
 
-export default ChangePassword
+export default ChangePassword;

@@ -8,14 +8,9 @@ import { WebsocketProvider } from "y-websocket";
 import config from "../config";
 import { useMemo } from "react";
 
-
-
-
-export const TiptapEditor = ({username}: {username: string}) => {
-  
-
+export const TiptapEditor = ({ username }: { username: string }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const ydoc = useMemo(() => new Y.Doc(), [username])
+  const ydoc = useMemo(() => new Y.Doc(), [username]);
   // // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const provider = useMemo(() => new WebsocketProvider(config.wsserver.URL, username, ydoc), [username, ydoc])
 
@@ -32,15 +27,19 @@ export const TiptapEditor = ({username}: {username: string}) => {
     ],
   });
 
-  return <div className="editor-page">
-    <div className="editor-main" >
-      <button onClick={() => {
-        // CSS can be applied to .ProseMirror-selectednode class
-        editor?.chain().focus().selectParentNode().run()
-        }}>selectParentNode</button>
-      <EditorContent editor={editor} />
+  return (
+    <div className="editor-page">
+      <div className="editor-main">
+        <button
+          onClick={() => {
+            // CSS can be applied to .ProseMirror-selectednode class
+            editor?.chain().focus().selectParentNode().run();
+          }}
+        >
+          selectParentNode
+        </button>
+        <EditorContent editor={editor} />
+      </div>
     </div>
-    
-    
-  </div> 
+  );
 };
