@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auths/useAuth";
-import "./Login.css";
 
 const Login = () => {
   const [name, setName] = useState("");
@@ -16,8 +15,11 @@ const Login = () => {
 
   const { login } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
+    console.log("submit clicked.");
     login(name, password).then((result) => {
       console.log(`login result: ${result}`);
       if (result) {
@@ -29,7 +31,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login">
+    <div className="flex flex-col justify-center items-center">
       <div className="p-4 bg-green-300">
         <p>Login rendered</p>
         <Link to="/register">to Register page</Link>
@@ -37,11 +39,12 @@ const Login = () => {
 
       <form
         className="px-10 py-4 flex flex-col gap-10"
-        onSubmit={(e) => handleSubmit(e)}
+        // onSubmit={(e) => handleSubmit(e)}
       >
         <div className="border-gray-300 border-b-4">
-          <label>Name:</label>
+          <label className="block">Name:</label>
           <input
+            className="w-full"
             type="text"
             name="user"
             value={name}
@@ -50,8 +53,9 @@ const Login = () => {
         </div>
 
         <div className="border-gray-300 border-b-4">
-          <label>Password:</label>
+          <label className="block">Password:</label>
           <input
+            className="w-full"
             type="password"
             name="password"
             value={password}
@@ -59,7 +63,10 @@ const Login = () => {
           />
         </div>
 
-        <input type="submit" value="Submit" />
+        {/* <input type="submit" value="Submit" /> */}
+        <button type="submit" className="" onClick={(e) => handleSubmit(e)}>
+          Submit
+        </button>
       </form>
     </div>
   );
