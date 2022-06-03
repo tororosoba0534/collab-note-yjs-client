@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import AuthGate from "./auths/AuthGate";
 import { UserContext } from "./auths/userProvider";
 import ChangePassword from "./components/ChangePassword";
 import ChangeUsername from "./components/ChangeUsername";
@@ -22,7 +23,14 @@ function App() {
       <h2>Welcome to React-Router!</h2>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/personal" element={<PersonalLayout />}>
+        <Route
+          path="/personal"
+          element={
+            <AuthGate>
+              <PersonalLayout />
+            </AuthGate>
+          }
+        >
           <Route index element={<TiptapEditor username={username} />} />
           <Route path="settings" element={<SettingsLayout />}>
             <Route path="delete-account" element={<DeleteAccount />} />

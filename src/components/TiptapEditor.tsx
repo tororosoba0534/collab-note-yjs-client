@@ -11,8 +11,11 @@ import { useMemo } from "react";
 export const TiptapEditor = ({ username }: { username: string }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const ydoc = useMemo(() => new Y.Doc(), [username]);
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const provider = useMemo(() => new WebsocketProvider(config.wsserver.URL, username, ydoc), [username, ydoc])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const provider = useMemo(
+    () => new WebsocketProvider(config.wsserver.URL, username, ydoc),
+    [username, ydoc]
+  );
 
   const editor = useEditor({
     extensions: [
