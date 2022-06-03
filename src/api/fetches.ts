@@ -1,30 +1,49 @@
 import config from "../config";
-import { renderError } from "../utils/errorHandlings";
 
+export type Status = number;
+type BaseResType = {
+  status: Status;
+};
 type ResJSON = any;
-const baseFetch = async (route: string, reqJSON: any): Promise<ResJSON> => {
+
+const baseFetch = async (
+  route: string,
+  reqJSON: any
+): Promise<BaseResType & { resJSON: ResJSON }> => {
   let realRoute = route;
   if (realRoute[0] !== "/") {
     realRoute = "/" + realRoute;
   }
   try {
-    const data = await fetch(config.server.ORIGIN + realRoute, {
+    const { status, resJSON } = await fetch(config.server.ORIGIN + realRoute, {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(reqJSON),
-    }).then((response) => response.json());
+    }).then(async (response) => {
+      const status = response.status;
+      const resJSON = await response.json();
+      return { status, resJSON };
+    });
 
-    return data;
+    return { status, resJSON };
   } catch (e) {
-    renderError(e);
-    return {};
+    throw e;
+    // return { status: "clientError", resJSON: null, error: e };
   }
 };
 
-type ResCheckAuth = {
+const throwIfTypeNot = (param: any, type: "string" | "boolean") => {
+  if (typeof param !== type) {
+    throw new Error(
+      `Invalid response type: typeof username === "${typeof param}"`
+    );
+  }
+};
+
+type ResCheckAuth = BaseResType & {
   username: string;
 };
 export const fetchCheckAuth = async (
@@ -32,17 +51,17 @@ export const fetchCheckAuth = async (
 ): Promise<ResCheckAuth> => {
   const route = "/personal/check-auth";
 
-  const { username } = await baseFetch(route, { sessionID });
+  const {
+    status,
+    resJSON: { username },
+  } = await baseFetch(route, { sessionID });
 
-  if (typeof username !== "string") {
-    console.error("Invalid response type.");
-    return { username: "" };
-  }
+  throwIfTypeNot(username, "string");
 
-  return { username };
+  return { username, status };
 };
 
-type ResLogin = {
+type ResLogin = BaseResType & {
   sessionID: string;
 };
 export const fetchLogin = async (
@@ -50,120 +69,92 @@ export const fetchLogin = async (
   password: string
 ): Promise<ResLogin> => {
   const route = "/login";
-  const { sessionID } = await baseFetch(route, { username, password });
+  const {
+    status,
+    resJSON: { sessionID },
+  } = await baseFetch(route, { username, password });
 
-  if (typeof sessionID !== "string") {
-    console.error("Invalid response type");
-    return { sessionID: "" };
-  }
+  throwIfTypeNot(sessionID, "string");
 
-  return { sessionID };
+  return { status, sessionID };
 };
 
-type ResLogout = {
-  logoutStatus: boolean;
-};
+type ResLogout = BaseResType;
 export const fetchLogout = async (sessionID: string): Promise<ResLogout> => {
-  const { logoutStatus } = await baseFetch("/personal/logout", { sessionID });
+  const { status } = await baseFetch("/personal/logout", { sessionID });
 
-  if (typeof logoutStatus !== "boolean") {
-    console.error("Invalid response type");
-    return { logoutStatus: false };
-  }
-
-  return { logoutStatus };
+  return { status };
 };
 
-type ResRegister = {
-  registerStatus: boolean;
-};
-export const fetchRegister = async (
+type ResCreateAccount = BaseResType;
+export const fetchCreateAccount = async (
   username: string,
   password: string
-): Promise<ResRegister> => {
-  const { registerStatus } = await baseFetch("/register", {
+): Promise<ResCreateAccount> => {
+  const { status } = await baseFetch("/createAccount", {
     username,
     password,
   });
 
-  if (typeof registerStatus !== "boolean") {
-    console.error("Invalid response type");
-    return { registerStatus: false };
-  }
-
-  return { registerStatus };
+  return { status };
 };
 
-type ResCheckUsername = {
-  isValidName: boolean;
-};
+type ResCheckUsername = BaseResType;
 export const fetchCheckUsername = async (
   username: string
 ): Promise<ResCheckUsername> => {
-  const { isValidName } = await baseFetch("/check-username", { username });
+  const { status } = await baseFetch("/check-username", { username });
 
-  if (typeof isValidName !== "boolean") {
-    console.error("Invalid response type");
-    return { isValidName: false };
-  }
-
-  return { isValidName };
+  return { status };
 };
 
-type ResDeleteAccount = {
-  deleteAccountStatus: boolean;
-};
+type ResDeleteAccount = BaseResType;
 export const fetchDeleteAccount = async (
   sessionID: string
 ): Promise<ResDeleteAccount> => {
-  const { deleteAccountStatus } = await baseFetch("/personal/delete-account", {
+  const { status } = await baseFetch("/personal/delete-account", {
     sessionID,
   });
 
-  if (typeof deleteAccountStatus !== "boolean") {
-    console.error("Invalid response type");
-    return { deleteAccountStatus: false };
-  }
-
-  return { deleteAccountStatus };
+  return { status };
 };
 
-type ResChangeUsername = {
+type ResChangeUsername = BaseResType & {
   newSessionID: string;
 };
 export const changeUsername = async (
   sessionID: string,
   newUsername: string
 ): Promise<ResChangeUsername> => {
-  const { newSessionID } = await baseFetch("/personal/change-username", {
+  const {
+    status,
+    resJSON: { newSessionID },
+  } = await baseFetch("/personal/change-username", {
     sessionID,
     newUsername,
   });
 
-  if (typeof newSessionID !== "string") {
-    console.error("Invalid response type");
-    return { newSessionID: "" };
-  }
+  throwIfTypeNot(newSessionID, "string");
 
-  return { newSessionID };
+  return { status, newSessionID };
 };
 
-type ResChangePassword = {
+type ResChangePassword = BaseResType & {
   newSessionID: string;
 };
 export const changePassword = async (
   sessionID: string,
   newPassword: string
 ): Promise<ResChangePassword> => {
-  const { newSessionID } = await baseFetch("/personal/change-password", {
+  const {
+    status,
+    resJSON: { newSessionID },
+  } = await baseFetch("/personal/change-password", {
     sessionID,
     newPassword,
   });
 
-  if (typeof newSessionID !== "string") {
-    console.error("Invalid response type");
-    return { newSessionID: "" };
-  }
+  throwIfTypeNot(newSessionID, "string");
 
-  return { newSessionID };
+  return { status, newSessionID };
 };

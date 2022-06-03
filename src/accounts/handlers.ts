@@ -1,11 +1,11 @@
-import { fetchRegister } from "../api/fetches";
+import { fetchCreateAccount } from "../api/fetches";
 import config from "../config";
 
 export const register = async (
   username: string,
   password: string
 ): Promise<boolean> => {
-  const { registerStatus } = await fetchRegister(username, password);
+  const { registerStatus } = await fetchCreateAccount(username, password);
 
   return registerStatus;
 
