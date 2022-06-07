@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { register } from "../accounts/utils";
-import { useCheckUsername } from "../accounts/useCheckUsername";
+import { useCreateAccount } from "../api/hooks";
 
-const Register = () => {
-  const [name, setName] = useState("");
+const CreateAccount = () => {
+  const [username, setUsername] = useState("");
 
-  // TODO:
-  // 一時的に平文でpasswordを保持してしまう。
-  // 扱い方を見直すべき。
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { isValidMessage, checkUsername } = useCheckUsername();
+  const {
+    createAccount,
+    status: createAccountStatus,
+    isLoading,
+    thrownErr,
+  } = useCreateAccount();
 
   const navigate = useNavigate();
 
@@ -24,14 +25,22 @@ const Register = () => {
       setConfirmPassword("");
       return;
     }
-    register(name, password).then((result) => {
-      console.log(`register result: ${result}`);
-      if (result) {
-        navigate("/login");
-      }
-      setPassword("");
-      setConfirmPassword("");
-    });
+
+    await createAccount(username, password);
+    if (createAccountStatus === 200) {
+      navigate("/login");
+    }
+    setPassword("");
+    setConfirmPassword("");
+
+    // register(name, password).then((result) => {
+    //   console.log(`register result: ${result}`);
+    //   if (result) {
+    //     navigate("/login");
+    //   }
+    //   setPassword("");
+    //   setConfirmPassword("");
+    // });
   };
 
   return (
@@ -44,14 +53,14 @@ const Register = () => {
           <input
             type="text"
             name="username"
-            value={name}
+            value={username}
             onChange={(e) => {
-              setName(e.currentTarget.value);
-              checkUsername(e.currentTarget.value);
+              setUsername(e.currentTarget.value);
+              // checkUsername(e.currentTarget.value);
             }}
           />
         </label>
-        <p>{isValidMessage}</p>
+        {/* <p>{isValidMessage}</p> */}
         <label>
           Password:
           <input
@@ -76,4 +85,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default CreateAccount;

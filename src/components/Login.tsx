@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../auths/useAuth";
+import { useLogin } from "../api/hooks";
 
 const Login = () => {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
 
   // TODO:
   // 一時的に平文でpasswordを保持してしまう。
@@ -13,21 +13,29 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { login } = useAuth();
+  const { login, status, thrownErr, isLoading } = useLogin();
 
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     console.log("submit clicked.");
-    login(name, password).then((result) => {
-      console.log(`login result: ${result}`);
-      if (result) {
-        navigate("/personal");
-      }
-      setName("");
-      setPassword("");
-    });
+
+    await login(username, password);
+    if (status === 200) {
+      navigate("/personal");
+    }
+    setUsername("");
+    setPassword("");
+
+    // login(name, password).then((result) => {
+    //   console.log(`login result: ${result}`);
+    //   if (result) {
+    //     navigate("/personal");
+    //   }
+    //   setName("");
+    //   setPassword("");
+    // });
   };
 
   return (
@@ -47,8 +55,8 @@ const Login = () => {
             className="w-full"
             type="text"
             name="user"
-            value={name}
-            onChange={(e) => setName(e.currentTarget.value)}
+            value={username}
+            onChange={(e) => setUsername(e.currentTarget.value)}
           />
         </div>
 

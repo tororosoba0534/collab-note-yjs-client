@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
-import config from "../config";
+import config from "../../config";
 import { useMemo } from "react";
 
 export const TiptapEditor = ({ username }: { username: string }) => {
