@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchCheckAuth, fetchLogin, fetchLogout } from "../api/fetches";
 import config from "../config";
 import { SESSION_ID_KEY } from "../localStorage";
-import { renderError } from "../utils/errorHandlings";
+import { renderError } from "../errorHandlings/renderError";
 import { UserContext } from "./userProvider";
 
 export const useAuth = () => {

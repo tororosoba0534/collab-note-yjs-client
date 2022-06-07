@@ -3,16 +3,16 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import AuthGate from "./auths/AuthGate";
 import { UserContext } from "./auths/userProvider";
-import ChangePassword from "./components/ChangePassword";
-import ChangeUsername from "./components/ChangeUsername";
-import DeleteAccount from "./components/DeleteAccount";
+import ChangePassword from "./components/personal/ChangePassword";
+import ChangeUsername from "./components/personal/ChangeUsername";
+import DeleteAccount from "./components/personal/DeleteAccount";
 import HomePage from "./components/HomePage";
 import Login from "./components/Login";
-import PersonalLayout from "./components/PersonalLayout";
+import PersonalLayout from "./components/personal/PersonalLayout";
 import Register from "./components/Register";
-import SettingsLayout from "./components/SettingsLayout";
+import SettingsLayout from "./components/personal/SettingsLayout";
 import TestLinks from "./components/TestLinks";
-import { TiptapEditor } from "./components/TiptapEditor";
+import { TiptapEditor } from "./components/personal/TiptapEditor";
 import config from "./config";
 
 function App() {

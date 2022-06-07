@@ -2,9 +2,9 @@ import { Menu } from "@headlessui/react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../auths/useAuth";
-import Loading from "./Loading";
-import CustomMenu from "./Menu";
+import { useAuth } from "../../auths/useAuth";
+import Loading from "../Loading";
+import CustomMenu from "../Menu";
 
 const PersonalLayout = () => {
   const { logout } = useAuth();
