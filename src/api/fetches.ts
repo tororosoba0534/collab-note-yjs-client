@@ -1,7 +1,7 @@
 import config from "../config";
 
 export type Status = number;
-type BaseResType = {
+export type BaseResType = {
   status: Status;
 };
 type ResJSON = any;
@@ -43,7 +43,7 @@ const throwIfTypeNot = (param: any, type: "string" | "boolean") => {
   }
 };
 
-type ResCheckAuth = BaseResType & {
+export type ResCheckAuth = BaseResType & {
   username: string;
 };
 export const fetchCheckAuth = async (
@@ -99,13 +99,18 @@ export const fetchCreateAccount = async (
   return { status };
 };
 
-type ResCheckUsername = BaseResType;
+type ResCheckUsername = BaseResType & { isUnusedValidUsername: boolean };
 export const fetchCheckUsername = async (
   username: string
 ): Promise<ResCheckUsername> => {
-  const { status } = await baseFetch("/check-username", { username });
+  const {
+    status,
+    resJSON: { isUnusedValidUsername },
+  } = await baseFetch("/check-username", { username });
 
-  return { status };
+  throwIfTypeNot(isUnusedValidUsername, "boolean");
+
+  return { status, isUnusedValidUsername };
 };
 
 type ResDeleteAccount = BaseResType;
@@ -122,7 +127,7 @@ export const fetchDeleteAccount = async (
 type ResChangeUsername = BaseResType & {
   newSessionID: string;
 };
-export const changeUsername = async (
+export const fetchChangeUsername = async (
   sessionID: string,
   newUsername: string
 ): Promise<ResChangeUsername> => {
@@ -142,7 +147,7 @@ export const changeUsername = async (
 type ResChangePassword = BaseResType & {
   newSessionID: string;
 };
-export const changePassword = async (
+export const fetchChangePassword = async (
   sessionID: string,
   newPassword: string
 ): Promise<ResChangePassword> => {

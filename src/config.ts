@@ -16,6 +16,7 @@ const config = {
         : "http://localhost:3001",
   },
   SOCKET_RECONNECTION_TIMEOUT: 1000,
+  SESSION_ID_KEY: "sessionID",
 };
 
 export default config;
