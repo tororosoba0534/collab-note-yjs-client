@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import config from "../config";
 import { error2String } from "../errorHandlings/error2String";
 import {
@@ -24,7 +24,7 @@ export const useCheckAuth = (): {
   const [thrownErr, setThrownErr] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const checkAuth = async (): Promise<void> => {
+  const checkAuth = useCallback(async (): Promise<void> => {
     setThrownErr("");
     setIsLoading(true);
     setUsername("");
@@ -49,7 +49,7 @@ export const useCheckAuth = (): {
       setIsLoading(false);
       return;
     }
-  };
+  }, []);
 
   return { checkAuth, username, status, thrownErr, isLoading };
 };
@@ -64,28 +64,31 @@ export const useLogin = (): {
   const [thrownErr, setThrownErr] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const login = async (username: string, password: string): Promise<void> => {
-    setThrownErr("");
-    setIsLoading(true);
+  const login = useCallback(
+    async (username: string, password: string): Promise<void> => {
+      setThrownErr("");
+      setIsLoading(true);
 
-    try {
-      const { status: resStatus, sessionID: resSessionID } = await fetchLogin(
-        username,
-        password
-      );
-      if (resStatus === 200) {
-        localStorage.setItem(config.SESSION_ID_KEY, resSessionID);
+      try {
+        const { status: resStatus, sessionID: resSessionID } = await fetchLogin(
+          username,
+          password
+        );
+        if (resStatus === 200) {
+          localStorage.setItem(config.SESSION_ID_KEY, resSessionID);
+        }
+
+        setStatus(resStatus);
+        setIsLoading(false);
+        return;
+      } catch (e) {
+        setThrownErr(error2String(e));
+        setIsLoading(false);
+        return;
       }
-
-      setStatus(resStatus);
-      setIsLoading(false);
-      return;
-    } catch (e) {
-      setThrownErr(error2String(e));
-      setIsLoading(false);
-      return;
-    }
-  };
+    },
+    []
+  );
 
   return { login, status, thrownErr, isLoading };
 };
@@ -100,7 +103,7 @@ export const useLogout = (): {
   const [thrownErr, setThrownErr] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const logout = async (): Promise<void> => {
+  const logout = useCallback(async (): Promise<void> => {
     setThrownErr("");
     setIsLoading(true);
 
@@ -120,7 +123,7 @@ export const useLogout = (): {
       setThrownErr(error2String(e));
       setIsLoading(false);
     }
-  };
+  }, []);
 
   return { logout, status, thrownErr, isLoading };
 };
@@ -135,26 +138,26 @@ export const useCreateAccount = (): {
   const [thrownErr, setThrownErr] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const createAccount = async (
-    username: string,
-    password: string
-  ): Promise<void> => {
-    setThrownErr("");
-    setIsLoading(true);
+  const createAccount = useCallback(
+    async (username: string, password: string): Promise<void> => {
+      setThrownErr("");
+      setIsLoading(true);
 
-    try {
-      const { status: resStatus } = await fetchCreateAccount(
-        username,
-        password
-      );
+      try {
+        const { status: resStatus } = await fetchCreateAccount(
+          username,
+          password
+        );
 
-      setStatus(resStatus);
-      setIsLoading(false);
-    } catch (e) {
-      setThrownErr(error2String(e));
-      setIsLoading(false);
-    }
-  };
+        setStatus(resStatus);
+        setIsLoading(false);
+      } catch (e) {
+        setThrownErr(error2String(e));
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   return { createAccount, status, thrownErr, isLoading };
 };
@@ -171,7 +174,7 @@ export const useCheckUsername = (): {
   const [isUnusedValidUsername, setIsUnusedValidUsername] = useState(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const checkUsername = async (username: string): Promise<void> => {
+  const checkUsername = useCallback(async (username: string): Promise<void> => {
     setThrownErr("");
     setIsLoading(true);
     try {
@@ -187,7 +190,7 @@ export const useCheckUsername = (): {
       setThrownErr(error2String(e));
       setIsLoading(false);
     }
-  };
+  }, []);
 
   return { checkUsername, status, isUnusedValidUsername, thrownErr, isLoading };
 };
@@ -202,7 +205,7 @@ export const useDeleteAccount = (): {
   const [thrownErr, setThrownErr] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const deleteAccount = async (): Promise<void> => {
+  const deleteAccount = useCallback(async (): Promise<void> => {
     setThrownErr("");
     setIsLoading(true);
 
@@ -220,7 +223,7 @@ export const useDeleteAccount = (): {
       setThrownErr(error2String(e));
       setIsLoading(false);
     }
-  };
+  }, []);
 
   return { deleteAccount, status, thrownErr, isLoading };
 };
@@ -235,34 +238,37 @@ export const useChangeUsername = (): {
   const [thrownErr, setThrownErr] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const changeUsername = async (newUsername: string): Promise<void> => {
-    setThrownErr("");
-    setIsLoading(true);
+  const changeUsername = useCallback(
+    async (newUsername: string): Promise<void> => {
+      setThrownErr("");
+      setIsLoading(true);
 
-    try {
-      const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
-      if (!sessionID) {
-        setStatus(401);
+      try {
+        const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
+        if (!sessionID) {
+          setStatus(401);
+          setIsLoading(false);
+          return;
+        }
+
+        const { status: resStatus, newSessionID } = await fetchChangeUsername(
+          sessionID,
+          newUsername
+        );
+
+        if (resStatus === 200) {
+          localStorage.setItem(config.SESSION_ID_KEY, newSessionID);
+        }
+
+        setStatus(resStatus);
         setIsLoading(false);
-        return;
+      } catch (e) {
+        setThrownErr(error2String(e));
+        setIsLoading(false);
       }
-
-      const { status: resStatus, newSessionID } = await fetchChangeUsername(
-        sessionID,
-        newUsername
-      );
-
-      if (resStatus === 200) {
-        localStorage.setItem(config.SESSION_ID_KEY, newSessionID);
-      }
-
-      setStatus(resStatus);
-      setIsLoading(false);
-    } catch (e) {
-      setThrownErr(error2String(e));
-      setIsLoading(false);
-    }
-  };
+    },
+    []
+  );
 
   return { changeUsername, status, thrownErr, isLoading };
 };
@@ -277,34 +283,37 @@ export const useChangePassword = (): {
   const [thrownErr, setThrownErr] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const changePassword = async (newPassword: string): Promise<void> => {
-    setThrownErr("");
-    setIsLoading(true);
+  const changePassword = useCallback(
+    async (newPassword: string): Promise<void> => {
+      setThrownErr("");
+      setIsLoading(true);
 
-    try {
-      const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
-      if (!sessionID) {
-        setStatus(401);
+      try {
+        const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
+        if (!sessionID) {
+          setStatus(401);
+          setIsLoading(false);
+          return;
+        }
+
+        const { status: resStatus, newSessionID } = await fetchChangePassword(
+          sessionID,
+          newPassword
+        );
+
+        if (resStatus === 200) {
+          localStorage.setItem(config.SESSION_ID_KEY, newSessionID);
+        }
+
+        setStatus(resStatus);
         setIsLoading(false);
-        return;
+      } catch (e) {
+        setThrownErr(error2String(e));
+        setIsLoading(false);
       }
-
-      const { status: resStatus, newSessionID } = await fetchChangePassword(
-        sessionID,
-        newPassword
-      );
-
-      if (resStatus === 200) {
-        localStorage.setItem(config.SESSION_ID_KEY, newSessionID);
-      }
-
-      setStatus(resStatus);
-      setIsLoading(false);
-    } catch (e) {
-      setThrownErr(error2String(e));
-      setIsLoading(false);
-    }
-  };
+    },
+    []
+  );
 
   return { changePassword, status, thrownErr, isLoading };
 };
