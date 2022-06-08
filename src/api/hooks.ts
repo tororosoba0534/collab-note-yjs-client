@@ -12,62 +12,73 @@ import {
   fetchLogout,
 } from "./fetches";
 
-export const useCheckAuth = (): {
-  checkAuth: () => Promise<void>;
-  username: string;
+type BaseReturnType = {
   status: number;
   thrownErr: string;
-  isLoading: boolean;
-} => {
-  const [username, setUsername] = useState<string>("");
-  const [status, setStatus] = useState<number>(401);
-  const [thrownErr, setThrownErr] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+};
 
-  const checkAuth = useCallback(async (): Promise<void> => {
-    setThrownErr("");
-    setIsLoading(true);
-    setUsername("");
+type BaseHooksType = BaseReturnType & {
+  isLoading: boolean;
+};
+
+export const useCheckAuth = (): BaseHooksType & {
+  checkAuth: () => Promise<BaseReturnType & { username: string }>;
+  username: string;
+} => {
+  const [usernameState, setUsernameState] = useState<string>("");
+  const [statusState, setStatusState] = useState<number>(401);
+  const [thrownErrState, setThrownErrState] = useState<string>("");
+  const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
+
+  const checkAuth = useCallback(async (): Promise<
+    BaseReturnType & { username: string }
+  > => {
+    setThrownErrState("");
+    setIsLoadingState(true);
+    setUsernameState("");
     try {
       const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
       if (!sessionID) {
-        setStatus(401);
-        setUsername("");
-        setIsLoading(false);
-        return;
+        setStatusState(401);
+        setUsernameState("");
+        setIsLoadingState(false);
+        return { status: 401, thrownErr: "", username: "" };
       }
       const { status: resStatus, username: resUsername } = await fetchCheckAuth(
         sessionID
       );
-      setStatus(resStatus);
-      setUsername(resUsername);
-      setIsLoading(false);
-      return;
+      setStatusState(resStatus);
+      setUsernameState(resUsername);
+      setIsLoadingState(false);
+      return { status: resStatus, username: resUsername, thrownErr: "" };
     } catch (e) {
-      setThrownErr(error2String(e));
-      setUsername("");
-      setIsLoading(false);
-      return;
+      setThrownErrState(error2String(e));
+      setUsernameState("");
+      setIsLoadingState(false);
+      return { status: 0, username: "", thrownErr: error2String(e) };
     }
   }, []);
 
-  return { checkAuth, username, status, thrownErr, isLoading };
+  return {
+    checkAuth,
+    username: usernameState,
+    status: statusState,
+    thrownErr: thrownErrState,
+    isLoading: isLoadingState,
+  };
 };
 
-export const useLogin = (): {
-  login: (username: string, password: string) => Promise<void>;
-  status: number;
-  thrownErr: string;
-  isLoading: boolean;
+export const useLogin = (): BaseHooksType & {
+  login: (username: string, password: string) => Promise<BaseReturnType>;
 } => {
-  const [status, setStatus] = useState(401);
-  const [thrownErr, setThrownErr] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [statusState, setStatusState] = useState(401);
+  const [thrownErrState, setThrownErrState] = useState<string>("");
+  const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
 
   const login = useCallback(
-    async (username: string, password: string): Promise<void> => {
-      setThrownErr("");
-      setIsLoading(true);
+    async (username: string, password: string): Promise<BaseReturnType> => {
+      setThrownErrState("");
+      setIsLoadingState(true);
 
       try {
         const { status: resStatus, sessionID: resSessionID } = await fetchLogin(
@@ -78,70 +89,78 @@ export const useLogin = (): {
           localStorage.setItem(config.SESSION_ID_KEY, resSessionID);
         }
 
-        setStatus(resStatus);
-        setIsLoading(false);
-        return;
+        setStatusState(resStatus);
+        setIsLoadingState(false);
+        return { status: resStatus, thrownErr: "" };
       } catch (e) {
-        setThrownErr(error2String(e));
-        setIsLoading(false);
-        return;
+        setThrownErrState(error2String(e));
+        setIsLoadingState(false);
+        return { status: 0, thrownErr: error2String(e) };
       }
     },
     []
   );
 
-  return { login, status, thrownErr, isLoading };
+  return {
+    login,
+    status: statusState,
+    thrownErr: thrownErrState,
+    isLoading: isLoadingState,
+  };
 };
 
-export const useLogout = (): {
-  logout: () => Promise<void>;
-  status: number;
-  thrownErr: string;
-  isLoading: boolean;
+export const useLogout = (): BaseHooksType & {
+  logout: () => Promise<BaseReturnType>;
 } => {
-  const [status, setStatus] = useState(401);
-  const [thrownErr, setThrownErr] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [statusState, setStatusState] = useState(401);
+  const [thrownErrState, setThrownErrState] = useState<string>("");
+  const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
 
-  const logout = useCallback(async (): Promise<void> => {
-    setThrownErr("");
-    setIsLoading(true);
+  const logout = useCallback(async (): Promise<BaseReturnType> => {
+    setThrownErrState("");
+    setIsLoadingState(true);
 
     try {
       const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
       if (!sessionID) {
-        setStatus(401);
-        setIsLoading(false);
-        return;
+        setStatusState(401);
+        setIsLoadingState(false);
+        return { status: 401, thrownErr: "" };
       }
 
       const { status: resStatus } = await fetchLogout(sessionID);
-      setStatus(resStatus);
-      setIsLoading(false);
-      return;
+      setStatusState(resStatus);
+      setIsLoadingState(false);
+      return { status: resStatus, thrownErr: "" };
     } catch (e) {
-      setThrownErr(error2String(e));
-      setIsLoading(false);
+      setThrownErrState(error2String(e));
+      setIsLoadingState(false);
+      return { status: 0, thrownErr: error2String(e) };
     }
   }, []);
 
-  return { logout, status, thrownErr, isLoading };
+  return {
+    logout,
+    status: statusState,
+    thrownErr: thrownErrState,
+    isLoading: isLoadingState,
+  };
 };
 
-export const useCreateAccount = (): {
-  createAccount: (username: string, password: string) => Promise<void>;
-  status: number;
-  thrownErr: string;
-  isLoading: boolean;
+export const useCreateAccount = (): BaseHooksType & {
+  createAccount: (
+    username: string,
+    password: string
+  ) => Promise<BaseReturnType>;
 } => {
-  const [status, setStatus] = useState(400);
-  const [thrownErr, setThrownErr] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [statusState, setStatusState] = useState(400);
+  const [thrownErrState, setThrownErrState] = useState<string>("");
+  const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
 
   const createAccount = useCallback(
-    async (username: string, password: string): Promise<void> => {
-      setThrownErr("");
-      setIsLoading(true);
+    async (username: string, password: string): Promise<BaseReturnType> => {
+      setThrownErrState("");
+      setIsLoadingState(true);
 
       try {
         const { status: resStatus } = await fetchCreateAccount(
@@ -149,106 +168,135 @@ export const useCreateAccount = (): {
           password
         );
 
-        setStatus(resStatus);
-        setIsLoading(false);
+        setStatusState(resStatus);
+        setIsLoadingState(false);
+        return { status: resStatus, thrownErr: "" };
       } catch (e) {
-        setThrownErr(error2String(e));
-        setIsLoading(false);
+        setThrownErrState(error2String(e));
+        setIsLoadingState(false);
+        return { status: 0, thrownErr: error2String(e) };
       }
     },
     []
   );
 
-  return { createAccount, status, thrownErr, isLoading };
+  return {
+    createAccount,
+    status: statusState,
+    thrownErr: thrownErrState,
+    isLoading: isLoadingState,
+  };
 };
 
-export const useCheckUsername = (): {
-  checkUsername: (username: string) => Promise<void>;
-  status: number;
+export const useCheckUsername = (): BaseHooksType & {
+  checkUsername: (
+    username: string
+  ) => Promise<BaseReturnType & { isUnusedValidUsername: boolean }>;
   isUnusedValidUsername: boolean;
-  thrownErr: string;
-  isLoading: boolean;
 } => {
-  const [status, setStatus] = useState(400);
-  const [thrownErr, setThrownErr] = useState("");
-  const [isUnusedValidUsername, setIsUnusedValidUsername] = useState(true);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [statusState, setStatusState] = useState(400);
+  const [thrownErrState, setThrownErrState] = useState<string>("");
+  const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
+  const [isUnusedValidUsernameState, setIsUnusedValidUsernameState] =
+    useState(true);
 
-  const checkUsername = useCallback(async (username: string): Promise<void> => {
-    setThrownErr("");
-    setIsLoading(true);
-    try {
-      const {
-        status: resStatus,
-        isUnusedValidUsername: resIsUnusedValidUsername,
-      } = await fetchCheckUsername(username);
+  const checkUsername = useCallback(
+    async (
+      username: string
+    ): Promise<BaseReturnType & { isUnusedValidUsername: boolean }> => {
+      setThrownErrState("");
+      setIsLoadingState(true);
+      try {
+        const {
+          status: resStatus,
+          isUnusedValidUsername: resIsUnusedValidUsername,
+        } = await fetchCheckUsername(username);
 
-      setStatus(resStatus);
-      setIsUnusedValidUsername(resIsUnusedValidUsername);
-      setIsLoading(false);
-    } catch (e) {
-      setThrownErr(error2String(e));
-      setIsLoading(false);
-    }
-  }, []);
+        setStatusState(resStatus);
+        setIsUnusedValidUsernameState(resIsUnusedValidUsername);
+        setIsLoadingState(false);
+        return {
+          status: resStatus,
+          thrownErr: "",
+          isUnusedValidUsername: resIsUnusedValidUsername,
+        };
+      } catch (e) {
+        setThrownErrState(error2String(e));
+        setIsLoadingState(false);
+        return {
+          status: 0,
+          thrownErr: error2String(e),
+          isUnusedValidUsername: false,
+        };
+      }
+    },
+    []
+  );
 
-  return { checkUsername, status, isUnusedValidUsername, thrownErr, isLoading };
+  return {
+    checkUsername,
+    status: statusState,
+    isUnusedValidUsername: isUnusedValidUsernameState,
+    thrownErr: thrownErrState,
+    isLoading: isLoadingState,
+  };
 };
 
-export const useDeleteAccount = (): {
-  deleteAccount: () => Promise<void>;
-  status: number;
-  thrownErr: string;
-  isLoading: boolean;
+export const useDeleteAccount = (): BaseHooksType & {
+  deleteAccount: () => Promise<BaseReturnType>;
 } => {
-  const [status, setStatus] = useState(401);
-  const [thrownErr, setThrownErr] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [statusState, setStatusState] = useState(401);
+  const [thrownErrState, setThrownErrState] = useState<string>("");
+  const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
 
-  const deleteAccount = useCallback(async (): Promise<void> => {
-    setThrownErr("");
-    setIsLoading(true);
+  const deleteAccount = useCallback(async (): Promise<BaseReturnType> => {
+    setThrownErrState("");
+    setIsLoadingState(true);
 
     try {
       const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
       if (!sessionID) {
-        setStatus(401);
-        setIsLoading(false);
-        return;
+        setStatusState(401);
+        setIsLoadingState(false);
+        return { status: 401, thrownErr: "" };
       }
       const { status: resStatus } = await fetchDeleteAccount(sessionID);
-      setStatus(resStatus);
-      setIsLoading(false);
+      setStatusState(resStatus);
+      setIsLoadingState(false);
+      return { status: resStatus, thrownErr: "" };
     } catch (e) {
-      setThrownErr(error2String(e));
-      setIsLoading(false);
+      setThrownErrState(error2String(e));
+      setIsLoadingState(false);
+      return { status: 0, thrownErr: error2String(e) };
     }
   }, []);
 
-  return { deleteAccount, status, thrownErr, isLoading };
+  return {
+    deleteAccount,
+    status: statusState,
+    thrownErr: thrownErrState,
+    isLoading: isLoadingState,
+  };
 };
 
-export const useChangeUsername = (): {
-  changeUsername: (newUsername: string) => Promise<void>;
-  status: number;
-  thrownErr: string;
-  isLoading: boolean;
+export const useChangeUsername = (): BaseHooksType & {
+  changeUsername: (newUsername: string) => Promise<BaseReturnType>;
 } => {
-  const [status, setStatus] = useState(401);
-  const [thrownErr, setThrownErr] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [statusState, setStatusState] = useState(401);
+  const [thrownErrState, setThrownErrState] = useState<string>("");
+  const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
 
   const changeUsername = useCallback(
-    async (newUsername: string): Promise<void> => {
-      setThrownErr("");
-      setIsLoading(true);
+    async (newUsername: string): Promise<BaseReturnType> => {
+      setThrownErrState("");
+      setIsLoadingState(true);
 
       try {
         const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
         if (!sessionID) {
-          setStatus(401);
-          setIsLoading(false);
-          return;
+          setStatusState(401);
+          setIsLoadingState(false);
+          return { status: 401, thrownErr: "" };
         }
 
         const { status: resStatus, newSessionID } = await fetchChangeUsername(
@@ -260,40 +308,44 @@ export const useChangeUsername = (): {
           localStorage.setItem(config.SESSION_ID_KEY, newSessionID);
         }
 
-        setStatus(resStatus);
-        setIsLoading(false);
+        setStatusState(resStatus);
+        setIsLoadingState(false);
+        return { status: resStatus, thrownErr: "" };
       } catch (e) {
-        setThrownErr(error2String(e));
-        setIsLoading(false);
+        setThrownErrState(error2String(e));
+        setIsLoadingState(false);
+        return { status: 0, thrownErr: error2String(e) };
       }
     },
     []
   );
 
-  return { changeUsername, status, thrownErr, isLoading };
+  return {
+    changeUsername,
+    status: statusState,
+    thrownErr: thrownErrState,
+    isLoading: isLoadingState,
+  };
 };
 
-export const useChangePassword = (): {
-  changePassword: (newPassword: string) => Promise<void>;
-  status: number;
-  thrownErr: string;
-  isLoading: boolean;
+export const useChangePassword = (): BaseHooksType & {
+  changePassword: (newPassword: string) => Promise<BaseReturnType>;
 } => {
-  const [status, setStatus] = useState(401);
-  const [thrownErr, setThrownErr] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [statusState, setStatusState] = useState(401);
+  const [thrownErrState, setThrownErrState] = useState<string>("");
+  const [isLoadingState, setIsLoadingState] = useState<boolean>(true);
 
   const changePassword = useCallback(
-    async (newPassword: string): Promise<void> => {
-      setThrownErr("");
-      setIsLoading(true);
+    async (newPassword: string): Promise<BaseReturnType> => {
+      setThrownErrState("");
+      setIsLoadingState(true);
 
       try {
         const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
         if (!sessionID) {
-          setStatus(401);
-          setIsLoading(false);
-          return;
+          setStatusState(401);
+          setIsLoadingState(false);
+          return { status: 401, thrownErr: "" };
         }
 
         const { status: resStatus, newSessionID } = await fetchChangePassword(
@@ -305,15 +357,22 @@ export const useChangePassword = (): {
           localStorage.setItem(config.SESSION_ID_KEY, newSessionID);
         }
 
-        setStatus(resStatus);
-        setIsLoading(false);
+        setStatusState(resStatus);
+        setIsLoadingState(false);
+        return { status: resStatus, thrownErr: "" };
       } catch (e) {
-        setThrownErr(error2String(e));
-        setIsLoading(false);
+        setThrownErrState(error2String(e));
+        setIsLoadingState(false);
+        return { status: 0, thrownErr: error2String(e) };
       }
     },
     []
   );
 
-  return { changePassword, status, thrownErr, isLoading };
+  return {
+    changePassword,
+    status: statusState,
+    thrownErr: thrownErrState,
+    isLoading: isLoadingState,
+  };
 };

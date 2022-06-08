@@ -44,8 +44,8 @@ const CreateAccount = () => {
 
     console.log("valid username & password");
 
-    await createAccount(username, password);
-    if (createAccountStatus === 200) {
+    const { status, thrownErr } = await createAccount(username, password);
+    if (status === 200) {
       // navigate("/login");
       console.log("create account succeeded!");
       return;
@@ -84,7 +84,7 @@ const CreateAccount = () => {
         return;
       }
 
-      console.log("username: valid username");
+      await checkUsername(newUsername);
     },
     []
   );
