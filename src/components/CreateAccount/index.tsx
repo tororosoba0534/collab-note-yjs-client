@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useCheckUsername, useCreateAccount } from "../../api/hooks";
-import { CreateAccountValidate } from "./validation";
+import { Validate } from "../../utils/validation";
 
 const CreateAccount = () => {
   const [username, setUsername] = useState("");
@@ -35,8 +35,8 @@ const CreateAccount = () => {
     }
 
     if (
-      CreateAccountValidate.isNotValidUsername(username) ||
-      CreateAccountValidate.isNotValidPassword(password)
+      Validate.isNotValidUsername(username) ||
+      Validate.isNotValidPassword(password)
     ) {
       console.log("username or password or the both are invalid");
       return;
@@ -61,25 +61,21 @@ const CreateAccount = () => {
       const newUsername: string = e.currentTarget.value;
       setUsername(newUsername);
 
-      if (CreateAccountValidate.isUsedInvalidChar(newUsername)) {
+      if (Validate.isUsedInvalidChar(newUsername)) {
         console.log("username: invalid char used");
         return;
       }
 
-      if (CreateAccountValidate.charsNeedMore(newUsername) !== 0) {
+      if (Validate.charsNeedMore(newUsername) !== 0) {
         console.log(
-          `username: need more ${CreateAccountValidate.charsNeedMore(
-            newUsername
-          )}`
+          `username: need more ${Validate.charsNeedMore(newUsername)}`
         );
         return;
       }
 
-      if (CreateAccountValidate.charsShouldLess(newUsername) !== 0) {
+      if (Validate.charsShouldLess(newUsername) !== 0) {
         console.log(
-          `username: exceed ${CreateAccountValidate.charsShouldLess(
-            newUsername
-          )}`
+          `username: exceed ${Validate.charsShouldLess(newUsername)}`
         );
         return;
       }
@@ -94,41 +90,37 @@ const CreateAccount = () => {
       const newPassword: string = e.currentTarget.value;
       setPassword(newPassword);
 
-      if (CreateAccountValidate.doesNotContainLowercase(newPassword)) {
+      if (Validate.doesNotContainLowercase(newPassword)) {
         console.log("password: does NOT contain lowercase");
       }
 
-      if (CreateAccountValidate.doesNotContainUppercase(newPassword)) {
+      if (Validate.doesNotContainUppercase(newPassword)) {
         console.log("password: does NOT contain uppercase");
       }
 
-      if (CreateAccountValidate.doesNotContainNumber(newPassword)) {
+      if (Validate.doesNotContainNumber(newPassword)) {
         console.log("password: does NOT contain number");
       }
 
-      // if (CreateAccountValidate.isLackedNeededChars(newPassword)) {
+      // if (Validate.isLackedNeededChars(newPassword)) {
       //   console.log("password: lack of needed char");
       // }
 
-      if (CreateAccountValidate.isUsedInvalidChar(newPassword)) {
+      if (Validate.isUsedInvalidChar(newPassword)) {
         console.log("password: invalid char used");
         return;
       }
 
-      if (CreateAccountValidate.charsNeedMore(newPassword) !== 0) {
+      if (Validate.charsNeedMore(newPassword) !== 0) {
         console.log(
-          `password: need more ${CreateAccountValidate.charsNeedMore(
-            newPassword
-          )}`
+          `password: need more ${Validate.charsNeedMore(newPassword)}`
         );
         return;
       }
 
-      if (CreateAccountValidate.charsShouldLess(newPassword) !== 0) {
+      if (Validate.charsShouldLess(newPassword) !== 0) {
         console.log(
-          `password: exceed ${CreateAccountValidate.charsShouldLess(
-            newPassword
-          )}`
+          `password: exceed ${Validate.charsShouldLess(newPassword)}`
         );
         return;
       }
@@ -143,7 +135,7 @@ const CreateAccount = () => {
       const newConfirmPassword: string = e.currentTarget.value;
       setConfirmPassword(newConfirmPassword);
 
-      if (CreateAccountValidate.isNotValidPassword(originalPassword)) return;
+      if (Validate.isNotValidPassword(originalPassword)) return;
 
       if (newConfirmPassword !== originalPassword) {
         console.log("confirm password: password NOT the same.");

@@ -1,5 +1,5 @@
 import config from "../config";
-import { error2String } from "../errorHandlings/error2String";
+import { error2String } from "../utils/errorHandlings";
 
 // export type Status = number;
 // export type BaseResType = {

@@ -8,7 +8,7 @@ const isContainAllCharsExp = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
 const MIN = 5;
 const MAX = 20;
 
-export class CreateAccountValidate {
+export class Validate {
   static isUsedInvalidChar = (param: string): boolean => {
     if (!param) return false;
     return !isNotUseInvalidCharExp.test(param);
