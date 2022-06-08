@@ -9,6 +9,8 @@ import config from "../../config";
 import { useMemo } from "react";
 
 export const TiptapEditor = ({ username }: { username: string }) => {
+  // ydoc should be recreated when user changes
+  // so "username" should be in the dependency array of useMemo.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const ydoc = useMemo(() => new Y.Doc(), [username]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
