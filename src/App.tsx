@@ -37,7 +37,7 @@ function App() {
           </Route>
         </Route>
         <Route path="/login" element={<Login />} />
-        <Route path="/create-accont" element={<CreateAccount />} />
+        <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/test" element={<TestLinks />} />
       </Routes>
     </div>
