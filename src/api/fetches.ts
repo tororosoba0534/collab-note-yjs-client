@@ -1,15 +1,19 @@
 import config from "../config";
+import { error2String } from "../errorHandlings/error2String";
 
-export type Status = number;
-export type BaseResType = {
-  status: Status;
-};
-type ResJSON = any;
+// export type Status = number;
+// export type BaseResType = {
+//   status: Status;
+// };
 
 const baseFetch = async (
   route: string,
   reqJSON: any
-): Promise<BaseResType & { resJSON: ResJSON }> => {
+): Promise<{
+  status: number;
+  thrownErr: string;
+  resJSON: any;
+}> => {
   let realRoute = route;
   if (realRoute[0] !== "/") {
     realRoute = "/" + realRoute;
@@ -28,138 +32,250 @@ const baseFetch = async (
       return { status, resJSON };
     });
 
-    return { status, resJSON };
+    return { status, resJSON, thrownErr: "" };
   } catch (e) {
-    throw e;
+    return { status: 0, resJSON: null, thrownErr: error2String(e) };
     // return { status: "clientError", resJSON: null, error: e };
   }
 };
 
-const throwIfTypeNot = (param: any, type: "string" | "boolean") => {
-  if (typeof param !== type) {
-    throw new Error(
-      `Invalid response type: typeof username === "${typeof param}"`
-    );
-  }
-};
-
-export type ResCheckAuth = BaseResType & {
-  username: string;
-};
 export const fetchCheckAuth = async (
   sessionID: string
-): Promise<ResCheckAuth> => {
+): Promise<{
+  status: 0 | 200 | 401 | 500;
+  thrownErr: string;
+  username: string;
+}> => {
   const route = "/personal/check-auth";
 
   const {
     status,
+    thrownErr,
     resJSON: { username },
   } = await baseFetch(route, { sessionID });
 
-  throwIfTypeNot(username, "string");
+  if (thrownErr !== "") return { status: 0, thrownErr, username: "" };
 
-  return { username, status };
+  if (typeof username !== "string")
+    return {
+      status: 0,
+      thrownErr: `Invalid response type: "${typeof username}"`,
+      username: "",
+    };
+
+  if (status !== 200 && status !== 401 && status !== 500)
+    return {
+      status: 0,
+      thrownErr: `Unexpected status code: ${status}`,
+      username: "",
+    };
+
+  return { username, status, thrownErr };
 };
 
-type ResLogin = BaseResType & {
-  sessionID: string;
-};
 export const fetchLogin = async (
   username: string,
   password: string
-): Promise<ResLogin> => {
+): Promise<{
+  status: 0 | 200 | 400 | 401 | 500;
+  thrownErr: string;
+  sessionID: string;
+}> => {
   const route = "/login";
   const {
     status,
+    thrownErr,
     resJSON: { sessionID },
   } = await baseFetch(route, { username, password });
 
-  throwIfTypeNot(sessionID, "string");
+  if (thrownErr !== "") return { status: 0, thrownErr, sessionID: "" };
 
-  return { status, sessionID };
+  if (typeof sessionID !== "string")
+    return {
+      status: 0,
+      thrownErr: `Invalid response type: "${typeof sessionID}"`,
+      sessionID: "",
+    };
+
+  if (status !== 200 && status !== 400 && status !== 401 && status !== 500)
+    return {
+      status: 0,
+      thrownErr: `Unexpected status code: ${status}`,
+      sessionID: "",
+    };
+
+  return { sessionID, status, thrownErr };
 };
 
-type ResLogout = BaseResType;
-export const fetchLogout = async (sessionID: string): Promise<ResLogout> => {
-  const { status } = await baseFetch("/personal/logout", { sessionID });
+export const fetchLogout = async (
+  sessionID: string
+): Promise<{
+  status: 0 | 200 | 401 | 500;
+  thrownErr: string;
+}> => {
+  const { status, thrownErr } = await baseFetch("/personal/logout", {
+    sessionID,
+  });
 
-  return { status };
+  if (thrownErr !== "") return { status: 0, thrownErr };
+
+  if (status !== 200 && status !== 401 && status !== 500)
+    return {
+      status: 0,
+      thrownErr: `Unexpected status code: ${status}`,
+    };
+
+  return { status, thrownErr };
 };
 
-type ResCreateAccount = BaseResType;
 export const fetchCreateAccount = async (
   username: string,
   password: string
-): Promise<ResCreateAccount> => {
-  const { status } = await baseFetch("/createAccount", {
+): Promise<{
+  status: 0 | 200 | 400 | 500;
+  thrownErr: string;
+}> => {
+  const { status, thrownErr } = await baseFetch("/createAccount", {
     username,
     password,
   });
 
-  return { status };
+  if (thrownErr !== "") return { status: 0, thrownErr };
+
+  if (status !== 200 && status !== 400 && status !== 500)
+    return {
+      status: 0,
+      thrownErr: `Unexpected status code: ${status}`,
+    };
+
+  return { status, thrownErr };
 };
 
-type ResCheckUsername = BaseResType & { isUnusedValidUsername: boolean };
 export const fetchCheckUsername = async (
   username: string
-): Promise<ResCheckUsername> => {
+): Promise<{
+  status: 0 | 200 | 400 | 500;
+  thrownErr: string;
+  isUnusedValidUsername: boolean;
+}> => {
   const {
     status,
+    thrownErr,
     resJSON: { isUnusedValidUsername },
   } = await baseFetch("/check-username", { username });
 
-  throwIfTypeNot(isUnusedValidUsername, "boolean");
+  if (thrownErr !== "")
+    return { status: 0, thrownErr, isUnusedValidUsername: false };
 
-  return { status, isUnusedValidUsername };
+  if (typeof isUnusedValidUsername !== "boolean") {
+    return {
+      status: 0,
+      thrownErr: `Invalid response type: "${typeof isUnusedValidUsername}"`,
+      isUnusedValidUsername: false,
+    };
+  }
+
+  if (status !== 200 && status !== 400 && status !== 500)
+    return {
+      status: 0,
+      thrownErr: `Unexpected status code: ${status}`,
+      isUnusedValidUsername: false,
+    };
+
+  return { status, thrownErr, isUnusedValidUsername };
 };
 
-type ResDeleteAccount = BaseResType;
 export const fetchDeleteAccount = async (
   sessionID: string
-): Promise<ResDeleteAccount> => {
-  const { status } = await baseFetch("/personal/delete-account", {
+): Promise<{
+  status: 0 | 200 | 401 | 500;
+  thrownErr: string;
+}> => {
+  const { status, thrownErr } = await baseFetch("/personal/delete-account", {
     sessionID,
   });
 
-  return { status };
+  if (thrownErr !== "") return { status: 0, thrownErr };
+
+  if (status !== 200 && status !== 401 && status !== 500)
+    return {
+      status: 0,
+      thrownErr: `Unexpected status code: ${status}`,
+    };
+
+  return { status, thrownErr };
 };
 
-type ResChangeUsername = BaseResType & {
-  newSessionID: string;
-};
 export const fetchChangeUsername = async (
   sessionID: string,
   newUsername: string
-): Promise<ResChangeUsername> => {
+): Promise<{
+  status: 0 | 200 | 400 | 401 | 500;
+  thrownErr: string;
+  newSessionID: string;
+}> => {
   const {
     status,
+    thrownErr,
     resJSON: { newSessionID },
   } = await baseFetch("/personal/change-username", {
     sessionID,
     newUsername,
   });
 
-  throwIfTypeNot(newSessionID, "string");
+  if (thrownErr !== "") return { status: 0, thrownErr, newSessionID: "" };
 
-  return { status, newSessionID };
+  if (typeof newSessionID !== "string") {
+    return {
+      status: 0,
+      thrownErr: `Invalid response type: "${typeof newSessionID}"`,
+      newSessionID: "",
+    };
+  }
+
+  if (status !== 200 && status !== 400 && status !== 401 && status !== 500)
+    return {
+      status: 0,
+      thrownErr: `Unexpected status code: ${status}`,
+      newSessionID: "",
+    };
+
+  return { status, thrownErr, newSessionID };
 };
 
-type ResChangePassword = BaseResType & {
-  newSessionID: string;
-};
 export const fetchChangePassword = async (
   sessionID: string,
   newPassword: string
-): Promise<ResChangePassword> => {
+): Promise<{
+  status: 0 | 200 | 400 | 401 | 500;
+  thrownErr: string;
+  newSessionID: string;
+}> => {
   const {
     status,
+    thrownErr,
     resJSON: { newSessionID },
   } = await baseFetch("/personal/change-password", {
     sessionID,
     newPassword,
   });
 
-  throwIfTypeNot(newSessionID, "string");
+  if (thrownErr !== "") return { status: 0, thrownErr, newSessionID: "" };
 
-  return { status, newSessionID };
+  if (typeof newSessionID !== "string") {
+    return {
+      status: 0,
+      thrownErr: `Invalid response type: "${typeof newSessionID}"`,
+      newSessionID: "",
+    };
+  }
+
+  if (status !== 200 && status !== 400 && status !== 401 && status !== 500)
+    return {
+      status: 0,
+      thrownErr: `Unexpected status code: ${status}`,
+      newSessionID: "",
+    };
+
+  return { status, thrownErr, newSessionID };
 };
