@@ -39,10 +39,11 @@ const baseFetch = async (
   }
 };
 
+export type StatusCheckAuth = 0 | 200 | 401 | 500;
 export const fetchCheckAuth = async (
   sessionID: string
 ): Promise<{
-  status: 0 | 200 | 401 | 500;
+  status: StatusCheckAuth;
   thrownErr: string;
   username: string;
 }> => {
@@ -73,11 +74,12 @@ export const fetchCheckAuth = async (
   return { username, status, thrownErr };
 };
 
+export type StatusLogin = 0 | 200 | 400 | 401 | 500;
 export const fetchLogin = async (
   username: string,
   password: string
 ): Promise<{
-  status: 0 | 200 | 400 | 401 | 500;
+  status: StatusLogin;
   thrownErr: string;
   sessionID: string;
 }> => {
@@ -107,10 +109,11 @@ export const fetchLogin = async (
   return { sessionID, status, thrownErr };
 };
 
+export type StatusLogout = 0 | 200 | 401 | 500;
 export const fetchLogout = async (
   sessionID: string
 ): Promise<{
-  status: 0 | 200 | 401 | 500;
+  status: StatusLogout;
   thrownErr: string;
 }> => {
   const { status, thrownErr } = await baseFetch("/personal/logout", {
@@ -128,11 +131,12 @@ export const fetchLogout = async (
   return { status, thrownErr };
 };
 
+export type StatusCreateAccount = 0 | 200 | 400 | 500;
 export const fetchCreateAccount = async (
   username: string,
   password: string
 ): Promise<{
-  status: 0 | 200 | 400 | 500;
+  status: StatusCreateAccount;
   thrownErr: string;
 }> => {
   const { status, thrownErr } = await baseFetch("/createAccount", {
@@ -151,10 +155,11 @@ export const fetchCreateAccount = async (
   return { status, thrownErr };
 };
 
+export type StatusCheckUsername = 0 | 200 | 400 | 500;
 export const fetchCheckUsername = async (
   username: string
 ): Promise<{
-  status: 0 | 200 | 400 | 500;
+  status: StatusCheckUsername;
   thrownErr: string;
   isUnusedValidUsername: boolean;
 }> => {
@@ -185,10 +190,11 @@ export const fetchCheckUsername = async (
   return { status, thrownErr, isUnusedValidUsername };
 };
 
+export type StatusDeleteAccount = 0 | 200 | 401 | 500;
 export const fetchDeleteAccount = async (
   sessionID: string
 ): Promise<{
-  status: 0 | 200 | 401 | 500;
+  status: StatusDeleteAccount;
   thrownErr: string;
 }> => {
   const { status, thrownErr } = await baseFetch("/personal/delete-account", {
@@ -206,11 +212,12 @@ export const fetchDeleteAccount = async (
   return { status, thrownErr };
 };
 
+export type StatusChangeUsername = 0 | 200 | 400 | 401 | 500;
 export const fetchChangeUsername = async (
   sessionID: string,
   newUsername: string
 ): Promise<{
-  status: 0 | 200 | 400 | 401 | 500;
+  status: StatusChangeUsername;
   thrownErr: string;
   newSessionID: string;
 }> => {
@@ -243,11 +250,12 @@ export const fetchChangeUsername = async (
   return { status, thrownErr, newSessionID };
 };
 
+export type StatusChangePassword = 0 | 200 | 400 | 401 | 500;
 export const fetchChangePassword = async (
   sessionID: string,
   newPassword: string
 ): Promise<{
-  status: 0 | 200 | 400 | 401 | 500;
+  status: StatusChangePassword;
   thrownErr: string;
   newSessionID: string;
 }> => {

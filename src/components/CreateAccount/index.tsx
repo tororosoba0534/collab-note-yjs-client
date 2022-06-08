@@ -86,7 +86,7 @@ const CreateAccount = () => {
 
       await checkUsername(newUsername);
     },
-    []
+    [checkUsername]
   );
 
   const handleChangePassword = useCallback(
