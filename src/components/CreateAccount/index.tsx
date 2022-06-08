@@ -28,20 +28,32 @@ const CreateAccount = () => {
 
   const handleSubmit = async () => {
     console.log("submit clicked");
-    // e.preventDefault();
-    // if (password !== confirmPassword) {
-    //   console.log("two passwords NOT the same.");
-    //   setPassword("");
-    //   setConfirmPassword("");
-    //   return;
-    // }
 
-    // await createAccount(username, password);
-    // if (createAccountStatus === 200) {
-    //   navigate("/login");
-    // }
-    // setPassword("");
-    // setConfirmPassword("");
+    if (password !== confirmPassword) {
+      console.log("two passwords NOT the same.");
+      return;
+    }
+
+    if (
+      CreateAccountValidate.isNotValidUsername(username) ||
+      CreateAccountValidate.isNotValidPassword(password)
+    ) {
+      console.log("username or password or the both are invalid");
+      return;
+    }
+
+    console.log("valid username & password");
+
+    await createAccount(username, password);
+    if (createAccountStatus === 200) {
+      // navigate("/login");
+      console.log("create account succeeded!");
+      return;
+    }
+
+    console.log("create account failed");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   const handleChangeUsername = useCallback(
