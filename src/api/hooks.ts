@@ -182,7 +182,7 @@ export const useCreateAccount = (): ReturnCreateAccount &
 };
 
 type ReturnCheckUsername = BaseReturn<StatusCheckUsername> & {
-  isUnusedValidUsername: boolean;
+  isUnused: boolean;
 };
 export const useCheckUsername = (): ReturnCheckUsername &
   Loading & {
@@ -190,21 +190,22 @@ export const useCheckUsername = (): ReturnCheckUsername &
   } => {
   const [status, setStatus] = useState<StatusCheckUsername>(400);
   const [thrownErr, setThrownErr] = useState<string>("");
-  const [isUnusedValidUsername, setIsUnusedValidUsername] = useState(true);
+  const [isUnused, setIsUnused] = useState(true);
 
   const checkUsername = useCallback(
     async (username: string): Promise<ReturnCheckUsername> => {
       setThrownErr("");
-      const { status, thrownErr, isUnusedValidUsername } =
-        await fetchCheckUsername(username);
+      const { status, thrownErr, isUnused } = await fetchCheckUsername(
+        username
+      );
 
       setStatus(status);
       setThrownErr(thrownErr);
-      setIsUnusedValidUsername(isUnusedValidUsername);
+      setIsUnused(isUnused);
       return {
         status,
         thrownErr,
-        isUnusedValidUsername,
+        isUnused,
       };
     },
     []
@@ -215,7 +216,7 @@ export const useCheckUsername = (): ReturnCheckUsername &
   return {
     checkUsername,
     status,
-    isUnusedValidUsername,
+    isUnused,
     thrownErr,
     isLoading,
     setIsLoading,

@@ -21,7 +21,7 @@ const CreateAccount = () => {
     status: checkUsernameStatus,
     isLoading: checkUsernameIsLoading,
     thrownErr: checkUsernameThrownErr,
-    isUnusedValidUsername,
+    isUnused,
   } = useCheckUsername();
 
   const navigate = useNavigate();

@@ -161,22 +161,21 @@ export const fetchCheckUsername = async (
 ): Promise<{
   status: StatusCheckUsername;
   thrownErr: string;
-  isUnusedValidUsername: boolean;
+  isUnused: boolean;
 }> => {
   const {
     status,
     thrownErr,
-    resJSON: { isUnusedValidUsername },
+    resJSON: { isUnused },
   } = await baseFetch("/check-username", { username });
 
-  if (thrownErr !== "")
-    return { status: 0, thrownErr, isUnusedValidUsername: false };
+  if (thrownErr !== "") return { status: 0, thrownErr, isUnused: false };
 
-  if (typeof isUnusedValidUsername !== "boolean") {
+  if (typeof isUnused !== "boolean") {
     return {
       status: 0,
-      thrownErr: `Invalid response type: "${typeof isUnusedValidUsername}"`,
-      isUnusedValidUsername: false,
+      thrownErr: `Invalid response type: "${typeof isUnused}"`,
+      isUnused: false,
     };
   }
 
@@ -184,10 +183,10 @@ export const fetchCheckUsername = async (
     return {
       status: 0,
       thrownErr: `Unexpected status code: ${status}`,
-      isUnusedValidUsername: false,
+      isUnused: false,
     };
 
-  return { status, thrownErr, isUnusedValidUsername };
+  return { status, thrownErr, isUnused };
 };
 
 export type StatusDeleteAccount = 0 | 200 | 401 | 500;
