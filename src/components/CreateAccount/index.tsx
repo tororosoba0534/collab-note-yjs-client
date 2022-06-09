@@ -45,12 +45,20 @@ const CreateAccount = () => {
     console.log("valid username & password");
 
     const { status, thrownErr } = await createAccount(username, password);
+
+    if (!thrownErr) {
+      console.error(thrownErr);
+      console.log("create account failed");
+      return;
+    }
+
     if (status === 200) {
       // navigate("/login");
       console.log("create account succeeded!");
       return;
     }
 
+    console.log(`status code: ${status}`);
     console.log("create account failed");
     setPassword("");
     setConfirmPassword("");
@@ -80,7 +88,23 @@ const CreateAccount = () => {
         return;
       }
 
-      await checkUsername(newUsername);
+      const { status, thrownErr, isUnused } = await checkUsername(newUsername);
+
+      if (!thrownErr) {
+        console.error(thrownErr);
+        return;
+      }
+
+      if (status === 200) {
+        if (isUnused) {
+          console.log("valid username");
+          return;
+        }
+        console.log("This username is already used.");
+        return;
+      }
+
+      console.log(`status code: ${status}`);
     },
     [checkUsername]
   );
@@ -122,6 +146,10 @@ const CreateAccount = () => {
         console.log(
           `password: exceed ${Validate.charsShouldLess(newPassword)}`
         );
+        return;
+      }
+
+      if (Validate.isNotValidPassword(newPassword)) {
         return;
       }
 
