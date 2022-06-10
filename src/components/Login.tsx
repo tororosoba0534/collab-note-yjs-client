@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "../api/hooks";
+import { Validate } from "../utils/validation";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -13,18 +14,34 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { login, status, thrownErr, isLoading } = useLogin();
+  const { login } = useLogin();
 
-  const handleSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     console.log("submit clicked.");
 
-    await login(username, password);
-    if (status === 200) {
-      navigate("/personal");
+    if (
+      Validate.isNotValidUsername(username) ||
+      Validate.isNotValidPassword(password)
+    ) {
+      console.log("username or password or both of them are invalid");
+      return;
     }
+
+    const { status, thrownErr } = await login(username, password);
+
+    if (!thrownErr) {
+      console.error(thrownErr);
+      return;
+    }
+
+    if (status === 200) {
+      console.log("login succeeded!");
+      return;
+      // navigate("/personal");
+    }
+
+    console.log("login failed");
+    console.log(`status code: ${status}`);
     setUsername("");
     setPassword("");
 
@@ -45,7 +62,7 @@ const Login = () => {
         <Link to="/register">to Register page</Link>
       </div>
 
-      <form
+      <div
         className="px-10 py-4 flex flex-col gap-10"
         // onSubmit={(e) => handleSubmit(e)}
       >
@@ -72,10 +89,10 @@ const Login = () => {
         </div>
 
         {/* <input type="submit" value="Submit" /> */}
-        <button type="submit" className="" onClick={(e) => handleSubmit(e)}>
+        <button type="submit" className="" onClick={() => handleSubmit()}>
           Submit
         </button>
-      </form>
+      </div>
     </div>
   );
 };
