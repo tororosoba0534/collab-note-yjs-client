@@ -19,8 +19,6 @@ import { PopupsContext } from "./components/popups/PopupsProvider";
 function App() {
   console.log(`url: ${config.wsserver.URL}`);
 
-  const { isOpenLogout, setIsOpenLogout } = useContext(PopupsContext);
-
   return (
     <div className="App">
       <h2>Welcome to React-Router!</h2>
@@ -46,7 +44,7 @@ function App() {
         <Route path="/test" element={<TestLinks />} />
       </Routes>
 
-      <LogoutWindow isOpen={isOpenLogout} setIsOpen={setIsOpenLogout} />
+      <LogoutWindow />
     </div>
   );
 }
