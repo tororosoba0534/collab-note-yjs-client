@@ -13,9 +13,14 @@ import TestLinks from "./components/TestLinks";
 import config from "./config";
 import { EditorWrapper } from "./components/personal/EditorWrapper";
 import CreateAccount from "./components/CreateAccount";
+import { LogoutWindow } from "./components/popups/LogoutWindow";
+import { PopupsContext } from "./components/popups/PopupsProvider";
 
 function App() {
   console.log(`url: ${config.wsserver.URL}`);
+
+  const { isOpenLogout, setIsOpenLogout } = useContext(PopupsContext);
+
   return (
     <div className="App">
       <h2>Welcome to React-Router!</h2>
@@ -40,6 +45,8 @@ function App() {
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/test" element={<TestLinks />} />
       </Routes>
+
+      <LogoutWindow isOpen={isOpenLogout} setIsOpen={setIsOpenLogout} />
     </div>
   );
 }

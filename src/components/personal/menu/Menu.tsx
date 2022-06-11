@@ -1,6 +1,10 @@
 import { Menu } from "@headlessui/react";
+import { useContext, useState } from "react";
+import { PopupsContext } from "../../popups/PopupsProvider";
 
 const CustomMenu = () => {
+  const { setIsOpenLogout } = useContext(PopupsContext);
+
   return (
     <Menu>
       <Menu.Button className="bg-red-200">Menu</Menu.Button>
@@ -29,6 +33,10 @@ const CustomMenu = () => {
         </Menu.Item>
         <Menu.Item disabled>
           <span className="opacity-75">Invite a friend (coming soon!)</span>
+        </Menu.Item>
+
+        <Menu.Item>
+          <button onClick={() => setIsOpenLogout(true)}>Logout</button>
         </Menu.Item>
       </Menu.Items>
     </Menu>

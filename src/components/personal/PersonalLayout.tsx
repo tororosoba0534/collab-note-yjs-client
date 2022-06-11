@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Navigate, Outlet } from "react-router-dom";
 import Loading from "../Loading";
-import CustomMenu from "../Menu";
+import CustomMenu from "./menu/Menu";
 
 const PersonalLayout = () => {
   return (
