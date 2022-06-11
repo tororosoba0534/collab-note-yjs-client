@@ -29,15 +29,16 @@ const Login = () => {
 
     const { status, thrownErr } = await login(username, password);
 
-    if (!thrownErr) {
+    if (thrownErr !== "") {
       console.error(thrownErr);
       return;
     }
 
     if (status === 200) {
-      console.log("login succeeded!");
+      // console.log("login succeeded!");
+      // return;
+      navigate("/personal");
       return;
-      // navigate("/personal");
     }
 
     console.log("login failed");

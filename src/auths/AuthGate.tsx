@@ -6,11 +6,17 @@ import Loading from "../components/Loading";
 const AuthGate = ({ children }: { children: JSX.Element }) => {
   console.log("RequireAuth rendered");
 
-  const { username, checkAuth, status, thrownErr, isLoading } = useCheckAuth();
+  const { username, checkAuth, status, thrownErr, isLoading, setIsLoading } =
+    useCheckAuth();
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    setIsLoading(true);
+    checkAuth().then(() => setIsLoading(false));
+  }, [checkAuth, setIsLoading]);
+
+  if (thrownErr !== "") {
+    console.error(thrownErr);
+  }
 
   if (isLoading) return <Loading />;
 

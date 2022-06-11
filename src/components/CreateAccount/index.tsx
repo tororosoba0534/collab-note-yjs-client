@@ -46,16 +46,16 @@ const CreateAccount = () => {
 
     const { status, thrownErr } = await createAccount(username, password);
 
-    if (!thrownErr) {
+    if (thrownErr !== "") {
       console.error(thrownErr);
       console.log("create account failed");
       return;
     }
 
     if (status === 200) {
-      // navigate("/login");
-      console.log("create account succeeded!");
-      return;
+      navigate("/login");
+      // console.log("create account succeeded!");
+      // return;
     }
 
     console.log(`status code: ${status}`);
@@ -90,7 +90,7 @@ const CreateAccount = () => {
 
       const { status, thrownErr, isUnused } = await checkUsername(newUsername);
 
-      if (!thrownErr) {
+      if (thrownErr !== "") {
         console.error(thrownErr);
         return;
       }
