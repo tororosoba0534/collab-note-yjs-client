@@ -8,6 +8,7 @@ import { WebsocketProvider } from "y-websocket";
 import config from "../../config";
 import { useContext, useMemo } from "react";
 import { PopupsContext, PopupsProvider } from "../popups/PopupsProvider";
+import { TooltipButton } from "./TooltipButton";
 
 export const TiptapEditor = ({ username }: { username: string }) => {
   // ydoc should be recreated when user changes
@@ -34,7 +35,7 @@ export const TiptapEditor = ({ username }: { username: string }) => {
     editorProps: {
       attributes: {
         class:
-          " border-4 border-gray-500 focus:bg-white focus:outline-none focus:border-gray-400 focus:ring focus:ring-offset-2 focus:ring-gray-400 px-3 py-5 rounded-xl mb-20",
+          " border-4 border-gray-500 shadow-md focus:bg-white focus:outline-none focus:border-gray-400 focus:ring focus:ring-offset-2 focus:ring-gray-400 px-3 py-5 rounded-xl mb-20",
       },
     },
   });
@@ -43,34 +44,37 @@ export const TiptapEditor = ({ username }: { username: string }) => {
 
   return (
     <div className="relative">
-      <div className="fixed top-0 w-full h-16 border-2 border-rose-400 bg-rose-300 z-10 flex items-center justify-around">
-        <button
+      <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex items-center justify-around">
+        <TooltipButton
+          label="select paragraph"
+          tooltip="Selecting paragraph"
           onClick={() => {
             // CSS can be applied to .ProseMirror-selectednode class
             editor?.chain().focus().selectParentNode().run();
           }}
-        >
-          <p>select</p>
-          <p>paragraph</p>
-        </button>
+        />
 
-        <button
+        <TooltipButton
+          label="UNDO"
+          tooltip="Undo"
           onClick={() => {
             editor?.chain().focus().undo().run();
           }}
-        >
-          UNDO
-        </button>
+        />
 
-        <button
+        <TooltipButton
+          label="REDO"
+          tooltip="Redo"
           onClick={() => {
             editor?.chain().focus().redo().run();
           }}
-        >
-          REDO
-        </button>
+        />
 
-        <button onClick={() => setIsOpenLogout(true)}>Logout</button>
+        <TooltipButton
+          label="Logout"
+          tooltip={null}
+          onClick={() => setIsOpenLogout(true)}
+        />
       </div>
       <div className="absolute inset-x-10 top-20 mb-10">
         <EditorContent editor={editor} />
