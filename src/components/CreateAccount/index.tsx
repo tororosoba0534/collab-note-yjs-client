@@ -176,8 +176,10 @@ const CreateAccount = () => {
   );
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="flex flex-col justify-center items-center gap-10">
+    <div className="flex justify-center items-center h-screen ">
+      <div className="flex flex-col justify-center items-center gap-10 p-5  shadow-[3px_3px_12px_rgba(0,0,0,0.3)]  rounded-2xl bg-white">
+        <h1 className="text-2xl">Create your account</h1>
+
         <FloatingLabelInput
           label="username"
           type="text"
@@ -201,9 +203,20 @@ const CreateAccount = () => {
           onChange={(e) => handleChangeConfirmPassword(e, password)}
         />
 
-        <button onClick={() => handleSubmit()}>CREATE</button>
+        <button
+          className="mt-20 px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
+          onClick={() => handleSubmit()}
+        >
+          CREATE
+        </button>
         <div>
-          ... or already have an account? <Link to="/login">login</Link>
+          ... or already have an account?{" "}
+          <Link
+            className="font-bold text-rose-500 hover:text-rose-400"
+            to="/login"
+          >
+            LOGIN
+          </Link>
         </div>
       </div>
     </div>

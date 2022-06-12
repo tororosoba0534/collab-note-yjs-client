@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "../api/hooks";
 import { Validate } from "../utils/validation";
+import { FloatingLabelInput } from "./form/FloatingLabelInput";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -57,42 +58,43 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
-      <div className="p-4 bg-green-300">
-        <p>Login rendered</p>
-        <Link to="/register">to Register page</Link>
-      </div>
+    <div className="flex justify-center items-center h-screen ">
+      <div className="flex flex-col justify-center items-center gap-10 p-5  shadow-[3px_3px_12px_rgba(0,0,0,0.3)]  rounded-2xl bg-white">
+        <h1 className="text-2xl">Login</h1>
 
-      <div
-        className="px-10 py-4 flex flex-col gap-10"
-        // onSubmit={(e) => handleSubmit(e)}
-      >
-        <div className="border-gray-300 border-b-4">
-          <label className="block">Name:</label>
-          <input
-            className="w-full"
-            type="text"
-            name="user"
-            value={username}
-            onChange={(e) => setUsername(e.currentTarget.value)}
-          />
-        </div>
+        <FloatingLabelInput
+          label="username"
+          type="text"
+          value={username}
+          onChange={(e) => {
+            setUsername(e.currentTarget.value);
+          }}
+        />
 
-        <div className="border-gray-300 border-b-4">
-          <label className="block">Password:</label>
-          <input
-            className="w-full"
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
-          />
-        </div>
+        <FloatingLabelInput
+          label="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.currentTarget.value)}
+        />
 
-        {/* <input type="submit" value="Submit" /> */}
-        <button type="submit" className="" onClick={() => handleSubmit()}>
-          Submit
+        <button
+          className="mt-20 px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
+          onClick={() => handleSubmit()}
+        >
+          LOGIN
         </button>
+
+        <div>
+          ... or{" "}
+          <Link
+            className="font-bold text-rose-500 hover:text-rose-400"
+            to="/create-account"
+          >
+            CREATE ACCOUNT
+          </Link>
+          {"?"}
+        </div>
       </div>
     </div>
   );
