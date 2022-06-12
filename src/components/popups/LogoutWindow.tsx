@@ -37,7 +37,7 @@ export const LogoutWindow = () => {
       }}
     >
       <div
-        className="bg-white"
+        className="bg-white rounded-lg relative flex items-center"
         ref={(elm) => {
           if (!elm) {
             return;
@@ -45,22 +45,37 @@ export const LogoutWindow = () => {
           ref.current = elm;
         }}
       >
-        <div onClick={() => setIsOpenLogout(false)}>X</div>
-        <h1>This is Logout window</h1>
-        <div>Really log out?</div>
-        <button
-          onClick={async () => {
-            const { status, thrownErr } = await logout();
-            if (status === 200) {
-              console.log("succeed");
-              return;
-            }
-            console.log("failed");
-          }}
+        <div
+          className="absolute top-0 right-0 w-5 h-5 hover:font-bold cursor-pointer"
+          onClick={() => setIsOpenLogout(false)}
         >
-          Logout
-        </button>
-        <button onClick={() => setIsOpenLogout(false)}>Cancel</button>
+          X
+        </div>
+        <div className="p-5 pt-10">
+          <div className="text-center">Really log out?</div>
+
+          <div className="flex justify-center items-center justify-around h-20">
+            <button
+              className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
+              onClick={async () => {
+                const { status, thrownErr } = await logout();
+                if (status === 200) {
+                  console.log("succeed");
+                  return;
+                }
+                console.log("failed");
+              }}
+            >
+              Logout
+            </button>
+            <button
+              className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
+              onClick={() => setIsOpenLogout(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
