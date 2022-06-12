@@ -9,6 +9,7 @@ import config from "../../config";
 import { useContext, useMemo } from "react";
 import { PopupsContext, PopupsProvider } from "../popups/PopupsProvider";
 import { TooltipButton } from "./TooltipButton";
+// import selectParagraphSvg from "./selectParagraph.svg";
 
 export const TiptapEditor = ({ username }: { username: string }) => {
   // ydoc should be recreated when user changes
@@ -46,6 +47,8 @@ export const TiptapEditor = ({ username }: { username: string }) => {
     <div className="relative">
       <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex items-center justify-around">
         <TooltipButton
+          // src={selectParagraphSvg}
+          src="./selectParagraph.svg"
           label="select paragraph"
           tooltip="Selecting paragraph"
           onClick={() => {
@@ -70,11 +73,7 @@ export const TiptapEditor = ({ username }: { username: string }) => {
           }}
         />
 
-        <TooltipButton
-          label="Logout"
-          tooltip={null}
-          onClick={() => setIsOpenLogout(true)}
-        />
+        <TooltipButton label="Logout" onClick={() => setIsOpenLogout(true)} />
       </div>
       <div className="absolute inset-x-10 top-20 mb-10">
         <EditorContent editor={editor} />

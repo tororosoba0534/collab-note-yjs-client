@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LogoutWindow } from "./popups/LogoutWindow";
+import { SelectParagraphSvg } from "./personal/icons/SelectParagraphSvg";
 
 const TestLinks = () => {
   return (
@@ -8,7 +9,8 @@ const TestLinks = () => {
       <Link to="/personal">to Personal</Link>
       <Link to="/personal/settings">to Settings</Link>
       <Link to="/personal/settings/delete-account">to DeleteAccount</Link>
-      <LogoutWindow />
+
+      <SelectParagraphSvg />
     </div>
   );
 };
