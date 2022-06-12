@@ -21,7 +21,6 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Welcome to React-Router!</h2>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route

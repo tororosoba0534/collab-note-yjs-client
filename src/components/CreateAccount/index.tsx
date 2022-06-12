@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useCheckUsername, useCreateAccount } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
+import { FloatingLabelInput } from "../form/FloatingLabelInput";
 
 const CreateAccount = () => {
   const [username, setUsername] = useState("");
@@ -175,42 +176,30 @@ const CreateAccount = () => {
   );
 
   return (
-    <div>
-      <p>CreateAccount rendered</p>
+    <div className="flex justify-center items-center h-screen">
+      <div className="flex flex-col justify-center items-center gap-10">
+        <FloatingLabelInput
+          label="username"
+          type="text"
+          value={username}
+          onChange={(e) => {
+            handleChangeUsername(e);
+          }}
+        />
 
-      <div>
-        <div>
-          <div>Username</div>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => {
-              handleChangeUsername(e);
-            }}
-          />
-        </div>
+        <FloatingLabelInput
+          label="password"
+          type="password"
+          value={password}
+          onChange={(e) => handleChangePassword(e)}
+        />
 
-        <div>
-          <div>Password</div>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => handleChangePassword(e)}
-          />
-        </div>
-
-        <div>
-          <div>Confirm Password</div>
-          <input
-            type="password"
-            name="password"
-            value={confirmPassword}
-            onChange={(e) => {
-              handleChangeConfirmPassword(e, password);
-            }}
-          />
-        </div>
+        <FloatingLabelInput
+          label="confirm password"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => handleChangeConfirmPassword(e, password)}
+        />
 
         <button onClick={() => handleSubmit()}>CREATE</button>
         <div>

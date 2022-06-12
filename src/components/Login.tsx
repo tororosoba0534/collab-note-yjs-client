@@ -57,7 +57,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center h-screen">
       <div className="p-4 bg-green-300">
         <p>Login rendered</p>
         <Link to="/register">to Register page</Link>
