@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
 import AuthGate from "./auths/AuthGate";
 import ChangePassword from "./components/personal/ChangePassword";
@@ -27,7 +27,7 @@ function App() {
           path="/personal"
           element={
             <AuthGate>
-              <PersonalLayout />
+              <Outlet />
             </AuthGate>
           }
         >

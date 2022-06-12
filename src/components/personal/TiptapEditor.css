@@ -1,11 +1,9 @@
-.ProseMirror {
-  background-color: lightpink;
-}
-
-.ProseMirror p {
-  margin: 10px;
-}
-
 .ProseMirror-selectednode {
   background-color: aquamarine;
+
+  border-radius: 4px;
+}
+.ProseMirror p {
+  padding-left: 4px;
+  padding-right: 4px;
 }

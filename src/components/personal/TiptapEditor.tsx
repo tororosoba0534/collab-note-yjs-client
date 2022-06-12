@@ -30,19 +30,28 @@ export const TiptapEditor = ({ username }: { username: string }) => {
         document: ydoc,
       }),
     ],
+    editorProps: {
+      attributes: {
+        class:
+          " border-4 border-black focus:outline-none focus:border-gray-400 px-3 py-5 rounded-xl ",
+      },
+    },
   });
 
   return (
-    <div className="editor-page">
-      <div className="editor-main">
+    <div className="relative">
+      <div className="fixed top-0 w-full h-10 bg-cyan-400 z-10">
         <button
           onClick={() => {
             // CSS can be applied to .ProseMirror-selectednode class
             editor?.chain().focus().selectParentNode().run();
           }}
         >
-          selectParentNode
+          <p>select</p>
+          <p>paragraph</p>
         </button>
+      </div>
+      <div className="absolute inset-x-10 top-20 mb-10">
         <EditorContent editor={editor} />
       </div>
     </div>

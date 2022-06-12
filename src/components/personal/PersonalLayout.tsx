@@ -7,12 +7,12 @@ import CustomMenu from "./menu/Menu";
 
 const PersonalLayout = () => {
   return (
-    <div className="">
-      <div className="sticky top-0 h-10 z-10">
+    <div className="relative inset-0">
+      <div className="sticky top-0 h-10 w-full">
         <CustomMenu />
       </div>
 
-      <div className="">
+      <div className="absolute w-full h-[calc(100%-40px)]">
         <Outlet />
       </div>
     </div>
