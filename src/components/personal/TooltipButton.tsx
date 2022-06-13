@@ -1,3 +1,12 @@
+const Tooltip = (props: { tooltip: string | null | undefined }) => {
+  if (!props.tooltip) return null;
+  return (
+    <div className="absolute top-10 bg-black text-white p-2 rounded-md opacity-0 peer-hover:opacity-100 transition pointer-events-none">
+      {props.tooltip}
+    </div>
+  );
+};
+
 export const TooltipButton = (props: {
   label?: string;
   img?: () => JSX.Element;
@@ -20,11 +29,7 @@ export const TooltipButton = (props: {
           </div>
         </button>
 
-        {props.tooltip ? (
-          <div className="absolute top-10 bg-black text-white px-2 opacity-0 peer-hover:opacity-100 transition pointer-events-none">
-            {props.tooltip}
-          </div>
-        ) : null}
+        <Tooltip tooltip={props.tooltip} />
       </div>
     );
   }
@@ -38,11 +43,7 @@ export const TooltipButton = (props: {
         {props.label}
       </button>
 
-      {props.tooltip ? (
-        <div className="absolute top-10 bg-black text-white px-2 opacity-0 peer-hover:opacity-100 transition pointer-events-none">
-          {props.tooltip}
-        </div>
-      ) : null}
+      <Tooltip tooltip={props.tooltip} />
     </div>
   );
 };
