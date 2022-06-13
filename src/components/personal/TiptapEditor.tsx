@@ -10,6 +10,9 @@ import { useContext, useMemo } from "react";
 import { PopupsContext, PopupsProvider } from "../popups/PopupsProvider";
 import { TooltipButton } from "./TooltipButton";
 // import selectParagraphSvg from "./selectParagraph.svg";
+import { SelectParagraphSvg } from "./icons/SelectParagraphSvg";
+import { UndoSvg } from "./icons/UndoSvg";
+import { RedoSvg } from "./icons/RedoSvg";
 
 export const TiptapEditor = ({ username }: { username: string }) => {
   // ydoc should be recreated when user changes
@@ -48,8 +51,7 @@ export const TiptapEditor = ({ username }: { username: string }) => {
       <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex items-center justify-around">
         <TooltipButton
           // src={selectParagraphSvg}
-          src="./selectParagraph.svg"
-          label="select paragraph"
+          img={SelectParagraphSvg}
           tooltip="Selecting paragraph"
           onClick={() => {
             // CSS can be applied to .ProseMirror-selectednode class
@@ -58,7 +60,7 @@ export const TiptapEditor = ({ username }: { username: string }) => {
         />
 
         <TooltipButton
-          label="UNDO"
+          img={UndoSvg}
           tooltip="Undo"
           onClick={() => {
             editor?.chain().focus().undo().run();
@@ -66,14 +68,14 @@ export const TiptapEditor = ({ username }: { username: string }) => {
         />
 
         <TooltipButton
-          label="REDO"
+          img={RedoSvg}
           tooltip="Redo"
           onClick={() => {
             editor?.chain().focus().redo().run();
           }}
         />
 
-        <TooltipButton label="Logout" onClick={() => setIsOpenLogout(true)} />
+        <TooltipButton label="LOGOUT" onClick={() => setIsOpenLogout(true)} />
       </div>
       <div className="absolute inset-x-10 top-20 mb-10">
         <EditorContent editor={editor} />

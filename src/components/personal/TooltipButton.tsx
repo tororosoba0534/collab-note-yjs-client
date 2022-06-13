@@ -1,37 +1,30 @@
 export const TooltipButton = (props: {
   label?: string;
-  src?: string;
+  img?: () => JSX.Element;
   tooltip?: string;
   onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }) => {
-  if (!props.label && !props.src) {
+  if (!props.label && !props.img) {
     return null;
   }
 
-  if (!props.tooltip) {
-    return (
-      <button
-        className="px-2 bg-gray-100 shadow-md rounded-md hover:bg-rose-100"
-        onClick={props.onClick}
-      >
-        {props.label}
-      </button>
-    );
-  }
-
-  if (props.src) {
+  if (props.img) {
     return (
       <div className="relative">
         <button
           className="peer px-2 bg-gray-100 shadow-md rounded-md hover:bg-rose-100"
           onClick={props.onClick}
         >
-          <img src={props.src} alt={props.label} />
+          <div className="w-10 h-10">
+            <props.img />
+          </div>
         </button>
 
-        <div className="absolute top-10 bg-black text-white px-2 opacity-0 peer-hover:opacity-100 transition pointer-events-none">
-          {props.tooltip}
-        </div>
+        {props.tooltip ? (
+          <div className="absolute top-10 bg-black text-white px-2 opacity-0 peer-hover:opacity-100 transition pointer-events-none">
+            {props.tooltip}
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -45,9 +38,11 @@ export const TooltipButton = (props: {
         {props.label}
       </button>
 
-      <div className="absolute top-10 bg-black text-white px-2 opacity-0 peer-hover:opacity-100 transition pointer-events-none">
-        {props.tooltip}
-      </div>
+      {props.tooltip ? (
+        <div className="absolute top-10 bg-black text-white px-2 opacity-0 peer-hover:opacity-100 transition pointer-events-none">
+          {props.tooltip}
+        </div>
+      ) : null}
     </div>
   );
 };

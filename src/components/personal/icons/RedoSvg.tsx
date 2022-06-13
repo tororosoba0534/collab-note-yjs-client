@@ -1,6 +1,6 @@
 export const RedoSvg = () => {
   return (
-    <svg width="200" height="200">
+    <svg viewBox="0 0 200 200">
       <path
         d="M 176 120 A 76 76 0 1 0 62 166"
         fill="none"

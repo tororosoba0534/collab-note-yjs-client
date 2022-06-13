@@ -10,7 +10,9 @@ const TestLinks = () => {
       <Link to="/personal/settings">to Settings</Link>
       <Link to="/personal/settings/delete-account">to DeleteAccount</Link>
 
-      <SelectParagraphSvg />
+      <div className="w-52 h-52 border-2 border-black">
+        <SelectParagraphSvg />
+      </div>
     </div>
   );
 };

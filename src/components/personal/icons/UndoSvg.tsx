@@ -1,6 +1,6 @@
 export const UndoSvg = () => {
   return (
-    <svg width="200" height="200">
+    <svg viewBox="0 0 200 200">
       <path
         d="M 24 120 A 76 76 0 1 1 138 166"
         fill="none"
