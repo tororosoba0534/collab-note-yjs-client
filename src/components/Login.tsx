@@ -15,52 +15,41 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { login } = useLogin();
+  const { login, isLoading, setIsLoading, status, thrownErr } = useLogin();
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     console.log("submit clicked.");
+    setIsLoading(true);
+    // if (
+    //   Validate.isNotValidUsername(username) ||
+    //   Validate.isNotValidPassword(password)
+    // ) {
+    //   console.log("username or password or both of them are invalid");
+    //   return;
+    // }
 
-    if (
-      Validate.isNotValidUsername(username) ||
-      Validate.isNotValidPassword(password)
-    ) {
-      console.log("username or password or both of them are invalid");
-      return;
-    }
-
-    const { status, thrownErr } = await login(username, password);
-
-    if (thrownErr !== "") {
-      console.error(thrownErr);
-      return;
-    }
-
-    if (status === 200) {
-      // console.log("login succeeded!");
-      // return;
-      navigate("/personal");
-      return;
-    }
-
-    console.log("login failed");
-    console.log(`status code: ${status}`);
-    setUsername("");
-    setPassword("");
-
-    // login(name, password).then((result) => {
-    //   console.log(`login result: ${result}`);
-    //   if (result) {
-    //     navigate("/personal");
-    //   }
-    //   setName("");
-    //   setPassword("");
-    // });
+    login(username, password).then(({ status }) => {
+      if (status === 200) {
+        navigate("/personal");
+        return;
+      }
+      setIsLoading(false);
+      console.log("login failed");
+      console.log(`status code: ${status}`);
+    });
   };
 
   return (
     <div className="flex justify-center items-center h-screen ">
       <div className="flex flex-col justify-center items-center gap-10 p-5  shadow-[3px_3px_12px_rgba(0,0,0,0.3)]  rounded-2xl bg-white">
         <h1 className="text-2xl">Login</h1>
+
+        {isLoading ? null : (
+          <div className="w-full rounded-md bg-red-400 text-white font-bold">
+            thrownErr: {thrownErr}
+            status code: {status}
+          </div>
+        )}
 
         <FloatingLabelInput
           label="username"

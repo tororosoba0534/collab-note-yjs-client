@@ -1,12 +1,15 @@
 import { useCallback, useContext, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../api/hooks";
 import { PopupsContext } from "./PopupsProvider";
 
 export const LogoutWindow = () => {
   const { isOpenLogout, setIsOpenLogout } = useContext(PopupsContext);
-  const { logout } = useLogout();
+  const { logout, status, isLoading, setIsLoading, thrownErr } = useLogout();
 
   const ref = useRef<HTMLElement | null>(null);
+
+  const navigate = useNavigate();
 
   // const handleClickDocument = useCallback((e: MouseEvent) => {
   //   if (!(e.target instanceof Node)) {
@@ -26,6 +29,20 @@ export const LogoutWindow = () => {
   // useEffect(() => {
   //   document.addEventListener("click", handleClickDocument);
   // }, [handleClickDocument]);
+
+  const handleClickLogout = useCallback(() => {
+    setIsLoading(true);
+    logout().then(({ status }) => {
+      if (status === 200 || status === 401) {
+        console.log("logout succeeded!");
+        setIsOpenLogout(false);
+        navigate("/login");
+        return;
+      }
+      setIsLoading(false);
+      console.log("logout failed");
+    });
+  }, [setIsLoading, logout, navigate, setIsOpenLogout]);
 
   if (!isOpenLogout) return null;
 
@@ -57,13 +74,8 @@ export const LogoutWindow = () => {
           <div className="flex justify-center items-center justify-around h-20">
             <button
               className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-              onClick={async () => {
-                const { status, thrownErr } = await logout();
-                if (status === 200) {
-                  console.log("succeed");
-                  return;
-                }
-                console.log("failed");
+              onClick={() => {
+                handleClickLogout();
               }}
             >
               Logout
@@ -75,6 +87,13 @@ export const LogoutWindow = () => {
               Cancel
             </button>
           </div>
+
+          {isLoading ? null : (
+            <div className="w-full rounded-md bg-red-400 text-white font-bold">
+              thrownErr: {thrownErr}
+              status code: {status}
+            </div>
+          )}
         </div>
       </div>
     </div>

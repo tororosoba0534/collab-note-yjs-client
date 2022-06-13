@@ -28,7 +28,15 @@ const baseFetch = async (
       body: JSON.stringify(reqJSON),
     }).then(async (response) => {
       const status = response.status;
-      const resJSON = await response.json();
+      let resJSON;
+      try {
+        // If API doesn't return JSON body, this line throw an error like:
+        // "unexpected token o in json at position 0"
+        resJSON = await response.json();
+      } catch {
+        resJSON = null;
+      }
+
       return { status, resJSON };
     });
 
