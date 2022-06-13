@@ -15,7 +15,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { login, isLoading, setIsLoading, status, thrownErr } = useLogin();
+  const { login, status, thrownErr } = useLogin();
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleSubmit = () => {
     console.log("submit clicked.");

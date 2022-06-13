@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useCheckAuth } from "../api/hooks";
 import Loading from "../components/Loading";
@@ -6,8 +6,8 @@ import Loading from "../components/Loading";
 const AuthGate = ({ children }: { children: JSX.Element }) => {
   console.log("RequireAuth rendered");
 
-  const { username, checkAuth, status, thrownErr, isLoading, setIsLoading } =
-    useCheckAuth();
+  const { username, checkAuth, status, thrownErr } = useCheckAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);

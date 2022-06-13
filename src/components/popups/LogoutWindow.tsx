@@ -1,11 +1,12 @@
-import { useCallback, useContext, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../api/hooks";
 import { PopupsContext } from "./PopupsProvider";
 
 export const LogoutWindow = () => {
   const { isOpenLogout, setIsOpenLogout } = useContext(PopupsContext);
-  const { logout, status, isLoading, setIsLoading, thrownErr } = useLogout();
+  const { logout, status, thrownErr } = useLogout();
+  const [isLoading, setIsLoading] = useState(true);
 
   const ref = useRef<HTMLElement | null>(null);
 

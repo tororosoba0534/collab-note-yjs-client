@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useCheckAuth } from "../../api/hooks";
 import Loading from "../Loading";
 import { TiptapEditor } from "./TiptapEditor";
 
 export const EditorWrapper = () => {
-  const { checkAuth, isLoading, setIsLoading, thrownErr, username, status } =
-    useCheckAuth();
+  const { checkAuth, thrownErr, username, status } = useCheckAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);

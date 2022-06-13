@@ -24,18 +24,17 @@ type BaseReturn<Status> = {
   thrownErr: string;
 };
 
-type Loading = {
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-};
+// type Loading = {
+//   isLoading: boolean;
+//   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+// };
 
 type ReturnCheckAuth = BaseReturn<StatusCheckAuth> & {
   username: string;
 };
-export const useCheckAuth = (): ReturnCheckAuth &
-  Loading & {
-    checkAuth: () => Promise<ReturnCheckAuth>;
-  } => {
+export const useCheckAuth = (): ReturnCheckAuth & {
+  checkAuth: () => Promise<ReturnCheckAuth>;
+} => {
   const [username, setUsername] = useState<string>("");
   const [status, setStatus] = useState<StatusCheckAuth>(401);
   const [thrownErr, setThrownErr] = useState<string>("");
@@ -56,23 +55,18 @@ export const useCheckAuth = (): ReturnCheckAuth &
     return { status, username, thrownErr };
   }, []);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   return {
     checkAuth,
     username,
     status,
     thrownErr,
-    isLoading,
-    setIsLoading,
   };
 };
 
 type ReturnLogin = BaseReturn<StatusLogin>;
-export const useLogin = (): ReturnLogin &
-  Loading & {
-    login: (username: string, password: string) => Promise<ReturnLogin>;
-  } => {
+export const useLogin = (): ReturnLogin & {
+  login: (username: string, password: string) => Promise<ReturnLogin>;
+} => {
   const [status, setStatus] = useState<StatusLogin>(401);
   const [thrownErr, setThrownErr] = useState<string>("");
 
@@ -95,22 +89,17 @@ export const useLogin = (): ReturnLogin &
     []
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   return {
     login,
     status,
     thrownErr,
-    isLoading,
-    setIsLoading,
   };
 };
 
 type ReturnLogout = BaseReturn<StatusLogout>;
-export const useLogout = (): ReturnLogout &
-  Loading & {
-    logout: () => Promise<ReturnLogout>;
-  } => {
+export const useLogout = (): ReturnLogout & {
+  logout: () => Promise<ReturnLogout>;
+} => {
   const [status, setStatus] = useState<StatusLogout>(401);
   const [thrownErr, setThrownErr] = useState<string>("");
 
@@ -129,25 +118,20 @@ export const useLogout = (): ReturnLogout &
     return { status, thrownErr };
   }, []);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   return {
     logout,
     status,
     thrownErr,
-    isLoading,
-    setIsLoading,
   };
 };
 
 type ReturnCreateAccount = BaseReturn<StatusCreateAccount>;
-export const useCreateAccount = (): ReturnCreateAccount &
-  Loading & {
-    createAccount: (
-      username: string,
-      password: string
-    ) => Promise<ReturnCreateAccount>;
-  } => {
+export const useCreateAccount = (): ReturnCreateAccount & {
+  createAccount: (
+    username: string,
+    password: string
+  ) => Promise<ReturnCreateAccount>;
+} => {
   const [status, setStatus] = useState<StatusCreateAccount>(400);
   const [thrownErr, setThrownErr] = useState<string>("");
 
@@ -170,24 +154,19 @@ export const useCreateAccount = (): ReturnCreateAccount &
     []
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   return {
     createAccount,
     status,
     thrownErr,
-    isLoading,
-    setIsLoading,
   };
 };
 
 type ReturnCheckUsername = BaseReturn<StatusCheckUsername> & {
   isUnused: boolean;
 };
-export const useCheckUsername = (): ReturnCheckUsername &
-  Loading & {
-    checkUsername: (username: string) => Promise<ReturnCheckUsername>;
-  } => {
+export const useCheckUsername = (): ReturnCheckUsername & {
+  checkUsername: (username: string) => Promise<ReturnCheckUsername>;
+} => {
   const [status, setStatus] = useState<StatusCheckUsername>(400);
   const [thrownErr, setThrownErr] = useState<string>("");
   const [isUnused, setIsUnused] = useState(true);
@@ -211,23 +190,18 @@ export const useCheckUsername = (): ReturnCheckUsername &
     []
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   return {
     checkUsername,
     status,
     isUnused,
     thrownErr,
-    isLoading,
-    setIsLoading,
   };
 };
 
 type ReturnDeleteAccount = BaseReturn<StatusDeleteAccount>;
-export const useDeleteAccount = (): ReturnDeleteAccount &
-  Loading & {
-    deleteAccount: () => Promise<ReturnDeleteAccount>;
-  } => {
+export const useDeleteAccount = (): ReturnDeleteAccount & {
+  deleteAccount: () => Promise<ReturnDeleteAccount>;
+} => {
   const [status, setStatus] = useState<StatusDeleteAccount>(401);
   const [thrownErr, setThrownErr] = useState<string>("");
 
@@ -245,22 +219,17 @@ export const useDeleteAccount = (): ReturnDeleteAccount &
     return { status, thrownErr };
   }, []);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   return {
     deleteAccount,
     status,
     thrownErr,
-    isLoading,
-    setIsLoading,
   };
 };
 
 type ReturnChangeUsername = BaseReturn<StatusChangeUsername>;
-export const useChangeUsername = (): ReturnChangeUsername &
-  Loading & {
-    changeUsername: (newUsername: string) => Promise<ReturnChangeUsername>;
-  } => {
+export const useChangeUsername = (): ReturnChangeUsername & {
+  changeUsername: (newUsername: string) => Promise<ReturnChangeUsername>;
+} => {
   const [status, setStatus] = useState<StatusChangeUsername>(401);
   const [thrownErr, setThrownErr] = useState<string>("");
 
@@ -290,22 +259,17 @@ export const useChangeUsername = (): ReturnChangeUsername &
     []
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   return {
     changeUsername,
     status,
     thrownErr,
-    isLoading,
-    setIsLoading,
   };
 };
 
 type ReturnChangePassword = BaseReturn<StatusChangePassword>;
-export const useChangePassword = (): ReturnChangePassword &
-  Loading & {
-    changePassword: (newPassword: string) => Promise<ReturnChangePassword>;
-  } => {
+export const useChangePassword = (): ReturnChangePassword & {
+  changePassword: (newPassword: string) => Promise<ReturnChangePassword>;
+} => {
   const [status, setStatus] = useState<StatusChangePassword>(401);
   const [thrownErr, setThrownErr] = useState<string>("");
 
@@ -335,13 +299,9 @@ export const useChangePassword = (): ReturnChangePassword &
     []
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   return {
     changePassword,
     status,
     thrownErr,
-    isLoading,
-    setIsLoading,
   };
 };
