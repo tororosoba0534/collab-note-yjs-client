@@ -1,17 +1,22 @@
 import { useCallback, useState } from "react";
 import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { ExclamationSvg } from "./ExclamationSvg";
+import { ValMsgBox } from "./ValMsgBox";
 
 export const CAPasswordInput = (props: {
   password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+  const [isInit, setIsInit] = useState(true);
+
   const [passwordValMsgLack, setPasswordValMsgLack] = useState("");
   const [passwordValMsgInvalidChar, setPasswordValMsgInvalidChar] =
     useState("");
   const [passwordValMsgGeneral, setPasswordValMsgGeneral] = useState("");
 
   const handleChangePassword = useCallback((newPassword: string) => {
+    setIsInit(() => false);
     setPasswordValMsgLack("");
     const msgLackArr: Array<"lowercase" | "uppercase" | "number"> = [];
     setPasswordValMsgInvalidChar("");
@@ -73,18 +78,72 @@ export const CAPasswordInput = (props: {
           handleChangePassword(e.currentTarget.value);
         }}
       />
-      <div className="h-20 w-full">
-        {passwordValMsgLack ||
-        passwordValMsgInvalidChar ||
-        passwordValMsgGeneral ? (
-          <div>
-            <p>{passwordValMsgLack}</p>
-            <p>{passwordValMsgInvalidChar}</p>
-            <p>{passwordValMsgGeneral}</p>
-          </div>
-        ) : props.password.length === 0 ? null : (
-          <div>Valid password!</div>
-        )}
+      <div className="w-full">
+        <ValMsgBox
+          label="length: 5 ~ 20 "
+          errStatus={
+            isInit
+              ? "disabled"
+              : props.password.length < 5
+              ? "NG"
+              : props.password.length > 20
+              ? "NG"
+              : "OK"
+          }
+          errMsg={
+            isInit
+              ? ""
+              : props.password.length < 5
+              ? `${5 - props.password.length} more`
+              : props.password.length > 20
+              ? `${props.password.length - 20} less`
+              : ""
+          }
+        />
+        <ValMsgBox
+          label="a~z, A~Z, 0~9 only"
+          errStatus={
+            !props.password
+              ? "disabled"
+              : Validate.isUsedInvalidChar(props.password)
+              ? "NG"
+              : "OK"
+          }
+          errMsg={ExclamationSvg()}
+        />
+        <ValMsgBox
+          label="at least one of a~z"
+          errStatus={
+            !props.password
+              ? "disabled"
+              : Validate.doesNotContainLowercase(props.password)
+              ? "NG"
+              : "OK"
+          }
+          errMsg={ExclamationSvg()}
+        />
+        <ValMsgBox
+          label="at least one of A~Z"
+          errStatus={
+            !props.password
+              ? "disabled"
+              : Validate.doesNotContainUppercase(props.password)
+              ? "NG"
+              : "OK"
+          }
+          errMsg={ExclamationSvg()}
+        />
+        <ValMsgBox
+          label="at least one of 0~9"
+          errStatus={
+            !props.password
+              ? "disabled"
+              : Validate.doesNotContainNumber(props.password)
+              ? "NG"
+              : "OK"
+          }
+          errMsg={ExclamationSvg()}
+        />
       </div>
     </div>
   );

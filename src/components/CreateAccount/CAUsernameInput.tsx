@@ -2,18 +2,22 @@ import { useCallback, useState } from "react";
 import { useCheckUsername } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { ExclamationSvg } from "./ExclamationSvg";
+import { ValMsgBox } from "./ValMsgBox";
 
 export const CAUsernameInput = (props: {
   username: string;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [usernameValMsg, setUsernameValMsg] = useState("");
+  const [isInit, setIsInit] = useState(true);
 
   const { checkUsername, status, thrownErr, isUnused } = useCheckUsername();
   const [isLoading, setIsLoading] = useState(true);
 
   const handleChangeUsername = useCallback(
     (newUsername: string) => {
+      setIsInit(() => false);
       setUsernameValMsg("");
       setIsLoading(true);
       if (Validate.isUsedInvalidChar(newUsername)) {
@@ -61,27 +65,53 @@ export const CAUsernameInput = (props: {
         }}
       />
       <div className="h-10 w-full">
-        {isLoading ? (
-          <div className="rounded-md bg-blue-500 text-white"></div>
-        ) : usernameValMsg ? (
-          <div className="rounded-md bg-red-500 text-white">
-            {usernameValMsg}
-          </div>
-        ) : thrownErr ? (
-          <div className="rounded-md bg-red-500 text-white">{thrownErr}</div>
-        ) : status !== 200 ? (
-          <div className="rounded-md bg-red-500 text-white">
-            status code: ${status}
-          </div>
-        ) : isUnused ? (
-          <div className="rounded-md bg-blue-500 text-white">
-            You can use this name!
-          </div>
-        ) : (
-          <div className="rounded-md bg-red-500 text-white">
-            This name is already used. You should use the other name!
-          </div>
-        )}
+        <ValMsgBox
+          label="length: 5 ~ 20 "
+          errStatus={
+            isInit
+              ? "disabled"
+              : props.username.length < 5
+              ? "NG"
+              : props.username.length > 20
+              ? "NG"
+              : "OK"
+          }
+          errMsg={
+            isInit
+              ? ""
+              : props.username.length < 5
+              ? `${5 - props.username.length} more`
+              : props.username.length > 20
+              ? `${props.username.length - 20} less`
+              : ""
+          }
+        />
+        <ValMsgBox
+          label="a~z, A~Z, 0~9 only"
+          errStatus={
+            !props.username
+              ? "disabled"
+              : Validate.isUsedInvalidChar(props.username)
+              ? "NG"
+              : "OK"
+          }
+          errMsg={ExclamationSvg()}
+        />
+        <ValMsgBox
+          label="is NOT already used?"
+          errStatus={
+            !props.username
+              ? "disabled"
+              : isInit
+              ? "disabled"
+              : isLoading
+              ? "disabled"
+              : isUnused
+              ? "OK"
+              : "NG"
+          }
+          errMsg={ExclamationSvg()}
+        />
       </div>
     </div>
   );

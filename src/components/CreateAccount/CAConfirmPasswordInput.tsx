@@ -1,14 +1,19 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { ExclamationSvg } from "./ExclamationSvg";
+import { ValMsgBox } from "./ValMsgBox";
 
 export const CAConfirmPasswordInput = (props: {
   confirmPassword: string;
   setConfirmPassword: React.Dispatch<React.SetStateAction<string>>;
   originalPassword: string;
 }) => {
+  const [isInit, setIsInit] = useState(true);
+
   const handleChangeConfirmPassword = useCallback(
     (newConfirmPassword: string, originalPassword: string) => {
+      setIsInit(() => false);
       if (Validate.isNotValidPassword(originalPassword)) return;
 
       if (newConfirmPassword !== originalPassword) {
@@ -35,12 +40,21 @@ export const CAConfirmPasswordInput = (props: {
         }}
       />
       <div className="h-10 w-full">
-        {!props.confirmPassword ? null : props.confirmPassword !==
-          props.originalPassword ? (
-          <div>NOT the same password.</div>
-        ) : (
-          <div>The same!</div>
-        )}
+        <ValMsgBox
+          label="the same password?"
+          errStatus={
+            props.originalPassword && !props.confirmPassword
+              ? "NG"
+              : props.confirmPassword && !props.originalPassword
+              ? "NG"
+              : !props.originalPassword
+              ? "disabled"
+              : props.confirmPassword === props.originalPassword
+              ? "OK"
+              : "NG"
+          }
+          errMsg={ExclamationSvg()}
+        />
       </div>
     </div>
   );
