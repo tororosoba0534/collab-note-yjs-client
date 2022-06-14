@@ -1,0 +1,71 @@
+.niceCheck {
+  height: 100px;
+  width: 100px;
+  background-color: cyan;
+}
+
+.niceCheck input[type="checkbox"] {
+  cursor: pointer;
+  height: px;
+  margin: 2px 0 0;
+  position: absolute;
+  opacity: 0;
+  width: 15px;
+  z-index: 2;
+}
+
+.niceCheck input[type="checkbox"] + span {
+  background: #e74c3c;
+  border-radius: 50%;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  height: 15px;
+  margin: 2px 0 0;
+  position: relative;
+  width: 15px;
+  transition: all 0.2s ease;
+}
+
+.niceCheck input[type="checkbox"] + span::before,
+input[type="checkbox"] + span::after {
+  background: #fff;
+  content: "";
+  display: block;
+  position: absolute;
+  width: 2px;
+  transition: all 0.2s ease;
+}
+
+.niceCheck input[type="checkbox"] + span::before {
+  height: 8px;
+  left: 6px;
+  top: 3px;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.niceCheck input[type="checkbox"] + span::after {
+  height: 8px;
+  right: 6px;
+  top: 3px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.niceCheck input[type="checkbox"]:checked + span {
+  background: #2ecc71;
+}
+
+.niceCheck input[type="checkbox"]:checked + span::before {
+  height: 4px;
+  left: 4px;
+  top: 6px;
+  -webkit-transform: rotate(-47deg);
+  transform: rotate(-47deg);
+}
+
+.niceCheck input[type="checkbox"]:checked + span::after {
+  height: 7px;
+  right: 5px;
+  top: 4px;
+}

@@ -1,0 +1,9 @@
+/* .checksvg path {
+  stroke-dasharray: 125;
+  stroke-dashoffset: 125;
+  transition: stroke-dashoffset 0.3s linear;
+}
+
+.checksvg:hover path {
+  stroke-dashoffset: 0;
+} */

@@ -1,17 +1,30 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { LogoutWindow } from "./popups/LogoutWindow";
-import { SelectParagraphSvg } from "./personal/icons/SelectParagraphSvg";
+import { CheckSvg } from "./CreateAccount/CheckSvg";
+import "./TestLinks.css";
 
 const TestLinks = () => {
-  return (
-    <div className="flex flex-col">
-      <Link to="/personal">to Personal</Link>
-      <Link to="/personal/settings">to Settings</Link>
-      <Link to="/personal/settings/delete-account">to DeleteAccount</Link>
+  const [status, setStatus] = useState<"disabled" | "NG" | "OK">("NG");
 
-      <div className="w-52 h-52 border-2 border-black">
-        <SelectParagraphSvg />
+  return (
+    <div>
+      <div className="niceCheck">
+        <input type="checkbox" />
+        <span></span>
+      </div>
+
+      <div
+        className="w-52 h-52 border-8"
+        onClick={() => {
+          setStatus((prevStatus) => {
+            if (prevStatus === "OK") {
+              return "NG";
+            }
+            return "OK";
+          });
+        }}
+      >
+        <CheckSvg status={status} />
       </div>
     </div>
   );
