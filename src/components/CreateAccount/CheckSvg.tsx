@@ -1,6 +1,7 @@
 import "./CheckSvg.css";
+import { CASvgStatus } from "./types";
 
-export const CheckSvg = (props: { status: "disabled" | "NG" | "OK" }) => {
+export const CheckSvg = (props: { status: CASvgStatus }) => {
   return (
     <svg className="checksvg" viewBox="0 0 100 100">
       <rect
@@ -11,8 +12,16 @@ export const CheckSvg = (props: { status: "disabled" | "NG" | "OK" }) => {
         rx="2"
         ry="2"
         fill="none"
-        stroke="black"
         strokeWidth="5"
+        style={{
+          stroke:
+            props.status === "OK"
+              ? "green"
+              : props.status === "disabled"
+              ? "gray"
+              : "white",
+          transition: "stroke 0.3s",
+        }}
       />
       <path
         d="M 10 50 L 35 72 L 90 15"
@@ -21,8 +30,8 @@ export const CheckSvg = (props: { status: "disabled" | "NG" | "OK" }) => {
         strokeWidth="7"
         style={{
           strokeDasharray: 125,
-          strokeDashoffset: props.status === "OK" ? 125 : 0,
-          transition: "stroke-dashoffset 0.3s linear",
+          strokeDashoffset: props.status === "OK" ? 0 : 125,
+          transition: "stroke-dashoffset 0.2s linear",
         }}
       />
     </svg>
