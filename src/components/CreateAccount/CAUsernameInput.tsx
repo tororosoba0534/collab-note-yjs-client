@@ -9,7 +9,6 @@ export const CAUsernameInput = (props: {
   username: string;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const [usernameValMsg, setUsernameValMsg] = useState("");
   const [isInit, setIsInit] = useState(true);
 
   const { checkUsername, status, thrownErr, isUnused } = useCheckUsername();
@@ -18,33 +17,12 @@ export const CAUsernameInput = (props: {
   const handleChangeUsername = useCallback(
     (newUsername: string) => {
       setIsInit(() => false);
-      setUsernameValMsg("");
+
+      if (Validate.isNotValidUsername(newUsername)) {
+        return;
+      }
+
       setIsLoading(true);
-      if (Validate.isUsedInvalidChar(newUsername)) {
-        setUsernameValMsg("invalid char used");
-        setIsLoading(false);
-        console.log("username: invalid char used");
-        return;
-      }
-
-      if (Validate.charsNeedMore(newUsername) !== 0) {
-        setUsernameValMsg(`need more ${Validate.charsNeedMore(newUsername)}`);
-        setIsLoading(false);
-        console.log(
-          `username: need more ${Validate.charsNeedMore(newUsername)}`
-        );
-        return;
-      }
-
-      if (Validate.charsShouldLess(newUsername) !== 0) {
-        setUsernameValMsg(`exceed ${Validate.charsShouldLess(newUsername)}`);
-        setIsLoading(false);
-        console.log(
-          `username: exceed ${Validate.charsShouldLess(newUsername)}`
-        );
-        return;
-      }
-
       checkUsername(newUsername).then(() => {
         setIsLoading(false);
       });
