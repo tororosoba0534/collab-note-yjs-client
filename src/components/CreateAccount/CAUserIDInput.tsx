@@ -1,45 +1,45 @@
 import { useCallback, useState } from "react";
-import { useCheckUsername } from "../../api/hooks";
+import { useCheckUserID } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { ExclamationSvg } from "./ExclamationSvg";
 import { ValMsgBox } from "./ValMsgBox";
 
-export const CAUsernameInput = (props: {
-  username: string;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
+export const CAUserIDInput = (props: {
+  userID: string;
+  setUserID: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [isInit, setIsInit] = useState(true);
 
-  const { checkUsername, status, thrownErr, isUnused } = useCheckUsername();
+  const { checkUserID, status, thrownErr, isUnused } = useCheckUserID();
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleChangeUsername = useCallback(
-    (newUsername: string) => {
+  const handleChangeUserID = useCallback(
+    (newUserID: string) => {
       setIsInit(() => false);
 
-      if (Validate.isNotValidUsername(newUsername)) {
+      if (Validate.isNotValidUserID(newUserID)) {
         return;
       }
 
       setIsLoading(true);
-      checkUsername(newUsername).then(() => {
+      checkUserID(newUserID).then(() => {
         setIsLoading(false);
       });
     },
 
-    [checkUsername]
+    [checkUserID]
   );
 
   return (
     <div className="w-full">
       <FloatingLabelInput
-        label="username"
+        label="userID"
         type="text"
-        value={props.username}
+        value={props.userID}
         onChange={(e) => {
-          props.setUsername(e.currentTarget.value);
-          handleChangeUsername(e.currentTarget.value);
+          props.setUserID(e.currentTarget.value);
+          handleChangeUserID(e.currentTarget.value);
         }}
       />
       <div className="h-10 w-full">
@@ -48,28 +48,28 @@ export const CAUsernameInput = (props: {
           errStatus={
             isInit
               ? "disabled"
-              : props.username.length < 5
+              : props.userID.length < 5
               ? "NG"
-              : props.username.length > 20
+              : props.userID.length > 20
               ? "NG"
               : "OK"
           }
           errMsg={
             isInit
               ? ""
-              : props.username.length < 5
-              ? `${5 - props.username.length} more`
-              : props.username.length > 20
-              ? `${props.username.length - 20} less`
+              : props.userID.length < 5
+              ? `${5 - props.userID.length} more`
+              : props.userID.length > 20
+              ? `${props.userID.length - 20} less`
               : ""
           }
         />
         <ValMsgBox
           label="a~z, A~Z, 0~9 only"
           errStatus={
-            !props.username
+            !props.userID
               ? "disabled"
-              : Validate.isUsedInvalidChar(props.username)
+              : Validate.isUsedInvalidChar(props.userID)
               ? "NG"
               : "OK"
           }
@@ -78,7 +78,7 @@ export const CAUsernameInput = (props: {
         <ValMsgBox
           label="is NOT already used?"
           errStatus={
-            !props.username
+            !props.userID
               ? "disabled"
               : isInit
               ? "disabled"

@@ -2,17 +2,17 @@ import { useCallback, useState } from "react";
 import config from "../config";
 import {
   fetchChangePassword,
-  fetchChangeUsername,
+  fetchChangeUserID,
   fetchCheckAuth,
-  fetchCheckUsername,
+  fetchCheckUserID,
   fetchCreateAccount,
   fetchDeleteAccount,
   fetchLogin,
   fetchLogout,
   StatusChangePassword,
-  StatusChangeUsername,
+  StatusChangeUserID,
   StatusCheckAuth,
-  StatusCheckUsername,
+  StatusCheckUserID,
   StatusCreateAccount,
   StatusDeleteAccount,
   StatusLogin,
@@ -30,34 +30,34 @@ type BaseReturn<Status> = {
 // };
 
 type ReturnCheckAuth = BaseReturn<StatusCheckAuth> & {
-  username: string;
+  userID: string;
 };
 export const useCheckAuth = (): ReturnCheckAuth & {
   checkAuth: () => Promise<ReturnCheckAuth>;
 } => {
-  const [username, setUsername] = useState<string>("");
+  const [userID, setUserID] = useState<string>("");
   const [status, setStatus] = useState<StatusCheckAuth>(401);
   const [thrownErr, setThrownErr] = useState<string>("");
 
   const checkAuth = useCallback(async (): Promise<ReturnCheckAuth> => {
     setThrownErr("");
-    setUsername("");
+    setUserID("");
     const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
     if (!sessionID) {
       setStatus(401);
-      setUsername("");
-      return { status: 401, thrownErr: "", username: "" };
+      setUserID("");
+      return { status: 401, thrownErr: "", userID: "" };
     }
-    const { status, username, thrownErr } = await fetchCheckAuth(sessionID);
+    const { status, userID, thrownErr } = await fetchCheckAuth(sessionID);
     setStatus(status);
-    setUsername(username);
+    setUserID(userID);
     setThrownErr(thrownErr);
-    return { status, username, thrownErr };
+    return { status, userID, thrownErr };
   }, []);
 
   return {
     checkAuth,
-    username,
+    userID,
     status,
     thrownErr,
   };
@@ -65,17 +65,17 @@ export const useCheckAuth = (): ReturnCheckAuth & {
 
 type ReturnLogin = BaseReturn<StatusLogin>;
 export const useLogin = (): ReturnLogin & {
-  login: (username: string, password: string) => Promise<ReturnLogin>;
+  login: (userID: string, password: string) => Promise<ReturnLogin>;
 } => {
   const [status, setStatus] = useState<StatusLogin>(401);
   const [thrownErr, setThrownErr] = useState<string>("");
 
   const login = useCallback(
-    async (username: string, password: string): Promise<ReturnLogin> => {
+    async (userID: string, password: string): Promise<ReturnLogin> => {
       setThrownErr("");
 
       const { status, sessionID, thrownErr } = await fetchLogin(
-        username,
+        userID,
         password
       );
       if (status === 200) {
@@ -128,7 +128,7 @@ export const useLogout = (): ReturnLogout & {
 type ReturnCreateAccount = BaseReturn<StatusCreateAccount>;
 export const useCreateAccount = (): ReturnCreateAccount & {
   createAccount: (
-    username: string,
+    userID: string,
     password: string
   ) => Promise<ReturnCreateAccount>;
 } => {
@@ -136,16 +136,10 @@ export const useCreateAccount = (): ReturnCreateAccount & {
   const [thrownErr, setThrownErr] = useState<string>("");
 
   const createAccount = useCallback(
-    async (
-      username: string,
-      password: string
-    ): Promise<ReturnCreateAccount> => {
+    async (userID: string, password: string): Promise<ReturnCreateAccount> => {
       setThrownErr("");
 
-      const { status, thrownErr } = await fetchCreateAccount(
-        username,
-        password
-      );
+      const { status, thrownErr } = await fetchCreateAccount(userID, password);
 
       setStatus(status);
       setThrownErr(thrownErr);
@@ -161,22 +155,20 @@ export const useCreateAccount = (): ReturnCreateAccount & {
   };
 };
 
-type ReturnCheckUsername = BaseReturn<StatusCheckUsername> & {
+type ReturnCheckUserID = BaseReturn<StatusCheckUserID> & {
   isUnused: boolean;
 };
-export const useCheckUsername = (): ReturnCheckUsername & {
-  checkUsername: (username: string) => Promise<ReturnCheckUsername>;
+export const useCheckUserID = (): ReturnCheckUserID & {
+  checkUserID: (userID: string) => Promise<ReturnCheckUserID>;
 } => {
-  const [status, setStatus] = useState<StatusCheckUsername>(400);
+  const [status, setStatus] = useState<StatusCheckUserID>(400);
   const [thrownErr, setThrownErr] = useState<string>("");
   const [isUnused, setIsUnused] = useState(true);
 
-  const checkUsername = useCallback(
-    async (username: string): Promise<ReturnCheckUsername> => {
+  const checkUserID = useCallback(
+    async (userID: string): Promise<ReturnCheckUserID> => {
       setThrownErr("");
-      const { status, thrownErr, isUnused } = await fetchCheckUsername(
-        username
-      );
+      const { status, thrownErr, isUnused } = await fetchCheckUserID(userID);
 
       setStatus(status);
       setThrownErr(thrownErr);
@@ -191,7 +183,7 @@ export const useCheckUsername = (): ReturnCheckUsername & {
   );
 
   return {
-    checkUsername,
+    checkUserID,
     status,
     isUnused,
     thrownErr,
@@ -226,15 +218,15 @@ export const useDeleteAccount = (): ReturnDeleteAccount & {
   };
 };
 
-type ReturnChangeUsername = BaseReturn<StatusChangeUsername>;
-export const useChangeUsername = (): ReturnChangeUsername & {
-  changeUsername: (newUsername: string) => Promise<ReturnChangeUsername>;
+type ReturnChangeUserID = BaseReturn<StatusChangeUserID>;
+export const useChangeUserID = (): ReturnChangeUserID & {
+  changeUserID: (newUserID: string) => Promise<ReturnChangeUserID>;
 } => {
-  const [status, setStatus] = useState<StatusChangeUsername>(401);
+  const [status, setStatus] = useState<StatusChangeUserID>(401);
   const [thrownErr, setThrownErr] = useState<string>("");
 
-  const changeUsername = useCallback(
-    async (newUsername: string): Promise<ReturnChangeUsername> => {
+  const changeUserID = useCallback(
+    async (newUserID: string): Promise<ReturnChangeUserID> => {
       setThrownErr("");
 
       const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
@@ -243,9 +235,9 @@ export const useChangeUsername = (): ReturnChangeUsername & {
         return { status: 401, thrownErr: "" };
       }
 
-      const { status, newSessionID, thrownErr } = await fetchChangeUsername(
+      const { status, newSessionID, thrownErr } = await fetchChangeUserID(
         sessionID,
-        newUsername
+        newUserID
       );
 
       if (status === 200) {
@@ -260,7 +252,7 @@ export const useChangeUsername = (): ReturnChangeUsername & {
   );
 
   return {
-    changeUsername,
+    changeUserID,
     status,
     thrownErr,
   };

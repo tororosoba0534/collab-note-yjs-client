@@ -6,10 +6,10 @@ import { Validate } from "../../utils/validation";
 import { CAConfirmPasswordInput } from "./CAConfirmPasswordInput";
 import { CAPasswordInput } from "./CAPasswordInput";
 import { CATitle } from "./CATitle";
-import { CAUsernameInput } from "./CAUsernameInput";
+import { CAUserIDInput } from "./CAUserIDInput";
 
 const CreateAccount = () => {
-  const [username, setUsername] = useState("");
+  const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -32,17 +32,17 @@ const CreateAccount = () => {
     }
 
     if (
-      Validate.isNotValidUsername(username) ||
+      Validate.isNotValidUserID(userID) ||
       Validate.isNotValidPassword(password)
     ) {
-      setSubmitMsg("username or password or the both are invalid");
-      console.log("username or password or the both are invalid");
+      setSubmitMsg("userID or password or the both are invalid");
+      console.log("userID or password or the both are invalid");
       return;
     }
 
-    console.log("valid username & password");
+    console.log("valid userID & password");
 
-    const { status, thrownErr } = await createAccount(username, password);
+    const { status, thrownErr } = await createAccount(userID, password);
 
     if (thrownErr !== "") {
       console.error(thrownErr);
@@ -72,7 +72,7 @@ const CreateAccount = () => {
           status={status}
         />
 
-        <CAUsernameInput username={username} setUsername={setUsername} />
+        <CAUserIDInput userID={userID} setUserID={setUserID} />
 
         <CAPasswordInput password={password} setPassword={setPassword} />
 

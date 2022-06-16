@@ -14,15 +14,15 @@ import { SelectParagraphSvg } from "./icons/SelectParagraphSvg";
 import { UndoSvg } from "./icons/UndoSvg";
 import { RedoSvg } from "./icons/RedoSvg";
 
-export const TiptapEditor = ({ username }: { username: string }) => {
+export const TiptapEditor = ({ userID }: { userID: string }) => {
   // ydoc should be recreated when user changes
-  // so "username" should be in the dependency array of useMemo.
+  // so "userID" should be in the dependency array of useMemo.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const ydoc = useMemo(() => new Y.Doc(), [username]);
+  const ydoc = useMemo(() => new Y.Doc(), [userID]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const provider = useMemo(
-    () => new WebsocketProvider(config.wsserver.URL, username, ydoc),
-    [username, ydoc]
+    () => new WebsocketProvider(config.wsserver.URL, userID, ydoc),
+    [userID, ydoc]
   );
 
   const editor = useEditor({

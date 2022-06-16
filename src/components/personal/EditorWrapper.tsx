@@ -5,7 +5,7 @@ import Loading from "../Loading";
 import { TiptapEditor } from "./TiptapEditor";
 
 export const EditorWrapper = () => {
-  const { checkAuth, thrownErr, username, status } = useCheckAuth();
+  const { checkAuth, thrownErr, userID, status } = useCheckAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -15,11 +15,10 @@ export const EditorWrapper = () => {
 
   if (isLoading) return <Loading />;
 
-  if (status === 200 && username !== "")
-    return <TiptapEditor username={username} />;
+  if (status === 200 && userID !== "") return <TiptapEditor userID={userID} />;
 
-  if (username === "") {
-    console.log(`username === ${username}`);
+  if (userID === "") {
+    console.log(`userID === ${userID}`);
   }
 
   return <Navigate to="/login" replace />;

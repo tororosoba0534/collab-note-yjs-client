@@ -53,44 +53,44 @@ export const fetchCheckAuth = async (
 ): Promise<{
   status: StatusCheckAuth;
   thrownErr: string;
-  username: string;
+  userID: string;
 }> => {
   const route = "/personal/check-auth";
 
   const { status, thrownErr, resJSON } = await baseFetch(route, { sessionID });
 
-  if (thrownErr !== "") return { status: 500, thrownErr, username: "" };
+  if (thrownErr !== "") return { status: 500, thrownErr, userID: "" };
 
   if (!resJSON) {
     return {
       status: 500,
       thrownErr: `Response JSON is nullable`,
-      username: "",
+      userID: "",
     };
   }
 
-  const username = resJSON.username;
+  const userID = resJSON.userID;
 
-  if (typeof username !== "string")
+  if (typeof userID !== "string")
     return {
       status: 500,
-      thrownErr: `Invalid response type: "${typeof username}"`,
-      username: "",
+      thrownErr: `Invalid response type: "${typeof userID}"`,
+      userID: "",
     };
 
   if (status !== 200 && status !== 401 && status !== 500)
     return {
       status: 500,
       thrownErr: `Unexpected status code: ${status}`,
-      username: "",
+      userID: "",
     };
 
-  return { username, status, thrownErr };
+  return { userID, status, thrownErr };
 };
 
 export type StatusLogin = 200 | 400 | 401 | 500;
 export const fetchLogin = async (
-  username: string,
+  userID: string,
   password: string
 ): Promise<{
   status: StatusLogin;
@@ -99,7 +99,7 @@ export const fetchLogin = async (
 }> => {
   const route = "/login";
   const { status, thrownErr, resJSON } = await baseFetch(route, {
-    username,
+    userID,
     password,
   });
 
@@ -156,14 +156,14 @@ export const fetchLogout = async (
 
 export type StatusCreateAccount = 200 | 400 | 500;
 export const fetchCreateAccount = async (
-  username: string,
+  userID: string,
   password: string
 ): Promise<{
   status: StatusCreateAccount;
   thrownErr: string;
 }> => {
-  const { status, thrownErr } = await baseFetch("/createAccount", {
-    username,
+  const { status, thrownErr } = await baseFetch("/create-account", {
+    userID,
     password,
   });
 
@@ -178,16 +178,16 @@ export const fetchCreateAccount = async (
   return { status, thrownErr };
 };
 
-export type StatusCheckUsername = 200 | 400 | 500;
-export const fetchCheckUsername = async (
-  username: string
+export type StatusCheckUserID = 200 | 400 | 500;
+export const fetchCheckUserID = async (
+  userID: string
 ): Promise<{
-  status: StatusCheckUsername;
+  status: StatusCheckUserID;
   thrownErr: string;
   isUnused: boolean;
 }> => {
-  const { status, thrownErr, resJSON } = await baseFetch("/check-username", {
-    username,
+  const { status, thrownErr, resJSON } = await baseFetch("/check-userid", {
+    userID,
   });
 
   if (thrownErr !== "") return { status: 500, thrownErr, isUnused: false };
@@ -242,20 +242,20 @@ export const fetchDeleteAccount = async (
   return { status, thrownErr };
 };
 
-export type StatusChangeUsername = 200 | 400 | 401 | 500;
-export const fetchChangeUsername = async (
+export type StatusChangeUserID = 200 | 400 | 401 | 500;
+export const fetchChangeUserID = async (
   sessionID: string,
-  newUsername: string
+  newUserID: string
 ): Promise<{
-  status: StatusChangeUsername;
+  status: StatusChangeUserID;
   thrownErr: string;
   newSessionID: string;
 }> => {
   const { status, thrownErr, resJSON } = await baseFetch(
-    "/personal/change-username",
+    "/personal/change-userid",
     {
       sessionID,
-      newUsername,
+      newUserID,
     }
   );
 

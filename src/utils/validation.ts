@@ -1,5 +1,5 @@
-const usernameExp = /^[0-9a-zA-Z]{5,20}$/;
-const passwordExp = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])^[0-9a-zA-Z]{5,20}$/;
+const userID_Exp = /^[0-9a-zA-Z]{5,20}$/;
+const password_Exp = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])^[0-9a-zA-Z]{5,20}$/;
 const doesContainUppercaseExp = /(?=.*[A-Z])/;
 const doesContainLowercaseExp = /(?=.*[a-z])/;
 const doesContainNumberExp = /(?=.*[0-9])/;
@@ -42,11 +42,11 @@ export class Validate {
     return !isContainAllCharsExp.test(param);
   };
 
-  static isNotValidUsername = (username: string): boolean => {
-    return !usernameExp.test(username);
+  static isNotValidUserID = (username: string): boolean => {
+    return !userID_Exp.test(username);
   };
 
   static isNotValidPassword = (password: string): boolean => {
-    return !passwordExp.test(password);
+    return !password_Exp.test(password);
   };
 }

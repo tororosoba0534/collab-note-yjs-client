@@ -6,7 +6,7 @@ import { Validate } from "../utils/validation";
 import { FloatingLabelInput } from "./form/FloatingLabelInput";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [userID, setUserID] = useState("");
 
   // TODO:
   // 一時的に平文でpasswordを保持してしまう。
@@ -22,14 +22,14 @@ const Login = () => {
     console.log("submit clicked.");
     setIsLoading(true);
     // if (
-    //   Validate.isNotValidUsername(username) ||
+    //   Validate.isNotValidUsername(userID) ||
     //   Validate.isNotValidPassword(password)
     // ) {
-    //   console.log("username or password or both of them are invalid");
+    //   console.log("userID or password or both of them are invalid");
     //   return;
     // }
 
-    login(username, password).then(({ status }) => {
+    login(userID, password).then(({ status }) => {
       if (status === 200) {
         navigate("/personal");
         return;
@@ -53,11 +53,11 @@ const Login = () => {
         )}
 
         <FloatingLabelInput
-          label="username"
+          label="userID"
           type="text"
-          value={username}
+          value={userID}
           onChange={(e) => {
-            setUsername(e.currentTarget.value);
+            setUserID(e.currentTarget.value);
           }}
         />
 
