@@ -14,7 +14,6 @@ import config from "./config";
 import { EditorWrapper } from "./components/personal/EditorWrapper";
 import CreateAccount from "./components/CreateAccount";
 import { LogoutWindow } from "./components/popups/LogoutWindow";
-import { PopupsContext } from "./components/popups/PopupsProvider";
 
 function App() {
   console.log(`url: ${config.wsserver.URL}`);
@@ -42,8 +41,6 @@ function App() {
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/test" element={<TestLinks />} />
       </Routes>
-
-      <LogoutWindow />
     </div>
   );
 }

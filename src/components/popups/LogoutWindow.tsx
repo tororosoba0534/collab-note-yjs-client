@@ -1,12 +1,15 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../api/hooks";
-import { PopupsContext } from "./PopupsProvider";
+import ErrorPage from "../errorPages/ErrorPage";
 
-export const LogoutWindow = () => {
-  const { isOpenLogout, setIsOpenLogout } = useContext(PopupsContext);
+export const LogoutWindow = (props: {
+  isOpenLogout: boolean;
+  setIsOpenLogout: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { logout, status } = useLogout();
   const [isLoading, setIsLoading] = useState(true);
+  const [didTryOnce, setDidTryOnce] = useState(false);
 
   const ref = useRef<HTMLElement | null>(null);
 
@@ -31,21 +34,26 @@ export const LogoutWindow = () => {
   //   document.addEventListener("click", handleClickDocument);
   // }, [handleClickDocument]);
 
-  const handleClickLogout = useCallback(() => {
+  const handleClickLogout = () => {
+    setDidTryOnce(true);
     setIsLoading(true);
     logout().then(({ status }) => {
+      setIsLoading(false);
+
       if (status === 200 || status === 401) {
         console.log("logout succeeded!");
-        setIsOpenLogout(false);
+        props.setIsOpenLogout(false);
         navigate("/login");
         return;
       }
-      setIsLoading(false);
+
       console.log("logout failed");
     });
-  }, [setIsLoading, logout, navigate, setIsOpenLogout]);
+  };
 
-  if (!isOpenLogout) return null;
+  if (!props.isOpenLogout) return null;
+
+  if (!isLoading && didTryOnce) return <ErrorPage status={status} />;
 
   return (
     <div
@@ -65,7 +73,7 @@ export const LogoutWindow = () => {
       >
         <div
           className="absolute top-0 right-0 w-5 h-5 hover:font-bold cursor-pointer"
-          onClick={() => setIsOpenLogout(false)}
+          onClick={() => props.setIsOpenLogout(false)}
         >
           X
         </div>
@@ -83,17 +91,11 @@ export const LogoutWindow = () => {
             </button>
             <button
               className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-              onClick={() => setIsOpenLogout(false)}
+              onClick={() => props.setIsOpenLogout(false)}
             >
               Cancel
             </button>
           </div>
-
-          {isLoading ? null : (
-            <div className="w-full rounded-md bg-red-400 text-white font-bold">
-              status: {status}
-            </div>
-          )}
         </div>
       </div>
     </div>

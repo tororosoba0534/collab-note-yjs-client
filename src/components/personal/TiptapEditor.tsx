@@ -6,13 +6,13 @@ import Collaboration from "@tiptap/extension-collaboration";
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
 import config from "../../config";
-import { useContext, useMemo } from "react";
-import { PopupsContext, PopupsProvider } from "../popups/PopupsProvider";
+import { useContext, useMemo, useState } from "react";
 import { TooltipButton } from "./TooltipButton";
 // import selectParagraphSvg from "./selectParagraph.svg";
 import { SelectParagraphSvg } from "./icons/SelectParagraphSvg";
 import { UndoSvg } from "./icons/UndoSvg";
 import { RedoSvg } from "./icons/RedoSvg";
+import { LogoutWindow } from "../popups/LogoutWindow";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   // ydoc should be recreated when user changes
@@ -44,7 +44,7 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
     },
   });
 
-  const { setIsOpenLogout } = useContext(PopupsContext);
+  const [isOpenLogout, setIsOpenLogout] = useState(false);
 
   return (
     <div className="relative">
@@ -80,6 +80,11 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       <div className="absolute inset-x-10 top-20 mb-10">
         <EditorContent editor={editor} />
       </div>
+
+      <LogoutWindow
+        isOpenLogout={isOpenLogout}
+        setIsOpenLogout={setIsOpenLogout}
+      />
     </div>
   );
 };
