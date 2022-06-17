@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import { isThrownErr, Status } from "../../api/base";
 import { NumsCreateAccount } from "../../api/fetches";
 
-export const CATitle = (props: {
+export const FormTitle = (props: {
   didSubmitOnce: boolean;
   submitMsg: string;
   isLoading: boolean;
+  redirectRoute: string;
+  redirectLabel: string;
 }) => {
   return (
     <div>
@@ -22,9 +24,13 @@ export const CATitle = (props: {
           Succeeded! If you see this page yet, please go to{" "}
           <Link
             className="font-bold text-rose-500 hover:text-rose-400"
-            to="/login"
+            to={
+              props.redirectRoute[0] === "/"
+                ? props.redirectRoute
+                : "/" + props.redirectRoute
+            }
           >
-            login page
+            {props.redirectLabel}
           </Link>
           !
         </div>

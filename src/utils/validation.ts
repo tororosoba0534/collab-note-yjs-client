@@ -42,8 +42,8 @@ export class Validate {
     return !isContainAllCharsExp.test(param);
   };
 
-  static isNotValidUserID = (username: string): boolean => {
-    return !userID_Exp.test(username);
+  static isNotValidUserID = (userID: string): boolean => {
+    return !userID_Exp.test(userID);
   };
 
   static isNotValidPassword = (password: string): boolean => {

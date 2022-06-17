@@ -6,7 +6,7 @@ import { useCreateAccount } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import { CAConfirmPasswordInput } from "./CAConfirmPasswordInput";
 import { CAPasswordInput } from "./CAPasswordInput";
-import { CATitle } from "./CATitle";
+import { FormTitle } from "../form/FormTitle";
 import { CAUserIDInput } from "./CAUserIDInput";
 
 const CreateAccount = () => {
@@ -89,10 +89,12 @@ const CreateAccount = () => {
   return (
     <div className="flex justify-center items-center h-screen ">
       <div className="flex flex-col justify-center items-center gap-10 p-5  shadow-[3px_3px_12px_rgba(0,0,0,0.3)]  rounded-2xl bg-white">
-        <CATitle
+        <FormTitle
           didSubmitOnce={didSubmitOnce}
           submitMsg={submitMsg}
           isLoading={isLoading}
+          redirectLabel="login page"
+          redirectRoute="/login"
         />
 
         <CAUserIDInput userID={userID} setUserID={setUserID} />
