@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { isThrownErr } from "../api/base";
 import { useCheckAuth } from "../api/hooks";
+import ErrorPage from "../components/errorPages/ErrorPage";
 import Loading from "../components/Loading";
 
 const AuthGate = ({ children }: { children: JSX.Element }) => {
@@ -23,7 +24,9 @@ const AuthGate = ({ children }: { children: JSX.Element }) => {
 
   if (status === 200) return children;
 
-  return <Navigate to="/login" replace />;
+  if (status === 401) return <Navigate to="/login" replace />;
+
+  return <ErrorPage status={status} />;
 };
 
 export default AuthGate;
