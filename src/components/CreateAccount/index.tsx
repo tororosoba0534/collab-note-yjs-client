@@ -18,17 +18,26 @@ const CreateAccount = () => {
   const [didSubmitOnce, setDidSubmitOnce] = useState(false);
 
   const { createAccount, status } = useCreateAccount();
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     console.log("submit clicked");
 
     setDidSubmitOnce(true);
     setSubmitMsg("");
+    setIsLoading(true);
+
+    if (!userID || !password || !confirmPassword) {
+      setSubmitMsg("fill in all the fields.");
+      setIsLoading(false);
+      return;
+    }
+
     if (password !== confirmPassword) {
-      setSubmitMsg("two passwords NOT the same.");
-      console.log("two passwords NOT the same.");
+      setSubmitMsg("two passwords are NOT matched.");
+      setIsLoading(false);
       return;
     }
 
@@ -36,31 +45,45 @@ const CreateAccount = () => {
       Validate.isNotValidUserID(userID) ||
       Validate.isNotValidPassword(password)
     ) {
-      setSubmitMsg("userID or password or the both are invalid");
-      console.log("userID or password or the both are invalid");
+      setSubmitMsg("userID or password or both are invalid");
+      setIsLoading(false);
       return;
     }
 
-    console.log("valid userID & password");
+    createAccount(userID, password).then(({ status }) => {
+      setIsLoading(false);
 
-    const { status } = await createAccount(userID, password);
+      if (status === 200) {
+        navigate("/login");
+        return;
+        // console.log("create account succeeded!");
+        // return;
+      }
 
-    if (isThrownErr(status)) {
-      console.error(status);
-      console.log("create account failed");
-      return;
-    }
+      setPassword("");
+      setConfirmPassword("");
 
-    if (status === 200) {
-      navigate("/login");
-      // console.log("create account succeeded!");
-      // return;
-    }
+      if (isThrownErr(status)) {
+        setSubmitMsg(status);
+        return;
+      }
 
-    console.log(`status code: ${status}`);
-    console.log("create account failed");
-    setPassword("");
-    setConfirmPassword("");
+      if (status === 403) {
+        setSubmitMsg(
+          "The same userID is already used! Please use different one."
+        );
+        return;
+      }
+
+      if (status === 400) {
+        setSubmitMsg(
+          "400 Bad Request: If you see this message, please tell us!"
+        );
+        return;
+      }
+
+      setSubmitMsg("500 Internal Server Error: Wait a minutes, please!");
+    });
   };
 
   return (
@@ -69,7 +92,7 @@ const CreateAccount = () => {
         <CATitle
           didSubmitOnce={didSubmitOnce}
           submitMsg={submitMsg}
-          status={status}
+          isLoading={isLoading}
         />
 
         <CAUserIDInput userID={userID} setUserID={setUserID} />

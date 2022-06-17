@@ -5,23 +5,17 @@ import { NumsCreateAccount } from "../../api/fetches";
 export const CATitle = (props: {
   didSubmitOnce: boolean;
   submitMsg: string;
-  status: Status<NumsCreateAccount>;
+  isLoading: boolean;
 }) => {
   return (
     <div>
       <h1 className="text-2xl">Create your account</h1>
 
-      {!props.didSubmitOnce ? null : props.submitMsg ? (
+      {!props.didSubmitOnce ? null : props.isLoading ? (
+        <div className="w-full rounded-md  ">{"Wait for minutes..."}</div>
+      ) : props.submitMsg ? (
         <div className="w-full rounded-md bg-red-400 text-white font-bold">
           {props.submitMsg}
-        </div>
-      ) : isThrownErr(props.status) ? (
-        <div className="w-full rounded-md bg-red-400 text-white font-bold">
-          {props.status}
-        </div>
-      ) : props.status !== 200 ? (
-        <div className="w-full rounded-md bg-red-400 text-white font-bold">
-          status code: {props.status}
         </div>
       ) : (
         <div className="w-full rounded-md bg-blue-400 text-white font-bold">
