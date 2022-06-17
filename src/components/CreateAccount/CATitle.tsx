@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
+import { isThrownErr, Status } from "../../api/base";
+import { NumsCreateAccount } from "../../api/fetches";
 
 export const CATitle = (props: {
   didSubmitOnce: boolean;
   submitMsg: string;
-  thrownErr: string;
-  status: number;
+  status: Status<NumsCreateAccount>;
 }) => {
   return (
     <div>
@@ -14,9 +15,9 @@ export const CATitle = (props: {
         <div className="w-full rounded-md bg-red-400 text-white font-bold">
           {props.submitMsg}
         </div>
-      ) : props.thrownErr ? (
+      ) : isThrownErr(props.status) ? (
         <div className="w-full rounded-md bg-red-400 text-white font-bold">
-          {props.submitMsg}
+          {props.status}
         </div>
       ) : props.status !== 200 ? (
         <div className="w-full rounded-md bg-red-400 text-white font-bold">

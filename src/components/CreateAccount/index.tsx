@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { isThrownErr } from "../../api/base";
 import { useCreateAccount } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import { CAConfirmPasswordInput } from "./CAConfirmPasswordInput";
@@ -16,7 +17,7 @@ const CreateAccount = () => {
   const [submitMsg, setSubmitMsg] = useState("");
   const [didSubmitOnce, setDidSubmitOnce] = useState(false);
 
-  const { createAccount, status, thrownErr } = useCreateAccount();
+  const { createAccount, status } = useCreateAccount();
 
   const navigate = useNavigate();
 
@@ -42,10 +43,10 @@ const CreateAccount = () => {
 
     console.log("valid userID & password");
 
-    const { status, thrownErr } = await createAccount(userID, password);
+    const { status } = await createAccount(userID, password);
 
-    if (thrownErr !== "") {
-      console.error(thrownErr);
+    if (isThrownErr(status)) {
+      console.error(status);
       console.log("create account failed");
       return;
     }
@@ -68,7 +69,6 @@ const CreateAccount = () => {
         <CATitle
           didSubmitOnce={didSubmitOnce}
           submitMsg={submitMsg}
-          thrownErr={thrownErr}
           status={status}
         />
 

@@ -5,7 +5,7 @@ import { PopupsContext } from "./PopupsProvider";
 
 export const LogoutWindow = () => {
   const { isOpenLogout, setIsOpenLogout } = useContext(PopupsContext);
-  const { logout, status, thrownErr } = useLogout();
+  const { logout, status } = useLogout();
   const [isLoading, setIsLoading] = useState(true);
 
   const ref = useRef<HTMLElement | null>(null);
@@ -91,8 +91,7 @@ export const LogoutWindow = () => {
 
           {isLoading ? null : (
             <div className="w-full rounded-md bg-red-400 text-white font-bold">
-              thrownErr: {thrownErr}
-              status code: {status}
+              status: {status}
             </div>
           )}
         </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { isThrownErr } from "../api/base";
 import { useLogin } from "../api/hooks";
 import { Validate } from "../utils/validation";
 import { FloatingLabelInput } from "./form/FloatingLabelInput";
@@ -15,7 +16,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { login, status, thrownErr } = useLogin();
+  const { login, status } = useLogin();
   const [isLoading, setIsLoading] = useState(true);
 
   const handleSubmit = () => {
@@ -36,6 +37,10 @@ const Login = () => {
       }
       setIsLoading(false);
       console.log("login failed");
+      if (isThrownErr(status)) {
+        console.log(status);
+        return;
+      }
       console.log(`status code: ${status}`);
     });
   };
@@ -47,8 +52,7 @@ const Login = () => {
 
         {isLoading ? null : (
           <div className="w-full rounded-md bg-red-400 text-white font-bold">
-            thrownErr: {thrownErr}
-            status code: {status}
+            status: {status}
           </div>
         )}
 

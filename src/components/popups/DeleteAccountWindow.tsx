@@ -15,7 +15,7 @@ export const DeleteAccountWindow = (props: {
       <div>Really delete account?</div>
       <button
         onClick={async () => {
-          const { status, thrownErr } = await deleteAccount();
+          const { status } = await deleteAccount();
           if (status === 200) {
             console.log("delete account succeeded!");
             return;

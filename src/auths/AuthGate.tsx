@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { isThrownErr } from "../api/base";
 import { useCheckAuth } from "../api/hooks";
 import Loading from "../components/Loading";
 
 const AuthGate = ({ children }: { children: JSX.Element }) => {
   console.log("RequireAuth rendered");
 
-  const { checkAuth, status, thrownErr } = useCheckAuth();
+  const { checkAuth, status } = useCheckAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -14,8 +15,8 @@ const AuthGate = ({ children }: { children: JSX.Element }) => {
     checkAuth().then(() => setIsLoading(false));
   }, [checkAuth, setIsLoading]);
 
-  if (thrownErr !== "") {
-    console.error(thrownErr);
+  if (isThrownErr(status)) {
+    console.error(status);
   }
 
   if (isLoading) return <Loading />;

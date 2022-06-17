@@ -5,7 +5,7 @@ import { CheckSvg } from "./CheckSvg";
 import { ExclamationSvg } from "./ExclamationSvg";
 
 export const CheckUserIDMsgBox = (props: { userID: string }) => {
-  const { checkUserID, status, thrownErr } = useCheckUserID();
+  const { checkUserID, status } = useCheckUserID();
   const [boxStatus, setBoxStatus] = useState<
     "disabled" | "loading" | "NG" | "OK"
   >("disabled");
@@ -17,10 +17,9 @@ export const CheckUserIDMsgBox = (props: { userID: string }) => {
     }
 
     setBoxStatus("loading");
-    checkUserID(props.userID).then(({ status, thrownErr }) => {
+    checkUserID(props.userID).then(({ status }) => {
       setBoxStatus(() => {
         if (status !== 200) return "NG";
-        if (thrownErr) return "NG";
         return "OK";
       });
     });

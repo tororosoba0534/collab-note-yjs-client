@@ -5,7 +5,7 @@ import Loading from "../Loading";
 import { TiptapEditor } from "./TiptapEditor";
 
 export const EditorWrapper = () => {
-  const { checkAuth, thrownErr, userID, status } = useCheckAuth();
+  const { checkAuth, userID, status } = useCheckAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

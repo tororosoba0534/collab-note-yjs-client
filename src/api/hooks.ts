@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import config from "../config";
+import { Status } from "./base";
 import {
   fetchChangePassword,
   fetchChangeUserID,
@@ -9,82 +10,70 @@ import {
   fetchDeleteAccount,
   fetchLogin,
   fetchLogout,
-  StatusChangePassword,
-  StatusChangeUserID,
-  StatusCheckAuth,
-  StatusCheckUserID,
-  StatusCreateAccount,
-  StatusDeleteAccount,
-  StatusLogin,
-  StatusLogout,
+  NumsChangePassword,
+  NumsChangeUserID,
+  NumsCheckAuth,
+  NumsCheckUserID,
+  NumsCreateAccount,
+  NumsDeleteAccount,
+  NumsLogin,
+  NumsLogout,
+  ReturnChangePassword,
+  ReturnChangeUserID,
+  ReturnCheckAuth,
+  ReturnCheckUserID,
+  ReturnCreateAccount,
+  ReturnDeleteAccount,
+  ReturnLogin,
+  ReturnLogout,
 } from "./fetches";
-
-type BaseReturn<Status> = {
-  status: Status;
-  thrownErr: string;
-};
 
 // type Loading = {
 //   isLoading: boolean;
 //   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 // };
 
-type ReturnCheckAuth = BaseReturn<StatusCheckAuth> & {
-  userID: string;
-};
 export const useCheckAuth = (): ReturnCheckAuth & {
   checkAuth: () => Promise<ReturnCheckAuth>;
 } => {
   const [userID, setUserID] = useState<string>("");
-  const [status, setStatus] = useState<StatusCheckAuth>(401);
-  const [thrownErr, setThrownErr] = useState<string>("");
+  const [status, setStatus] = useState<Status<NumsCheckAuth>>(401);
 
   const checkAuth = useCallback(async (): Promise<ReturnCheckAuth> => {
-    setThrownErr("");
     setUserID("");
     const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
     if (!sessionID) {
       setStatus(401);
       setUserID("");
-      return { status: 401, thrownErr: "", userID: "" };
+      return { status: 401, userID: "" };
     }
-    const { status, userID, thrownErr } = await fetchCheckAuth(sessionID);
+    const { status, userID } = await fetchCheckAuth(sessionID);
     setStatus(status);
     setUserID(userID);
-    setThrownErr(thrownErr);
-    return { status, userID, thrownErr };
+    return { status, userID };
   }, []);
 
   return {
     checkAuth,
     userID,
     status,
-    thrownErr,
   };
 };
 
-type ReturnLogin = BaseReturn<StatusLogin>;
 export const useLogin = (): ReturnLogin & {
   login: (userID: string, password: string) => Promise<ReturnLogin>;
 } => {
-  const [status, setStatus] = useState<StatusLogin>(401);
-  const [thrownErr, setThrownErr] = useState<string>("");
+  const [status, setStatus] = useState<Status<NumsLogin>>(401);
 
   const login = useCallback(
     async (userID: string, password: string): Promise<ReturnLogin> => {
-      setThrownErr("");
-
-      const { status, sessionID, thrownErr } = await fetchLogin(
-        userID,
-        password
-      );
+      const { status, sessionID } = await fetchLogin(userID, password);
       if (status === 200) {
         localStorage.setItem(config.SESSION_ID_KEY, sessionID);
       }
 
       setStatus(status);
-      setThrownErr(thrownErr);
-      return { status, thrownErr };
+      return { status };
     },
     []
   );
@@ -92,58 +81,46 @@ export const useLogin = (): ReturnLogin & {
   return {
     login,
     status,
-    thrownErr,
   };
 };
 
-type ReturnLogout = BaseReturn<StatusLogout>;
 export const useLogout = (): ReturnLogout & {
   logout: () => Promise<ReturnLogout>;
 } => {
-  const [status, setStatus] = useState<StatusLogout>(401);
-  const [thrownErr, setThrownErr] = useState<string>("");
+  const [status, setStatus] = useState<Status<NumsLogout>>(401);
 
   const logout = useCallback(async (): Promise<ReturnLogout> => {
-    setThrownErr("");
-
     const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
     if (!sessionID) {
       setStatus(401);
-      return { status: 401, thrownErr: "" };
+      return { status: 401 };
     }
 
-    const { status, thrownErr } = await fetchLogout(sessionID);
+    const { status } = await fetchLogout(sessionID);
     setStatus(status);
-    setThrownErr(thrownErr);
-    return { status, thrownErr };
+    return { status };
   }, []);
 
   return {
     logout,
     status,
-    thrownErr,
   };
 };
 
-type ReturnCreateAccount = BaseReturn<StatusCreateAccount>;
 export const useCreateAccount = (): ReturnCreateAccount & {
   createAccount: (
     userID: string,
     password: string
   ) => Promise<ReturnCreateAccount>;
 } => {
-  const [status, setStatus] = useState<StatusCreateAccount>(400);
-  const [thrownErr, setThrownErr] = useState<string>("");
+  const [status, setStatus] = useState<Status<NumsCreateAccount>>(400);
 
   const createAccount = useCallback(
     async (userID: string, password: string): Promise<ReturnCreateAccount> => {
-      setThrownErr("");
-
-      const { status, thrownErr } = await fetchCreateAccount(userID, password);
+      const { status } = await fetchCreateAccount(userID, password);
 
       setStatus(status);
-      setThrownErr(thrownErr);
-      return { status, thrownErr };
+      return { status };
     },
     []
   );
@@ -151,27 +128,21 @@ export const useCreateAccount = (): ReturnCreateAccount & {
   return {
     createAccount,
     status,
-    thrownErr,
   };
 };
 
-type ReturnCheckUserID = BaseReturn<StatusCheckUserID>;
 export const useCheckUserID = (): ReturnCheckUserID & {
   checkUserID: (userID: string) => Promise<ReturnCheckUserID>;
 } => {
-  const [status, setStatus] = useState<StatusCheckUserID>(400);
-  const [thrownErr, setThrownErr] = useState<string>("");
+  const [status, setStatus] = useState<Status<NumsCheckUserID>>(400);
 
   const checkUserID = useCallback(
     async (userID: string): Promise<ReturnCheckUserID> => {
-      setThrownErr("");
-      const { status, thrownErr } = await fetchCheckUserID(userID);
+      const { status } = await fetchCheckUserID(userID);
 
       setStatus(status);
-      setThrownErr(thrownErr);
       return {
         status,
-        thrownErr,
       };
     },
     []
@@ -180,56 +151,45 @@ export const useCheckUserID = (): ReturnCheckUserID & {
   return {
     checkUserID,
     status,
-    thrownErr,
   };
 };
 
-type ReturnDeleteAccount = BaseReturn<StatusDeleteAccount>;
 export const useDeleteAccount = (): ReturnDeleteAccount & {
   deleteAccount: () => Promise<ReturnDeleteAccount>;
 } => {
-  const [status, setStatus] = useState<StatusDeleteAccount>(401);
-  const [thrownErr, setThrownErr] = useState<string>("");
+  const [status, setStatus] = useState<Status<NumsDeleteAccount>>(401);
 
   const deleteAccount = useCallback(async (): Promise<ReturnDeleteAccount> => {
-    setThrownErr("");
-
     const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
     if (!sessionID) {
       setStatus(401);
-      return { status: 401, thrownErr: "" };
+      return { status: 401 };
     }
-    const { status, thrownErr } = await fetchDeleteAccount(sessionID);
+    const { status } = await fetchDeleteAccount(sessionID);
     setStatus(status);
-    setThrownErr(thrownErr);
-    return { status, thrownErr };
+    return { status };
   }, []);
 
   return {
     deleteAccount,
     status,
-    thrownErr,
   };
 };
 
-type ReturnChangeUserID = BaseReturn<StatusChangeUserID>;
 export const useChangeUserID = (): ReturnChangeUserID & {
   changeUserID: (newUserID: string) => Promise<ReturnChangeUserID>;
 } => {
-  const [status, setStatus] = useState<StatusChangeUserID>(401);
-  const [thrownErr, setThrownErr] = useState<string>("");
+  const [status, setStatus] = useState<Status<NumsChangeUserID>>(401);
 
   const changeUserID = useCallback(
     async (newUserID: string): Promise<ReturnChangeUserID> => {
-      setThrownErr("");
-
       const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
       if (!sessionID) {
         setStatus(401);
-        return { status: 401, thrownErr: "" };
+        return { status: 401 };
       }
 
-      const { status, newSessionID, thrownErr } = await fetchChangeUserID(
+      const { status, newSessionID } = await fetchChangeUserID(
         sessionID,
         newUserID
       );
@@ -239,8 +199,7 @@ export const useChangeUserID = (): ReturnChangeUserID & {
       }
 
       setStatus(status);
-      setThrownErr(thrownErr);
-      return { status, thrownErr };
+      return { status };
     },
     []
   );
@@ -248,28 +207,23 @@ export const useChangeUserID = (): ReturnChangeUserID & {
   return {
     changeUserID,
     status,
-    thrownErr,
   };
 };
 
-type ReturnChangePassword = BaseReturn<StatusChangePassword>;
 export const useChangePassword = (): ReturnChangePassword & {
   changePassword: (newPassword: string) => Promise<ReturnChangePassword>;
 } => {
-  const [status, setStatus] = useState<StatusChangePassword>(401);
-  const [thrownErr, setThrownErr] = useState<string>("");
+  const [status, setStatus] = useState<Status<NumsChangePassword>>(401);
 
   const changePassword = useCallback(
     async (newPassword: string): Promise<ReturnChangePassword> => {
-      setThrownErr("");
-
       const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
       if (!sessionID) {
         setStatus(401);
-        return { status: 401, thrownErr: "" };
+        return { status: 401 };
       }
 
-      const { status, newSessionID, thrownErr } = await fetchChangePassword(
+      const { status, newSessionID } = await fetchChangePassword(
         sessionID,
         newPassword
       );
@@ -279,8 +233,7 @@ export const useChangePassword = (): ReturnChangePassword & {
       }
 
       setStatus(status);
-      setThrownErr(thrownErr);
-      return { status, thrownErr };
+      return { status };
     },
     []
   );
@@ -288,6 +241,5 @@ export const useChangePassword = (): ReturnChangePassword & {
   return {
     changePassword,
     status,
-    thrownErr,
   };
 };
