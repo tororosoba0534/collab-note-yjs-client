@@ -155,28 +155,23 @@ export const useCreateAccount = (): ReturnCreateAccount & {
   };
 };
 
-type ReturnCheckUserID = BaseReturn<StatusCheckUserID> & {
-  isUnused: boolean;
-};
+type ReturnCheckUserID = BaseReturn<StatusCheckUserID>;
 export const useCheckUserID = (): ReturnCheckUserID & {
   checkUserID: (userID: string) => Promise<ReturnCheckUserID>;
 } => {
   const [status, setStatus] = useState<StatusCheckUserID>(400);
   const [thrownErr, setThrownErr] = useState<string>("");
-  const [isUnused, setIsUnused] = useState(true);
 
   const checkUserID = useCallback(
     async (userID: string): Promise<ReturnCheckUserID> => {
       setThrownErr("");
-      const { status, thrownErr, isUnused } = await fetchCheckUserID(userID);
+      const { status, thrownErr } = await fetchCheckUserID(userID);
 
       setStatus(status);
       setThrownErr(thrownErr);
-      setIsUnused(isUnused);
       return {
         status,
         thrownErr,
-        isUnused,
       };
     },
     []
@@ -185,7 +180,6 @@ export const useCheckUserID = (): ReturnCheckUserID & {
   return {
     checkUserID,
     status,
-    isUnused,
     thrownErr,
   };
 };

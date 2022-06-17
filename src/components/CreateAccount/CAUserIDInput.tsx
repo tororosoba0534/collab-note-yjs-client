@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useCheckUserID } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { CheckUserIDMsgBox } from "./CheckUserIDMsgBox";
 import { ExclamationSvg } from "./ExclamationSvg";
 import { ValMsgBox } from "./ValMsgBox";
 
@@ -11,26 +12,6 @@ export const CAUserIDInput = (props: {
 }) => {
   const [isInit, setIsInit] = useState(true);
 
-  const { checkUserID, status, thrownErr, isUnused } = useCheckUserID();
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleChangeUserID = useCallback(
-    (newUserID: string) => {
-      setIsInit(() => false);
-
-      if (Validate.isNotValidUserID(newUserID)) {
-        return;
-      }
-
-      setIsLoading(true);
-      checkUserID(newUserID).then(() => {
-        setIsLoading(false);
-      });
-    },
-
-    [checkUserID]
-  );
-
   return (
     <div className="w-full">
       <FloatingLabelInput
@@ -39,7 +20,7 @@ export const CAUserIDInput = (props: {
         value={props.userID}
         onChange={(e) => {
           props.setUserID(e.currentTarget.value);
-          handleChangeUserID(e.currentTarget.value);
+          setIsInit(() => false);
         }}
       />
       <div className="h-10 w-full">
@@ -75,21 +56,7 @@ export const CAUserIDInput = (props: {
           }
           errMsg={ExclamationSvg()}
         />
-        <ValMsgBox
-          label="is NOT already used?"
-          errStatus={
-            !props.userID
-              ? "disabled"
-              : isInit
-              ? "disabled"
-              : isLoading
-              ? "disabled"
-              : isUnused
-              ? "OK"
-              : "NG"
-          }
-          errMsg={ExclamationSvg()}
-        />
+        <CheckUserIDMsgBox userID={props.userID} />
       </div>
     </div>
   );

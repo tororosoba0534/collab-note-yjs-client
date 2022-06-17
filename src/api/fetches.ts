@@ -154,7 +154,7 @@ export const fetchLogout = async (
   return { status, thrownErr };
 };
 
-export type StatusCreateAccount = 200 | 400 | 500;
+export type StatusCreateAccount = 200 | 400 | 403 | 500;
 export const fetchCreateAccount = async (
   userID: string,
   password: string
@@ -178,46 +178,26 @@ export const fetchCreateAccount = async (
   return { status, thrownErr };
 };
 
-export type StatusCheckUserID = 200 | 400 | 500;
+export type StatusCheckUserID = 200 | 400 | 403 | 500;
 export const fetchCheckUserID = async (
   userID: string
 ): Promise<{
   status: StatusCheckUserID;
   thrownErr: string;
-  isUnused: boolean;
 }> => {
-  const { status, thrownErr, resJSON } = await baseFetch("/check-userid", {
+  const { status, thrownErr } = await baseFetch("/check-userid", {
     userID,
   });
 
-  if (thrownErr !== "") return { status: 500, thrownErr, isUnused: false };
-
-  if (!resJSON) {
-    return {
-      status: 500,
-      thrownErr: `Response JSON is nullable`,
-      isUnused: false,
-    };
-  }
-
-  const isUnused = resJSON.isUnused;
-
-  if (typeof isUnused !== "boolean") {
-    return {
-      status: 500,
-      thrownErr: `Invalid response type: "${typeof isUnused}"`,
-      isUnused: false,
-    };
-  }
+  if (thrownErr !== "") return { status: 500, thrownErr };
 
   if (status !== 200 && status !== 400 && status !== 500)
     return {
       status: 500,
       thrownErr: `Unexpected status code: ${status}`,
-      isUnused: false,
     };
 
-  return { status, thrownErr, isUnused };
+  return { status, thrownErr };
 };
 
 export type StatusDeleteAccount = 200 | 401 | 500;
