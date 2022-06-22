@@ -13,6 +13,7 @@ import { SelectParagraphSvg } from "./icons/SelectParagraphSvg";
 import { UndoSvg } from "./icons/UndoSvg";
 import { RedoSvg } from "./icons/RedoSvg";
 import { LogoutWindow } from "../popups/LogoutWindow";
+import ErrorPage from "../errorPages/ErrorPage";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   // ydoc should be recreated when user changes
@@ -45,6 +46,11 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
   });
 
   const [isOpenLogout, setIsOpenLogout] = useState(false);
+  const [isLogoutLoading, setIsLogoutLoading] = useState(true);
+  const [didTryLogoutOnce, setDidTryLogoutOnce] = useState(false);
+
+  if (!isLogoutLoading && didTryLogoutOnce)
+    return <ErrorPage status={status} />;
 
   return (
     <div className="relative">
@@ -84,6 +90,8 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       <LogoutWindow
         isOpenLogout={isOpenLogout}
         setIsOpenLogout={setIsOpenLogout}
+        setDidTryOnce={setDidTryLogoutOnce}
+        setIsLoading={setIsLogoutLoading}
       />
     </div>
   );

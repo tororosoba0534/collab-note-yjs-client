@@ -6,10 +6,10 @@ import ErrorPage from "../errorPages/ErrorPage";
 export const LogoutWindow = (props: {
   isOpenLogout: boolean;
   setIsOpenLogout: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setDidTryOnce: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { logout, status } = useLogout();
-  const [isLoading, setIsLoading] = useState(true);
-  const [didTryOnce, setDidTryOnce] = useState(false);
 
   const ref = useRef<HTMLElement | null>(null);
 
@@ -35,10 +35,10 @@ export const LogoutWindow = (props: {
   // }, [handleClickDocument]);
 
   const handleClickLogout = () => {
-    setDidTryOnce(true);
-    setIsLoading(true);
+    props.setDidTryOnce(true);
+    props.setIsLoading(true);
     logout().then(({ status }) => {
-      setIsLoading(false);
+      props.setIsLoading(false);
 
       if (status === 200 || status === 401) {
         console.log("logout succeeded!");
@@ -52,8 +52,6 @@ export const LogoutWindow = (props: {
   };
 
   if (!props.isOpenLogout) return null;
-
-  if (!isLoading && didTryOnce) return <ErrorPage status={status} />;
 
   return (
     <div

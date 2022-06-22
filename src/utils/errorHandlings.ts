@@ -1,4 +1,4 @@
-export const error2String = (error: any): string => {
+const _innerError2String = (error: any): string => {
   if (typeof error === "string") {
     return error;
   }
@@ -8,6 +8,14 @@ export const error2String = (error: any): string => {
   }
 
   return JSON.stringify(error);
+};
+
+export const error2String = (error: any): string => {
+  const str = _innerError2String(error);
+
+  if (!str) return "empty error";
+
+  return str;
 };
 
 export const renderError = (error: any) => {
