@@ -15,16 +15,26 @@ import { RedoSvg } from "./icons/RedoSvg";
 import { LogoutWindow } from "../popups/LogoutWindow";
 import ErrorPage from "../errorPages/ErrorPage";
 
+import * as decoding from "lib0/decoding";
+
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   // ydoc should be recreated when user changes
   // so "userID" should be in the dependency array of useMemo.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const ydoc = useMemo(() => new Y.Doc(), [userID]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const provider = useMemo(
-    () => new WebsocketProvider(config.wsserver.URL, userID, ydoc),
-    [userID, ydoc]
-  );
+  const provider = useMemo(() => {
+    const provider = new WebsocketProvider(config.wsserver.URL, userID, ydoc);
+    if (provider.ws) {
+      provider.ws.addEventListener("message", (event) => {
+        const decoder = decoding.createDecoder(new Uint8Array(event.data));
+        const messageType = decoding.readVarUint(decoder);
+        console.log(`messageType: ${messageType}`);
+      });
+    }
+
+    return provider;
+  }, [userID, ydoc]);
 
   const editor = useEditor({
     extensions: [
