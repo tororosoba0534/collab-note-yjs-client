@@ -15,7 +15,6 @@ const config = {
         ? "https://collab-note-yjs-backend.herokuapp.com"
         : "http://localhost:3001",
   },
-  SOCKET_RECONNECTION_TIMEOUT: 1000,
   SESSION_ID_KEY: "sessionID",
 };
 

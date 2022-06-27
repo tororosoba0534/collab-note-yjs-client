@@ -4,98 +4,12 @@ import * as time from "lib0/time";
 import * as encoding from "lib0/encoding";
 import * as decoding from "lib0/decoding";
 import * as syncProtocol from "y-protocols/sync";
-import * as authProtocol from "y-protocols/auth";
 import * as awarenessProtocol from "y-protocols/awareness";
 import { Observable } from "lib0/observable";
 import * as math from "lib0/math";
 import * as url from "lib0/url";
-
-const messageSync = 0;
-const messageQueryAwareness = 3;
-const messageAwareness = 1;
-const messageAuth = 2;
-
-type MessageHandlers = Array<
-  (
-    encoder: encoding.Encoder,
-    decoder: decoding.Decoder,
-    provider: CustomWSProvider,
-    emitSynced: boolean,
-    messageType: number
-  ) => void
->;
-
-const messageHandlers: MessageHandlers = [];
-
-messageHandlers[messageSync] = (
-  encoder,
-  decoder,
-  provider,
-  emitSynced,
-  messageType
-) => {
-  encoding.writeVarUint(encoder, messageSync);
-  const syncMessageType = syncProtocol.readSyncMessage(
-    decoder,
-    encoder,
-    provider.doc,
-    provider
-  );
-  if (
-    emitSynced &&
-    syncMessageType === syncProtocol.messageYjsSyncStep2 &&
-    !provider.synced
-  ) {
-    provider.synced = true;
-  }
-};
-
-messageHandlers[messageQueryAwareness] = (
-  encoder,
-  decoder,
-  provider,
-  emitSynced,
-  messageType
-) => {
-  encoding.writeVarUint(encoder, messageAwareness);
-  encoding.writeVarUint8Array(
-    encoder,
-    awarenessProtocol.encodeAwarenessUpdate(
-      provider.awareness,
-      Array.from(provider.awareness.getStates().keys())
-    )
-  );
-};
-
-messageHandlers[messageAwareness] = (
-  encoder,
-  decoder,
-  provider,
-  emitSynced,
-  messageType
-) => {
-  awarenessProtocol.applyAwarenessUpdate(
-    provider.awareness,
-    decoding.readVarUint8Array(decoder),
-    provider
-  );
-};
-
-messageHandlers[messageAuth] = (
-  encoder,
-  decoder,
-  provider,
-  emitSynced,
-  messageType
-) => {
-  authProtocol.readAuthMessage(decoder, provider.doc, permissionDeniedHandler);
-};
-
-// @todo - this should depend on awareness.outdatedTime
-const messageReconnectTimeout = 30000;
-
-const permissionDeniedHandler = (provider: CustomWSProvider, reason: string) =>
-  console.warn(`Permission denied to access ${provider.url}.\n${reason}`);
+import { messageHandlers, MessageHandlers } from "./messageHandlers";
+import { yjsConsts } from "./yjsConsts";
 
 const readMessage = (
   provider: CustomWSProvider,
@@ -179,13 +93,16 @@ const setupWS = (provider: CustomWSProvider): void => {
       ]);
       // always send sync step 1 when connected
       const encoder = encoding.createEncoder();
-      encoding.writeVarUint(encoder, messageSync);
+      encoding.writeVarUint(encoder, yjsConsts.MESSAGE_SYNC);
       syncProtocol.writeSyncStep1(encoder, provider.doc);
       websocket.send(encoding.toUint8Array(encoder));
       // broadcast local awareness state
       if (provider.awareness.getLocalState() !== null) {
         const encoderAwarenessState = encoding.createEncoder();
-        encoding.writeVarUint(encoderAwarenessState, messageAwareness);
+        encoding.writeVarUint(
+          encoderAwarenessState,
+          yjsConsts.MESSAGE_AWARENESS
+        );
         encoding.writeVarUint8Array(
           encoderAwarenessState,
           awarenessProtocol.encodeAwarenessUpdate(provider.awareness, [
@@ -212,6 +129,9 @@ const broadcastMessage = (provider: CustomWSProvider, buf: ArrayBuffer) => {
     bc.publish(provider.bcChannel, buf, provider);
   }
 };
+
+// @todo - this should depend on awareness.outdatedTime
+const messageReconnectTimeout = 30000;
 
 /**
  * Websocket Provider for Yjs. Creates a websocket connection to sync the shared document.
@@ -315,7 +235,7 @@ export class CustomWSProvider extends Observable<string> {
         if (this.ws) {
           // resend sync step 1
           const encoder = encoding.createEncoder();
-          encoding.writeVarUint(encoder, messageSync);
+          encoding.writeVarUint(encoder, yjsConsts.MESSAGE_SYNC);
           syncProtocol.writeSyncStep1(encoder, doc);
           this.ws.send(encoding.toUint8Array(encoder));
         }
@@ -342,7 +262,7 @@ export class CustomWSProvider extends Observable<string> {
     this._updateHandler = (update: Uint8Array, origin: unknown) => {
       if (origin !== this) {
         const encoder = encoding.createEncoder();
-        encoding.writeVarUint(encoder, messageSync);
+        encoding.writeVarUint(encoder, yjsConsts.MESSAGE_SYNC);
         syncProtocol.writeUpdate(encoder, update);
         broadcastMessage(this, encoding.toUint8Array(encoder));
       }
@@ -359,7 +279,7 @@ export class CustomWSProvider extends Observable<string> {
     ) => {
       const changedClients = added.concat(updated).concat(removed);
       const encoder = encoding.createEncoder();
-      encoding.writeVarUint(encoder, messageAwareness);
+      encoding.writeVarUint(encoder, yjsConsts.MESSAGE_AWARENESS);
       encoding.writeVarUint8Array(
         encoder,
         awarenessProtocol.encodeAwarenessUpdate(awareness, changedClients)
@@ -437,17 +357,20 @@ export class CustomWSProvider extends Observable<string> {
     // send sync step1 to bc
     // write sync step 1
     const encoderSync = encoding.createEncoder();
-    encoding.writeVarUint(encoderSync, messageSync);
+    encoding.writeVarUint(encoderSync, yjsConsts.MESSAGE_SYNC);
     syncProtocol.writeSyncStep1(encoderSync, this.doc);
     bc.publish(this.bcChannel, encoding.toUint8Array(encoderSync), this);
     // broadcast local state
     const encoderState = encoding.createEncoder();
-    encoding.writeVarUint(encoderState, messageSync);
+    encoding.writeVarUint(encoderState, yjsConsts.MESSAGE_SYNC);
     syncProtocol.writeSyncStep2(encoderState, this.doc);
     bc.publish(this.bcChannel, encoding.toUint8Array(encoderState), this);
     // write queryAwareness
     const encoderAwarenessQuery = encoding.createEncoder();
-    encoding.writeVarUint(encoderAwarenessQuery, messageQueryAwareness);
+    encoding.writeVarUint(
+      encoderAwarenessQuery,
+      yjsConsts.MESSAGE_QUERY_AWARENESS
+    );
     bc.publish(
       this.bcChannel,
       encoding.toUint8Array(encoderAwarenessQuery),
@@ -455,7 +378,7 @@ export class CustomWSProvider extends Observable<string> {
     );
     // broadcast local awareness state
     const encoderAwarenessState = encoding.createEncoder();
-    encoding.writeVarUint(encoderAwarenessState, messageAwareness);
+    encoding.writeVarUint(encoderAwarenessState, yjsConsts.MESSAGE_AWARENESS);
     encoding.writeVarUint8Array(
       encoderAwarenessState,
       awarenessProtocol.encodeAwarenessUpdate(this.awareness, [
@@ -472,7 +395,7 @@ export class CustomWSProvider extends Observable<string> {
   disconnectBc() {
     // broadcast message with local awareness state set to null (indicating disconnect)
     const encoder = encoding.createEncoder();
-    encoding.writeVarUint(encoder, messageAwareness);
+    encoding.writeVarUint(encoder, yjsConsts.MESSAGE_AWARENESS);
     encoding.writeVarUint8Array(
       encoder,
       awarenessProtocol.encodeAwarenessUpdate(
