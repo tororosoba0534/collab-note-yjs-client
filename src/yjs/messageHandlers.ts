@@ -85,6 +85,16 @@ messageHandlers[yjsConsts.MESSAGE_AUTH] = (
 const permissionDeniedHandler = (provider: CustomWSProvider, reason: string) =>
   console.warn(`Permission denied to access ${provider.url}.\n${reason}`);
 
+messageHandlers[yjsConsts.MESSAGE_TEST] = (
+  encoder,
+  decoder,
+  provider,
+  emitSynced,
+  messageType
+) => {
+  console.log("MESSAGE_TEST detected!");
+};
+
 messageHandlers[yjsConsts.MESSAGE_DELETE_ACCOUNT] = (
   encoder,
   decoder,

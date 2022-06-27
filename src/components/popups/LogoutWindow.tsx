@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../api/hooks";
 import ErrorPage from "../errorPages/ErrorPage";
+import { PopupTemplate } from "./PopupTemplate";
 
 export const LogoutWindow = (props: {
   isOpenLogout: boolean;
@@ -10,8 +11,6 @@ export const LogoutWindow = (props: {
   setDidTryOnce: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { logout, status } = useLogout();
-
-  const ref = useRef<HTMLElement | null>(null);
 
   const navigate = useNavigate();
 
@@ -54,48 +53,25 @@ export const LogoutWindow = (props: {
   if (!props.isOpenLogout) return null;
 
   return (
-    <div
-      className="fixed inset-0 bg-black/50 flex justify-center items-center z-20"
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-    >
-      <div
-        className="bg-white rounded-lg relative flex items-center"
-        ref={(elm) => {
-          if (!elm) {
-            return;
-          }
-          ref.current = elm;
-        }}
-      >
-        <div
-          className="absolute top-0 right-0 w-5 h-5 hover:font-bold cursor-pointer"
+    <PopupTemplate handleClose={() => props.setIsOpenLogout(false)}>
+      <div className="text-center">Really log out?</div>
+
+      <div className="flex justify-center items-center justify-around h-20">
+        <button
+          className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
+          onClick={() => {
+            handleClickLogout();
+          }}
+        >
+          Logout
+        </button>
+        <button
+          className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
           onClick={() => props.setIsOpenLogout(false)}
         >
-          X
-        </div>
-        <div className="p-5 pt-10">
-          <div className="text-center">Really log out?</div>
-
-          <div className="flex justify-center items-center justify-around h-20">
-            <button
-              className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-              onClick={() => {
-                handleClickLogout();
-              }}
-            >
-              Logout
-            </button>
-            <button
-              className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-              onClick={() => props.setIsOpenLogout(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+          Cancel
+        </button>
       </div>
-    </div>
+    </PopupTemplate>
   );
 };

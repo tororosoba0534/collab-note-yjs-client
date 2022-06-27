@@ -4,6 +4,7 @@ import StarterKit from "@tiptap/starter-kit";
 
 import Collaboration from "@tiptap/extension-collaboration";
 import * as Y from "yjs";
+import * as encoding from "lib0/encoding";
 import { WebsocketProvider } from "y-websocket";
 import config from "../../config";
 import { useContext, useMemo, useState } from "react";
@@ -17,8 +18,12 @@ import ErrorPage from "../errorPages/ErrorPage";
 
 import * as decoding from "lib0/decoding";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
+import { YjsMsgContext } from "../../yjs/YjsMsgContext";
+import { yjsConsts } from "../../yjs/yjsConsts";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
+  const { yjsMsgStatus, setYjsMsgStatus } = useContext(YjsMsgContext);
+
   // ydoc should be recreated when user changes
   // so "userID" should be in the dependency array of useMemo.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,11 +36,23 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
         const decoder = decoding.createDecoder(new Uint8Array(event.data));
         const messageType = decoding.readVarUint(decoder);
         console.log(`messageType: ${messageType}`);
+        setYjsMsgStatus((prevStatus) => {
+          if (prevStatus) return prevStatus;
+          return messageType === yjsConsts.MESSAGE_DELETE_ACCOUNT
+            ? "deleteAccount"
+            : messageType === yjsConsts.MESSAGE_CHANGE_USER_ID
+            ? "changeUserID"
+            : messageType === yjsConsts.MESSAGE_CHANGE_PASSWORD
+            ? "changePassword"
+            : messageType === yjsConsts.MESSAGE_TEST
+            ? "test"
+            : prevStatus;
+        });
       });
     }
 
     return provider;
-  }, [userID, ydoc]);
+  }, [setYjsMsgStatus, userID, ydoc]);
 
   const editor = useEditor({
     extensions: [
@@ -93,6 +110,15 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
         />
 
         <TooltipButton label="LOGOUT" onClick={() => setIsOpenLogout(true)} />
+
+        <TooltipButton
+          label="TEST"
+          onClick={() => {
+            const encoder = encoding.createEncoder();
+            encoding.writeVarUint(encoder, yjsConsts.MESSAGE_TEST);
+            provider.ws?.send(encoding.toUint8Array(encoder));
+          }}
+        />
       </div>
       <div className="absolute inset-x-10 top-20 mb-10">
         <EditorContent editor={editor} />
