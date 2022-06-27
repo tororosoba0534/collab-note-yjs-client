@@ -16,6 +16,7 @@ import { LogoutWindow } from "../popups/LogoutWindow";
 import ErrorPage from "../errorPages/ErrorPage";
 
 import * as decoding from "lib0/decoding";
+import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   // ydoc should be recreated when user changes
@@ -24,7 +25,7 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
   const ydoc = useMemo(() => new Y.Doc(), [userID]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const provider = useMemo(() => {
-    const provider = new WebsocketProvider(config.wsserver.URL, userID, ydoc);
+    const provider = new CustomWSProvider(config.wsserver.URL, userID, ydoc);
     if (provider.ws) {
       provider.ws.addEventListener("message", (event) => {
         const decoder = decoding.createDecoder(new Uint8Array(event.data));
