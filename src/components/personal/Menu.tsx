@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { CustomWSProvider } from "../../yjs/CustomWSProvider";
+import { YjsWS } from "../../yjs/YjsWS";
+import { TooltipButton } from "./TooltipButton";
 
-export const Menu = () => {
+export const Menu = (props: {
+  setIsOpenLogout: (value: React.SetStateAction<boolean>) => void;
+  provider: CustomWSProvider;
+}) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   return (
@@ -12,7 +18,7 @@ export const Menu = () => {
         Menu
       </div>
       <div
-        className="absolute w-56 h-56  bg-green-500 top-24 transition-all"
+        className="absolute w-56 h-56  bg-green-500 top-24 transition-all flex flex-col justify-around items-center"
         style={{
           opacity: isOpenMenu ? 1 : 0,
           visibility: isOpenMenu ? "visible" : "hidden",
@@ -21,6 +27,19 @@ export const Menu = () => {
         onClick={() => console.log("Dropdown clicked!")}
       >
         DROP DOWN MENU
+        <TooltipButton
+          label="LOGOUT"
+          onClick={() => props.setIsOpenLogout(true)}
+        />
+        <TooltipButton
+          label="TEST"
+          onClick={() => {
+            //   const encoder = encoding.createEncoder();
+            //   encoding.writeVarUint(encoder, yjsConsts.MESSAGE_TEST);
+            //   props.provider.ws?.send(encoding.toUint8Array(encoder));
+            YjsWS.sendTest(props.provider);
+          }}
+        />
       </div>
     </div>
   );

@@ -90,7 +90,7 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
           provider={provider}
           setIsOpenLogout={setIsOpenLogout}
         />
-        <Menu />
+        <Menu setIsOpenLogout={setIsOpenLogout} provider={provider} />
       </div>
       <div className="absolute inset-x-10 top-20 mb-10">
         <EditorContent editor={editor} />

@@ -39,20 +39,6 @@ export const TopMenuBar = (props: {
           props.editor?.chain().focus().redo().run();
         }}
       />
-
-      <TooltipButton
-        label="LOGOUT"
-        onClick={() => props.setIsOpenLogout(true)}
-      />
-
-      <TooltipButton
-        label="TEST"
-        onClick={() => {
-          const encoder = encoding.createEncoder();
-          encoding.writeVarUint(encoder, yjsConsts.MESSAGE_TEST);
-          props.provider.ws?.send(encoding.toUint8Array(encoder));
-        }}
-      />
     </div>
   );
 };
