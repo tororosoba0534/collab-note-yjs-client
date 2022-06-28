@@ -7,11 +7,7 @@ import { yjsConsts } from "../../yjs/yjsConsts";
 import { Editor } from "@tiptap/react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 
-export const TopMenuBar = (props: {
-  editor: Editor | null;
-  provider: CustomWSProvider;
-  setIsOpenLogout: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+export const TopMenuBar = (props: { editor: Editor | null }) => {
   return (
     <div className="flex items-center justify-around w-full h-16">
       <TooltipButton

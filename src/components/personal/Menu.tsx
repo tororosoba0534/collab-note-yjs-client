@@ -4,7 +4,11 @@ import { YjsWS } from "../../yjs/YjsWS";
 import { TooltipButton } from "./TooltipButton";
 
 export const Menu = (props: {
-  setIsOpenLogout: (value: React.SetStateAction<boolean>) => void;
+  setPopupStatus: React.Dispatch<
+    React.SetStateAction<
+      "deleteAccount" | "changeUserID" | "changePassword" | "logout" | null
+    >
+  >;
   provider: CustomWSProvider;
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -29,7 +33,7 @@ export const Menu = (props: {
         DROP DOWN MENU
         <TooltipButton
           label="LOGOUT"
-          onClick={() => props.setIsOpenLogout(true)}
+          onClick={() => props.setPopupStatus("logout")}
         />
         <TooltipButton
           label="TEST"

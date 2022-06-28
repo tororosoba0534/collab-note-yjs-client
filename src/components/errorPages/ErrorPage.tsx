@@ -3,7 +3,7 @@ import { isThrownErr, Status } from "../../api/base";
 
 const ErrorPage = (props: { status: Status<number> }) => {
   return (
-    <div className="flex flex-col gap-10">
+    <div className="fixed inset-0 bg-gray-100 z-20 flex flex-col gap-10">
       <div>
         {isThrownErr(props.status)
           ? props.status

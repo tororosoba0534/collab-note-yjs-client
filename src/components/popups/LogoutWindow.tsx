@@ -5,14 +5,18 @@ import ErrorPage from "../errorPages/ErrorPage";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const LogoutWindow = (props: {
-  isOpenLogout: boolean;
-  setIsOpenLogout: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setDidTryOnce: React.Dispatch<React.SetStateAction<boolean>>;
+  setPopupStatus: React.Dispatch<
+    React.SetStateAction<
+      "deleteAccount" | "changeUserID" | "changePassword" | "logout" | null
+    >
+  >;
 }) => {
   const { logout, status } = useLogout();
 
   const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [didTryOnce, setDidTryOnce] = useState(false);
 
   // const handleClickDocument = useCallback((e: MouseEvent) => {
   //   if (!(e.target instanceof Node)) {
@@ -34,14 +38,14 @@ export const LogoutWindow = (props: {
   // }, [handleClickDocument]);
 
   const handleClickLogout = () => {
-    props.setDidTryOnce(true);
-    props.setIsLoading(true);
+    setDidTryOnce(true);
+    setIsLoading(true);
     logout().then(({ status }) => {
-      props.setIsLoading(false);
+      setIsLoading(false);
 
       if (status === 200 || status === 401) {
         console.log("logout succeeded!");
-        props.setIsOpenLogout(false);
+        props.setPopupStatus(null);
         navigate("/login");
         return;
       }
@@ -50,10 +54,10 @@ export const LogoutWindow = (props: {
     });
   };
 
-  if (!props.isOpenLogout) return null;
+  if (!isLoading && didTryOnce) return <ErrorPage status={status} />;
 
   return (
-    <PopupTemplate handleClose={() => props.setIsOpenLogout(false)}>
+    <PopupTemplate handleClose={() => props.setPopupStatus(null)}>
       <div className="text-center">Really log out?</div>
 
       <div className="flex justify-center items-center justify-around h-20">
@@ -67,7 +71,7 @@ export const LogoutWindow = (props: {
         </button>
         <button
           className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-          onClick={() => props.setIsOpenLogout(false)}
+          onClick={() => props.setPopupStatus(null)}
         >
           Cancel
         </button>
