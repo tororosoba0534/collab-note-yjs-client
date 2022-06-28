@@ -20,6 +20,8 @@ import * as decoding from "lib0/decoding";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { YjsMsgContext } from "../../yjs/YjsMsgContext";
 import { yjsConsts } from "../../yjs/yjsConsts";
+import { TopMenuBar } from "./TopMenuBar";
+import { Menu } from "./Menu";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   const { yjsMsgStatus, setYjsMsgStatus } = useContext(YjsMsgContext);
@@ -82,43 +84,13 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
 
   return (
     <div className="relative">
-      <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex items-center justify-around">
-        <TooltipButton
-          // src={selectParagraphSvg}
-          img={SelectParagraphSvg}
-          tooltip="Selecting paragraph"
-          onClick={() => {
-            // CSS can be applied to .ProseMirror-selectednode class
-            editor?.chain().focus().selectParentNode().run();
-          }}
+      <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex ">
+        <TopMenuBar
+          editor={editor}
+          provider={provider}
+          setIsOpenLogout={setIsOpenLogout}
         />
-
-        <TooltipButton
-          img={UndoSvg}
-          tooltip="Undo"
-          onClick={() => {
-            editor?.chain().focus().undo().run();
-          }}
-        />
-
-        <TooltipButton
-          img={RedoSvg}
-          tooltip="Redo"
-          onClick={() => {
-            editor?.chain().focus().redo().run();
-          }}
-        />
-
-        <TooltipButton label="LOGOUT" onClick={() => setIsOpenLogout(true)} />
-
-        <TooltipButton
-          label="TEST"
-          onClick={() => {
-            const encoder = encoding.createEncoder();
-            encoding.writeVarUint(encoder, yjsConsts.MESSAGE_TEST);
-            provider.ws?.send(encoding.toUint8Array(encoder));
-          }}
-        />
+        <Menu />
       </div>
       <div className="absolute inset-x-10 top-20 mb-10">
         <EditorContent editor={editor} />
