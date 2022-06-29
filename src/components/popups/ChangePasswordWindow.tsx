@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useChangePassword } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
-import { CAConfirmPasswordInput } from "../form/CAConfirmPasswordInput";
 import ErrorPage from "../errorPages/ErrorPage";
-import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
+import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { PopupTemplate } from "./PopupTemplate";
-import { CAPasswordInput } from "../form/CAPasswordInput";
 
 export const ChangePasswordWindow = (props: {
   setPopupStatus: React.Dispatch<
@@ -60,7 +59,7 @@ export const ChangePasswordWindow = (props: {
       <div className="flex flex-col justify-around gap-10">
         <div className="text-center">Change User ID</div>
 
-        <CAPasswordInput
+        <PasswordInputWithMsg
           label="new password"
           password={password}
           setPassword={setPassword}
@@ -73,10 +72,12 @@ export const ChangePasswordWindow = (props: {
           onChange={(e) => setNewUserID(e.currentTarget.value)}
         /> */}
 
-        <CAConfirmPasswordInput
-          confirmPassword={confirmPassword}
-          setConfirmPassword={setConfirmPassword}
-          originalPassword={password}
+        <ConfirmInputWithMsg
+          confirm={confirmPassword}
+          setConfirm={setConfirmPassword}
+          original={password}
+          type="password"
+          label="Confirm Password"
         />
 
         <div className="flex items-center justify-around h-20">

@@ -1,9 +1,9 @@
 import { CheckSvg } from "./CheckSvg";
-import { CASvgStatus } from "./types";
+import { ValMsgBoxStatus } from "./types";
 
 export const ValMsgBox = (props: {
   label: string;
-  errStatus: CASvgStatus;
+  errStatus: ValMsgBoxStatus;
   errMsg: string | JSX.Element;
 }) => {
   return (

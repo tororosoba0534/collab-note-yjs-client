@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useChangeUserID } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import ErrorPage from "../errorPages/ErrorPage";
-import { CAUserIDInput } from "../form/CAUserIDInput";
+import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const ChangeUserIDWindow = (props: {
@@ -59,7 +60,7 @@ export const ChangeUserIDWindow = (props: {
       <div className="flex flex-col justify-around gap-10">
         <div className="text-center">Change User ID</div>
 
-        <CAUserIDInput
+        <UserIDInputWithMsg
           label="New User ID"
           userID={newUserID}
           setUserID={setNewUserID}
@@ -72,11 +73,19 @@ export const ChangeUserIDWindow = (props: {
           onChange={(e) => setNewUserID(e.currentTarget.value)}
         /> */}
 
-        <FloatingLabelInput
+        {/* <FloatingLabelInput
           label="Confirm New User ID"
           type="text"
           value={confirmUserID}
           onChange={(e) => setConfirmUserID(e.currentTarget.value)}
+        /> */}
+
+        <ConfirmInputWithMsg
+          label="Confirm new UserID"
+          type="text"
+          confirm={confirmUserID}
+          setConfirm={setConfirmUserID}
+          original={newUserID}
         />
 
         <div className="flex items-center justify-around h-20">

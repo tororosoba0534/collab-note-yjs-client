@@ -1,1 +1,1 @@
-export type CASvgStatus = "disabled" | "NG" | "OK";
+export type ValMsgBoxStatus = "disabled" | "NG" | "OK";

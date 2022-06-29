@@ -1,5 +1,3 @@
-import { CASvgStatus } from "./types";
-
 export const ExclamationSvg = () => {
   return (
     <svg className="h-full py-1" viewBox="0 0 30 90">

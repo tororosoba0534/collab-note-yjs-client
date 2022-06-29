@@ -1,15 +1,14 @@
-import { useCallback, useState } from "react";
-import { useCheckUserID } from "../../api/hooks";
+import { useState } from "react";
 import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { CheckUserIDMsgBox } from "./CheckUserIDMsgBox";
 import { ExclamationSvg } from "./ExclamationSvg";
 import { ValMsgBox } from "./ValMsgBox";
 
-export const CAUserIDInput = (props: {
+export const UserIDInputWithMsg = (props: {
   userID: string;
   setUserID: React.Dispatch<React.SetStateAction<string>>;
-  label?: string;
+  label: string;
 }) => {
   const [isInit, setIsInit] = useState(true);
 

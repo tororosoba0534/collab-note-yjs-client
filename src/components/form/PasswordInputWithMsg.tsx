@@ -4,8 +4,8 @@ import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { ExclamationSvg } from "./ExclamationSvg";
 import { ValMsgBox } from "./ValMsgBox";
 
-export const CAPasswordInput = (props: {
-  label?: string;
+export const PasswordInputWithMsg = (props: {
+  label: string;
   password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
 }) => {

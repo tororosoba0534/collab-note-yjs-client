@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { isThrownErr } from "../../api/base";
 import { useCreateAccount } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
-import { CAConfirmPasswordInput } from "../form/CAConfirmPasswordInput";
-import { CAPasswordInput } from "../form/CAPasswordInput";
-import { CAUserIDInput } from "../form/CAUserIDInput";
+import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FormTitle } from "../form/FormTitle";
+import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
+import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
 
 const CreateAccount = () => {
   const [userID, setUserID] = useState("");
@@ -97,14 +97,24 @@ const CreateAccount = () => {
           redirectRoute="/login"
         />
 
-        <CAUserIDInput userID={userID} setUserID={setUserID} />
+        <UserIDInputWithMsg
+          label="UserID"
+          userID={userID}
+          setUserID={setUserID}
+        />
 
-        <CAPasswordInput password={password} setPassword={setPassword} />
+        <PasswordInputWithMsg
+          label="Password"
+          password={password}
+          setPassword={setPassword}
+        />
 
-        <CAConfirmPasswordInput
-          originalPassword={password}
-          confirmPassword={confirmPassword}
-          setConfirmPassword={setConfirmPassword}
+        <ConfirmInputWithMsg
+          label="Confirm Password"
+          type="password"
+          original={password}
+          confirm={confirmPassword}
+          setConfirm={setConfirmPassword}
         />
 
         <button

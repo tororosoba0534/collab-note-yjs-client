@@ -1,7 +1,7 @@
 import "./CheckSvg.css";
-import { CASvgStatus } from "./types";
+import { ValMsgBoxStatus } from "./types";
 
-export const CheckSvg = (props: { status: CASvgStatus }) => {
+export const CheckSvg = (props: { status: ValMsgBoxStatus }) => {
   return (
     <svg className="checksvg" viewBox="0 0 100 100">
       <rect
