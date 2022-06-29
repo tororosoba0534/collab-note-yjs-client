@@ -168,6 +168,7 @@ export class CustomWSProvider extends Observable<string> {
   _bcSubscriber: (data: ArrayBuffer, origin: unknown) => void;
   _updateHandler: (update: Uint8Array, origin: unknown) => void;
   _awarenessUpdateHandler: (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     { added, updated, removed }: any,
     origin: unknown
   ) => void;
@@ -188,6 +189,8 @@ export class CustomWSProvider extends Observable<string> {
       disableBc = false,
     } = {}
   ) {
+    console.log("CustomWSProvider constructor called");
+
     super();
     // ensure that url is always ends with /
     while (serverUrl[serverUrl.length - 1] === "/") {
@@ -274,7 +277,9 @@ export class CustomWSProvider extends Observable<string> {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this._awarenessUpdateHandler = (
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { added, updated, removed }: any,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       origin: unknown
     ) => {
       const changedClients = added.concat(updated).concat(removed);

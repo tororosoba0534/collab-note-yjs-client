@@ -37,6 +37,12 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       provider.ws.addEventListener("message", (event) => {
         YjsWS.manageMsgPopup(event, { setPopupStatus });
       });
+      provider.ws.addEventListener("open", () => {
+        console.log("websocket connection open event fired!");
+      });
+      provider.ws.addEventListener("close", () => {
+        console.log("websocket connection close event fired!");
+      });
     }
 
     return provider;
