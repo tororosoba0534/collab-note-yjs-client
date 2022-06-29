@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Validate } from "../../utils/validation";
-import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { FloatingLabelInput } from "./FloatingLabelInput";
 import { ExclamationSvg } from "./ExclamationSvg";
 import { ValMsgBox } from "./ValMsgBox";
 

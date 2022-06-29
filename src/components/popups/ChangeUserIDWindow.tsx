@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useChangeUserID } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
-import { CAUserIDInput } from "../CreateAccount/CAUserIDInput";
 import ErrorPage from "../errorPages/ErrorPage";
+import { CAUserIDInput } from "../form/CAUserIDInput";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PopupTemplate } from "./PopupTemplate";
 

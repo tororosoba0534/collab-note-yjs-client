@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { CheckSvg } from "./CreateAccount/CheckSvg";
-import { ExclamationSvg } from "./CreateAccount/ExclamationSvg";
-import { CASvgStatus } from "./CreateAccount/types";
+import { CheckSvg } from "./form/CheckSvg";
+import { ExclamationSvg } from "./form/ExclamationSvg";
+import { CASvgStatus } from "./form/types";
 import "./TestLinks.css";
 
 const TestLinks = () => {

@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { isThrownErr } from "../../api/base";
 import { useCreateAccount } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
-import { CAConfirmPasswordInput } from "./CAConfirmPasswordInput";
-import { CAPasswordInput } from "./CAPasswordInput";
+import { CAConfirmPasswordInput } from "../form/CAConfirmPasswordInput";
+import { CAPasswordInput } from "../form/CAPasswordInput";
+import { CAUserIDInput } from "../form/CAUserIDInput";
 import { FormTitle } from "../form/FormTitle";
-import { CAUserIDInput } from "./CAUserIDInput";
 
 const CreateAccount = () => {
   const [userID, setUserID] = useState("");

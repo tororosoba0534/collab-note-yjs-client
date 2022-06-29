@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useChangePassword } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
-import { CAConfirmPasswordInput } from "../CreateAccount/CAConfirmPasswordInput";
-import { CAPasswordInput } from "../CreateAccount/CAPasswordInput";
+import { CAConfirmPasswordInput } from "../form/CAConfirmPasswordInput";
 import ErrorPage from "../errorPages/ErrorPage";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PopupTemplate } from "./PopupTemplate";
+import { CAPasswordInput } from "../form/CAPasswordInput";
 
 export const ChangePasswordWindow = (props: {
   setPopupStatus: React.Dispatch<
