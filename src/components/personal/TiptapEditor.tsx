@@ -2,6 +2,7 @@ import "./TiptapEditor.css";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import * as Y from "yjs";
 import config from "../../config";
 import { useMemo, useState } from "react";
@@ -57,6 +58,13 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       // Register the document with Tiptap
       Collaboration.configure({
         document: ydoc,
+      }),
+      CollaborationCursor.configure({
+        provider: provider,
+        user: {
+          name: "Cyndi Lauper",
+          color: "#f783ac",
+        },
       }),
     ],
     editorProps: {

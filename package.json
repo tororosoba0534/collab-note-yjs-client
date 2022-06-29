@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@tiptap/extension-collaboration": "^2.0.0-beta.33",
+    "@tiptap/extension-collaboration-cursor": "^2.0.0-beta.37",
     "@tiptap/react": "^2.0.0-beta.109",
     "@tiptap/starter-kit": "^2.0.0-beta.184",
     "@types/jest": "^27.0.1",

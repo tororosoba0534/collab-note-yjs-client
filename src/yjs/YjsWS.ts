@@ -12,6 +12,12 @@ export class YjsWS {
     provider.ws?.send(encoding.toUint8Array(encoder));
   };
 
+  static sendTestClose = (provider: CustomWSProvider) => {
+    const encoder = encoding.createEncoder();
+    encoding.writeVarUint(encoder, yjsConsts.MESSAGE_TEST_CLOSE);
+    provider.ws?.send(encoding.toUint8Array(encoder));
+  };
+
   static manageMsgPopup = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     event: MessageEvent<any>,

@@ -6,7 +6,7 @@ export const TestWindow = (props: {
 }) => {
   return (
     <PopupTemplate handleClose={null}>
-      <div>TEST: messageType === 9</div>
+      <div>TEST: messageType === 20</div>
 
       <button
         className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
