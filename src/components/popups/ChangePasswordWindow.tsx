@@ -1,7 +1,6 @@
-import { useDeleteAccount } from "../../api/hooks";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const DeleteAccountWindow = (props: {
+export const ChangePasswordWindow = (props: {
   setPopupStatus: React.Dispatch<
     React.SetStateAction<
       "deleteAccount" | "changeUserID" | "changePassword" | "logout" | null
@@ -10,7 +9,7 @@ export const DeleteAccountWindow = (props: {
 }) => {
   return (
     <PopupTemplate handleClose={() => props.setPopupStatus(null)}>
-      <div>Delete Account</div>
+      <div>Change Password</div>
     </PopupTemplate>
   );
 };

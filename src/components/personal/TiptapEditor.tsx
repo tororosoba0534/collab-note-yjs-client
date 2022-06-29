@@ -11,6 +11,8 @@ import { YjsMsgContext } from "../../yjs/YjsMsgContext";
 import { TopMenuBar } from "./TopMenuBar";
 import { Menu } from "./Menu";
 import { YjsWS } from "../../yjs/YjsWS";
+import { DeleteAccountWindow } from "../popups/DeleteAccountWindow";
+import { PopupsInPersonal } from "./PopupsInPersonal";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   const { yjsMsgStatus, setYjsMsgStatus, isYjsOriginOf } =
@@ -65,9 +67,10 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
         <EditorContent editor={editor} />
       </div>
 
-      {popupStatus === "logout" ? (
-        <LogoutWindow setPopupStatus={setPopupStatus} />
-      ) : null}
+      <PopupsInPersonal
+        popupStatus={popupStatus}
+        setPopupStatus={setPopupStatus}
+      />
     </div>
   );
 };

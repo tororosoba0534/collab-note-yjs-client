@@ -44,6 +44,18 @@ export const Menu = (props: {
             YjsWS.sendTest(props.provider);
           }}
         />
+        <TooltipButton
+          label="Delete Account"
+          onClick={() => props.setPopupStatus("deleteAccount")}
+        />
+        <TooltipButton
+          label="Change User ID"
+          onClick={() => props.setPopupStatus("changeUserID")}
+        />
+        <TooltipButton
+          label="Change Password"
+          onClick={() => props.setPopupStatus("changePassword")}
+        />
       </div>
     </div>
   );
