@@ -2,14 +2,11 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../api/hooks";
 import ErrorPage from "../errorPages/ErrorPage";
+import { PopupStatus } from "../personal/TiptapEditor";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const LogoutWindow = (props: {
-  setPopupStatus: React.Dispatch<
-    React.SetStateAction<
-      "deleteAccount" | "changeUserID" | "changePassword" | "logout" | null
-    >
-  >;
+  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
 }) => {
   const { logout, status } = useLogout();
 

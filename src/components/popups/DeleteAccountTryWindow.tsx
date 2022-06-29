@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { useDeleteAccount } from "../../api/hooks";
 import ErrorPage from "../errorPages/ErrorPage";
+import { PopupStatus } from "../personal/TiptapEditor";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const DeleteAccountWindow = (props: {
-  setPopupStatus: React.Dispatch<
-    React.SetStateAction<
-      "deleteAccount" | "changeUserID" | "changePassword" | "logout" | null
-    >
-  >;
+export const DeleteAccountTryWindow = (props: {
+  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
 }) => {
   const { deleteAccount, status } = useDeleteAccount();
   const [loadingStatus, setLoadingStatus] = useState<
@@ -19,19 +16,14 @@ export const DeleteAccountWindow = (props: {
     setLoadingStatus("loading");
     deleteAccount().then(({ status }) => {
       setLoadingStatus("finish");
+      if (status === 200) {
+        props.setPopupStatus("deleteAccountOK");
+      }
     });
   };
 
-  if (loadingStatus === "finish") {
-    if (status === 200) {
-      return (
-        <PopupTemplate handleClose={null}>
-          <div>This account has been successfully deleted!</div>
-        </PopupTemplate>
-      );
-    } else {
-      return <ErrorPage status={status} />;
-    }
+  if (loadingStatus === "finish" && status !== 200) {
+    return <ErrorPage status={status} />;
   }
 
   return (

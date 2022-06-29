@@ -4,14 +4,11 @@ import { Validate } from "../../utils/validation";
 import ErrorPage from "../errorPages/ErrorPage";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
+import { PopupStatus } from "../personal/TiptapEditor";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const ChangePasswordWindow = (props: {
-  setPopupStatus: React.Dispatch<
-    React.SetStateAction<
-      "deleteAccount" | "changeUserID" | "changePassword" | "logout" | null
-    >
-  >;
+export const ChangePasswordTryWindow = (props: {
+  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
 }) => {
   const { changePassword, status } = useChangePassword();
   const [loadingStatus, setLoadingStatus] = useState<
@@ -39,19 +36,14 @@ export const ChangePasswordWindow = (props: {
     setLoadingStatus("loading");
     changePassword(password).then(({ status }) => {
       setLoadingStatus("finish");
+      if (status === 200) {
+        props.setPopupStatus("changePasswordOK");
+      }
     });
   };
 
-  if (loadingStatus === "finish") {
-    if (status === 200) {
-      return (
-        <PopupTemplate handleClose={null}>
-          <div>Password has been successfully changed!</div>
-        </PopupTemplate>
-      );
-    } else {
-      return <ErrorPage status={status} />;
-    }
+  if (loadingStatus === "finish" && status !== 200) {
+    return <ErrorPage status={status} />;
   }
 
   return (
@@ -64,13 +56,6 @@ export const ChangePasswordWindow = (props: {
           password={password}
           setPassword={setPassword}
         />
-
-        {/* <FloatingLabelInput
-          label="New User ID"
-          type="text"
-          value={password}
-          onChange={(e) => setNewUserID(e.currentTarget.value)}
-        /> */}
 
         <ConfirmInputWithMsg
           confirm={confirmPassword}

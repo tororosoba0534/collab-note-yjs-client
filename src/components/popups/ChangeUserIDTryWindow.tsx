@@ -3,16 +3,12 @@ import { useChangeUserID } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import ErrorPage from "../errorPages/ErrorPage";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
-import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
+import { PopupStatus } from "../personal/TiptapEditor";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const ChangeUserIDWindow = (props: {
-  setPopupStatus: React.Dispatch<
-    React.SetStateAction<
-      "deleteAccount" | "changeUserID" | "changePassword" | "logout" | null
-    >
-  >;
+export const ChangeUserIDTryWindow = (props: {
+  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
 }) => {
   const { changeUserID, status } = useChangeUserID();
   const [loadingStatus, setLoadingStatus] = useState<
@@ -40,19 +36,15 @@ export const ChangeUserIDWindow = (props: {
     setLoadingStatus("loading");
     changeUserID(newUserID).then(({ status }) => {
       setLoadingStatus("finish");
+      if (status === 200) {
+        console.log("change userID succeeded!");
+        props.setPopupStatus("changeUserIDOK");
+      }
     });
   };
 
-  if (loadingStatus === "finish") {
-    if (status === 200) {
-      return (
-        <PopupTemplate handleClose={null}>
-          <div>User ID has been successfully changed!</div>
-        </PopupTemplate>
-      );
-    } else {
-      return <ErrorPage status={status} />;
-    }
+  if (loadingStatus === "finish" && status !== 200) {
+    return <ErrorPage status={status} />;
   }
 
   return (
@@ -65,20 +57,6 @@ export const ChangeUserIDWindow = (props: {
           userID={newUserID}
           setUserID={setNewUserID}
         />
-
-        {/* <FloatingLabelInput
-          label="New User ID"
-          type="text"
-          value={newUserID}
-          onChange={(e) => setNewUserID(e.currentTarget.value)}
-        /> */}
-
-        {/* <FloatingLabelInput
-          label="Confirm New User ID"
-          type="text"
-          value={confirmUserID}
-          onChange={(e) => setConfirmUserID(e.currentTarget.value)}
-        /> */}
 
         <ConfirmInputWithMsg
           label="Confirm new UserID"

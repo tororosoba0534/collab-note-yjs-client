@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { YjsWS } from "../../yjs/YjsWS";
+import { PopupStatus } from "./TiptapEditor";
 import { TooltipButton } from "./TooltipButton";
 
 export const Menu = (props: {
-  setPopupStatus: React.Dispatch<
-    React.SetStateAction<
-      "deleteAccount" | "changeUserID" | "changePassword" | "logout" | null
-    >
-  >;
+  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
   provider: CustomWSProvider;
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -46,15 +43,15 @@ export const Menu = (props: {
         />
         <TooltipButton
           label="Delete Account"
-          onClick={() => props.setPopupStatus("deleteAccount")}
+          onClick={() => props.setPopupStatus("deleteAccountTry")}
         />
         <TooltipButton
           label="Change User ID"
-          onClick={() => props.setPopupStatus("changeUserID")}
+          onClick={() => props.setPopupStatus("changeUserIDTry")}
         />
         <TooltipButton
           label="Change Password"
-          onClick={() => props.setPopupStatus("changePassword")}
+          onClick={() => props.setPopupStatus("changePasswordTry")}
         />
       </div>
     </div>

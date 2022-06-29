@@ -1,30 +1,37 @@
-import { ChangePasswordWindow } from "../popups/ChangePasswordWindow";
-import { ChangeUserIDWindow } from "../popups/ChangeUserIDWindow";
-import { DeleteAccountWindow } from "../popups/DeleteAccountWindow";
+import { ChangePasswordOKWindow } from "../popups/ChangePasswordOKWindow";
+import { ChangePasswordTryWindow } from "../popups/ChangePasswordTryWindow";
+import { ChangeUserIDOKWindow } from "../popups/ChangeUserIDOKWindow";
+import { ChangeUserIDTryWindow } from "../popups/ChangeUserIDTryWindow";
+import { DeleteAccountOKWindow } from "../popups/DeleteAccountOKWindow";
+import { DeleteAccountTryWindow } from "../popups/DeleteAccountTryWindow";
 import { LogoutWindow } from "../popups/LogoutWindow";
+import { TestWindow } from "../popups/TestWindow";
+import { PopupStatus } from "./TiptapEditor";
 
 export const PopupsInPersonal = (props: {
-  popupStatus:
-    | "deleteAccount"
-    | "changeUserID"
-    | "changePassword"
-    | "logout"
-    | null;
-  setPopupStatus: React.Dispatch<
-    React.SetStateAction<
-      "deleteAccount" | "changeUserID" | "changePassword" | "logout" | null
-    >
-  >;
+  popupStatus: PopupStatus;
+  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
 }) => {
   switch (props.popupStatus) {
+    case null:
+      return null;
+    case "test":
+      return <TestWindow setPopupStatus={props.setPopupStatus} />;
     case "logout":
       return <LogoutWindow setPopupStatus={props.setPopupStatus} />;
-    case "deleteAccount":
-      return <DeleteAccountWindow setPopupStatus={props.setPopupStatus} />;
-    case "changeUserID":
-      return <ChangeUserIDWindow setPopupStatus={props.setPopupStatus} />;
-    case "changePassword":
-      return <ChangePasswordWindow setPopupStatus={props.setPopupStatus} />;
+    case "deleteAccountTry":
+      return <DeleteAccountTryWindow setPopupStatus={props.setPopupStatus} />;
+    case "changeUserIDTry":
+      return <ChangeUserIDTryWindow setPopupStatus={props.setPopupStatus} />;
+    case "changePasswordTry":
+      return <ChangePasswordTryWindow setPopupStatus={props.setPopupStatus} />;
+    case "deleteAccountOK":
+      return <DeleteAccountOKWindow />;
+    case "changeUserIDOK":
+      return <ChangeUserIDOKWindow setPopupStatus={props.setPopupStatus} />;
+    case "changePasswordOK":
+      return <ChangePasswordOKWindow setPopupStatus={props.setPopupStatus} />;
+
     default:
       return null;
   }

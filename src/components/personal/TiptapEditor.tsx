@@ -4,35 +4,43 @@ import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
 import * as Y from "yjs";
 import config from "../../config";
-import { useContext, useMemo, useState } from "react";
-import { LogoutWindow } from "../popups/LogoutWindow";
+import { useMemo, useState } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
-import { YjsMsgContext } from "../../yjs/YjsMsgContext";
 import { TopToolBar } from "./TopToolBar";
 import { Menu } from "./Menu";
 import { YjsWS } from "../../yjs/YjsWS";
-import { DeleteAccountWindow } from "../popups/DeleteAccountWindow";
 import { PopupsInPersonal } from "./PopupsInPersonal";
 
+export type PopupStatus =
+  | null
+  | "logout"
+  | "test"
+  | "deleteAccountTry"
+  | "changeUserIDTry"
+  | "changePasswordTry"
+  | "deleteAccountOK"
+  | "changeUserIDOK"
+  | "changePasswordOK";
+
 export const TiptapEditor = ({ userID }: { userID: string }) => {
-  const { yjsMsgStatus, setYjsMsgStatus, isYjsOriginOf } =
-    useContext(YjsMsgContext);
+  const [popupStatus, setPopupStatus] = useState<PopupStatus>(null);
 
   // ydoc should be recreated when user changes
   // so "userID" should be in the dependency array of useMemo.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const ydoc = useMemo(() => new Y.Doc(), [userID]);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const provider = useMemo(() => {
     const provider = new CustomWSProvider(config.wsserver.URL, userID, ydoc);
     if (provider.ws) {
       provider.ws.addEventListener("message", (event) => {
-        YjsWS.manageMsgPopup(event, setYjsMsgStatus, isYjsOriginOf);
+        YjsWS.manageMsgPopup(event, { setPopupStatus });
       });
     }
 
     return provider;
-  }, [isYjsOriginOf, setYjsMsgStatus, userID, ydoc]);
+  }, [userID, ydoc]);
 
   const editor = useEditor({
     extensions: [
@@ -52,10 +60,6 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       },
     },
   });
-
-  const [popupStatus, setPopupStatus] = useState<
-    null | "logout" | "deleteAccount" | "changeUserID" | "changePassword"
-  >(null);
 
   return (
     <div className="relative">
