@@ -8,7 +8,7 @@ import { useContext, useMemo, useState } from "react";
 import { LogoutWindow } from "../popups/LogoutWindow";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { YjsMsgContext } from "../../yjs/YjsMsgContext";
-import { TopMenuBar } from "./TopMenuBar";
+import { TopToolBar } from "./TopToolBar";
 import { Menu } from "./Menu";
 import { YjsWS } from "../../yjs/YjsWS";
 import { DeleteAccountWindow } from "../popups/DeleteAccountWindow";
@@ -60,7 +60,7 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
   return (
     <div className="relative">
       <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex ">
-        <TopMenuBar editor={editor} />
+        <TopToolBar editor={editor} />
         <Menu setPopupStatus={setPopupStatus} provider={provider} />
       </div>
       <div className="absolute inset-x-10 top-20 mb-10">

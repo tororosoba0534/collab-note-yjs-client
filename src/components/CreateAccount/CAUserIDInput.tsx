@@ -9,13 +9,14 @@ import { ValMsgBox } from "./ValMsgBox";
 export const CAUserIDInput = (props: {
   userID: string;
   setUserID: React.Dispatch<React.SetStateAction<string>>;
+  label?: string;
 }) => {
   const [isInit, setIsInit] = useState(true);
 
   return (
     <div className="w-full">
       <FloatingLabelInput
-        label="userID"
+        label={props.label || "userID"}
         type="text"
         value={props.userID}
         onChange={(e) => {

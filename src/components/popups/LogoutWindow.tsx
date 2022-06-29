@@ -18,25 +18,6 @@ export const LogoutWindow = (props: {
   const [isLoading, setIsLoading] = useState(true);
   const [didTryOnce, setDidTryOnce] = useState(false);
 
-  // const handleClickDocument = useCallback((e: MouseEvent) => {
-  //   if (!(e.target instanceof Node)) {
-  //     console.log(`(e.target instanceof Node}) === false`);
-  //     return;
-  //   }
-
-  //   if (!ref.current?.contains(e.target)) {
-  //     // setIsOpenLogout(false);
-  //     console.log("outside of popup clicked");
-  //     return;
-  //   }
-
-  //   console.log("inside of popup clicked");
-  // }, []);
-
-  // useEffect(() => {
-  //   document.addEventListener("click", handleClickDocument);
-  // }, [handleClickDocument]);
-
   const handleClickLogout = () => {
     setDidTryOnce(true);
     setIsLoading(true);

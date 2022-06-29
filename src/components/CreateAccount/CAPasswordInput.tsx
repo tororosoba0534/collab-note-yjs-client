@@ -5,6 +5,7 @@ import { ExclamationSvg } from "./ExclamationSvg";
 import { ValMsgBox } from "./ValMsgBox";
 
 export const CAPasswordInput = (props: {
+  label?: string;
   password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
 }) => {
@@ -70,7 +71,7 @@ export const CAPasswordInput = (props: {
   return (
     <div className="w-full">
       <FloatingLabelInput
-        label="password"
+        label={props.label || "password"}
         type="password"
         value={props.password}
         onChange={(e) => {
