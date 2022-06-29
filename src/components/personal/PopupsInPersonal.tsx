@@ -28,9 +28,9 @@ export const PopupsInPersonal = (props: {
     case "deleteAccountOK":
       return <DeleteAccountOKWindow />;
     case "changeUserIDOK":
-      return <ChangeUserIDOKWindow setPopupStatus={props.setPopupStatus} />;
+      return <ChangeUserIDOKWindow />;
     case "changePasswordOK":
-      return <ChangePasswordOKWindow setPopupStatus={props.setPopupStatus} />;
+      return <ChangePasswordOKWindow />;
 
     default:
       return null;
