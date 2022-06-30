@@ -73,6 +73,7 @@ const setupWS = (provider: CustomWSProvider): void => {
         provider.wsUnsuccessfulReconnects++;
       }
 
+      if (!provider.shouldConnect) return;
       if (provider.wsUnsuccessfulReconnects > 1) return;
       // Start with no reconnect timeout and increase timeout by
       // using exponential backoff starting with 100ms

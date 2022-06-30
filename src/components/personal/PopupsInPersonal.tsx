@@ -1,3 +1,4 @@
+import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { ChangePasswordOKWindow } from "../popups/ChangePasswordOKWindow";
 import { ChangePasswordTryWindow } from "../popups/ChangePasswordTryWindow";
 import { ChangeUserIDOKWindow } from "../popups/ChangeUserIDOKWindow";
@@ -9,6 +10,7 @@ import { TestWindow } from "../popups/TestWindow";
 import { PopupStatus } from "./TiptapEditor";
 
 export const PopupsInPersonal = (props: {
+  provider: CustomWSProvider;
   popupStatus: PopupStatus;
   setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
 }) => {
@@ -18,7 +20,12 @@ export const PopupsInPersonal = (props: {
     case "test":
       return <TestWindow setPopupStatus={props.setPopupStatus} />;
     case "logout":
-      return <LogoutWindow setPopupStatus={props.setPopupStatus} />;
+      return (
+        <LogoutWindow
+          provider={props.provider}
+          setPopupStatus={props.setPopupStatus}
+        />
+      );
     case "deleteAccountTry":
       return <DeleteAccountTryWindow setPopupStatus={props.setPopupStatus} />;
     case "changeUserIDTry":

@@ -88,6 +88,7 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       </div>
 
       <PopupsInPersonal
+        provider={provider}
         popupStatus={popupStatus}
         setPopupStatus={setPopupStatus}
       />

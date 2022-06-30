@@ -1,11 +1,13 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../api/hooks";
+import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import ErrorPage from "../errorPages/ErrorPage";
 import { PopupStatus } from "../personal/TiptapEditor";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const LogoutWindow = (props: {
+  provider: CustomWSProvider;
   setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
 }) => {
   const { logout, status } = useLogout();
@@ -24,6 +26,7 @@ export const LogoutWindow = (props: {
       if (status === 200 || status === 401) {
         console.log("logout succeeded!");
         props.setPopupStatus(null);
+        props.provider.destroy();
         navigate("/login");
         return;
       }
