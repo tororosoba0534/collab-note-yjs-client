@@ -1,5 +1,5 @@
 import * as Y from "yjs";
-import * as bc from "lib0/broadcastchannel";
+// import * as bc from "lib0/broadcastchannel";
 import * as time from "lib0/time";
 import * as encoding from "lib0/encoding";
 import * as decoding from "lib0/decoding";
@@ -125,9 +125,9 @@ const broadcastMessage = (provider: CustomWSProvider, buf: ArrayBuffer) => {
   if (provider.wsconnected) {
     /** @type {WebSocket} */ provider.ws?.send(buf);
   }
-  if (provider.bcconnected) {
-    bc.publish(provider.bcChannel, buf, provider);
-  }
+  // if (provider.bcconnected) {
+  //   bc.publish(provider.bcChannel, buf, provider);
+  // }
 };
 
 // @todo - this should depend on awareness.outdatedTime
@@ -250,12 +250,13 @@ export class CustomWSProvider extends Observable<string> {
      * @param {any} origin
      */
     this._bcSubscriber = (data: ArrayBuffer, origin: unknown) => {
-      if (origin !== this) {
-        const encoder = readMessage(this, new Uint8Array(data), false);
-        if (encoding.length(encoder) > 1) {
-          bc.publish(this.bcChannel, encoding.toUint8Array(encoder), this);
-        }
-      }
+      return;
+      // if (origin !== this) {
+      //   const encoder = readMessage(this, new Uint8Array(data), false);
+      //   if (encoding.length(encoder) > 1) {
+      //     bc.publish(this.bcChannel, encoding.toUint8Array(encoder), this);
+      //   }
+      // }
     };
     /**
      * Listens to Yjs updates and sends them to remote peers (ws and broadcastchannel)
@@ -352,68 +353,70 @@ export class CustomWSProvider extends Observable<string> {
   }
 
   connectBc() {
-    if (this.disableBc) {
-      return;
-    }
-    if (!this.bcconnected) {
-      bc.subscribe(this.bcChannel, this._bcSubscriber);
-      this.bcconnected = true;
-    }
-    // send sync step1 to bc
-    // write sync step 1
-    const encoderSync = encoding.createEncoder();
-    encoding.writeVarUint(encoderSync, yjsConsts.MESSAGE_SYNC);
-    syncProtocol.writeSyncStep1(encoderSync, this.doc);
-    bc.publish(this.bcChannel, encoding.toUint8Array(encoderSync), this);
-    // broadcast local state
-    const encoderState = encoding.createEncoder();
-    encoding.writeVarUint(encoderState, yjsConsts.MESSAGE_SYNC);
-    syncProtocol.writeSyncStep2(encoderState, this.doc);
-    bc.publish(this.bcChannel, encoding.toUint8Array(encoderState), this);
-    // write queryAwareness
-    const encoderAwarenessQuery = encoding.createEncoder();
-    encoding.writeVarUint(
-      encoderAwarenessQuery,
-      yjsConsts.MESSAGE_QUERY_AWARENESS
-    );
-    bc.publish(
-      this.bcChannel,
-      encoding.toUint8Array(encoderAwarenessQuery),
-      this
-    );
-    // broadcast local awareness state
-    const encoderAwarenessState = encoding.createEncoder();
-    encoding.writeVarUint(encoderAwarenessState, yjsConsts.MESSAGE_AWARENESS);
-    encoding.writeVarUint8Array(
-      encoderAwarenessState,
-      awarenessProtocol.encodeAwarenessUpdate(this.awareness, [
-        this.doc.clientID,
-      ])
-    );
-    bc.publish(
-      this.bcChannel,
-      encoding.toUint8Array(encoderAwarenessState),
-      this
-    );
+    return;
+    // if (this.disableBc) {
+    //   return;
+    // }
+    // if (!this.bcconnected) {
+    //   bc.subscribe(this.bcChannel, this._bcSubscriber);
+    //   this.bcconnected = true;
+    // }
+    // // send sync step1 to bc
+    // // write sync step 1
+    // const encoderSync = encoding.createEncoder();
+    // encoding.writeVarUint(encoderSync, yjsConsts.MESSAGE_SYNC);
+    // syncProtocol.writeSyncStep1(encoderSync, this.doc);
+    // bc.publish(this.bcChannel, encoding.toUint8Array(encoderSync), this);
+    // // broadcast local state
+    // const encoderState = encoding.createEncoder();
+    // encoding.writeVarUint(encoderState, yjsConsts.MESSAGE_SYNC);
+    // syncProtocol.writeSyncStep2(encoderState, this.doc);
+    // bc.publish(this.bcChannel, encoding.toUint8Array(encoderState), this);
+    // // write queryAwareness
+    // const encoderAwarenessQuery = encoding.createEncoder();
+    // encoding.writeVarUint(
+    //   encoderAwarenessQuery,
+    //   yjsConsts.MESSAGE_QUERY_AWARENESS
+    // );
+    // bc.publish(
+    //   this.bcChannel,
+    //   encoding.toUint8Array(encoderAwarenessQuery),
+    //   this
+    // );
+    // // broadcast local awareness state
+    // const encoderAwarenessState = encoding.createEncoder();
+    // encoding.writeVarUint(encoderAwarenessState, yjsConsts.MESSAGE_AWARENESS);
+    // encoding.writeVarUint8Array(
+    //   encoderAwarenessState,
+    //   awarenessProtocol.encodeAwarenessUpdate(this.awareness, [
+    //     this.doc.clientID,
+    //   ])
+    // );
+    // bc.publish(
+    //   this.bcChannel,
+    //   encoding.toUint8Array(encoderAwarenessState),
+    //   this
+    // );
   }
 
   disconnectBc() {
-    // broadcast message with local awareness state set to null (indicating disconnect)
-    const encoder = encoding.createEncoder();
-    encoding.writeVarUint(encoder, yjsConsts.MESSAGE_AWARENESS);
-    encoding.writeVarUint8Array(
-      encoder,
-      awarenessProtocol.encodeAwarenessUpdate(
-        this.awareness,
-        [this.doc.clientID],
-        new Map()
-      )
-    );
-    broadcastMessage(this, encoding.toUint8Array(encoder));
-    if (this.bcconnected) {
-      bc.unsubscribe(this.bcChannel, this._bcSubscriber);
-      this.bcconnected = false;
-    }
+    return;
+    // // broadcast message with local awareness state set to null (indicating disconnect)
+    // const encoder = encoding.createEncoder();
+    // encoding.writeVarUint(encoder, yjsConsts.MESSAGE_AWARENESS);
+    // encoding.writeVarUint8Array(
+    //   encoder,
+    //   awarenessProtocol.encodeAwarenessUpdate(
+    //     this.awareness,
+    //     [this.doc.clientID],
+    //     new Map()
+    //   )
+    // );
+    // broadcastMessage(this, encoding.toUint8Array(encoder));
+    // if (this.bcconnected) {
+    //   bc.unsubscribe(this.bcChannel, this._bcSubscriber);
+    //   this.bcconnected = false;
+    // }
   }
 
   disconnect() {

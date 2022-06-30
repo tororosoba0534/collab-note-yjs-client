@@ -5,7 +5,7 @@ import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import * as Y from "yjs";
 import config from "../../config";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { TopToolBar } from "./TopToolBar";
 import { Menu } from "./Menu";
@@ -33,7 +33,9 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const provider = useMemo(() => {
-    const provider = new CustomWSProvider(config.wsserver.URL, userID, ydoc);
+    const provider = new CustomWSProvider(config.wsserver.URL, userID, ydoc, {
+      disableBc: true,
+    });
     if (provider.ws) {
       provider.ws.addEventListener("message", (event) => {
         YjsWS.manageMsgPopup(event, { setPopupStatus });

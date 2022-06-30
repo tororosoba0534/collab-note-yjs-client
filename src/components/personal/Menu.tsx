@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { YjsWS } from "../../yjs/YjsWS";
+import { ConnStatusBox } from "./ConnStatusBox";
 import { PopupStatus } from "./TiptapEditor";
 import { TooltipButton } from "./TooltipButton";
 
@@ -14,11 +15,13 @@ export const Menu = (props: {
   return (
     <div className="flex-none w-56 h-16 bg-slate-500 relative">
       <div
-        className="absolute m-2 p-2 border-2"
+        className=" m-2 p-2 border-2"
         onClick={() => setIsOpenMenu((prev) => !prev)}
       >
         Menu
       </div>
+
+      <ConnStatusBox provider={props.provider} />
       <div
         className="absolute w-56  bg-green-500 top-24 transition-all flex flex-col gap-5 items-center p-5"
         style={{

@@ -6,6 +6,7 @@ import * as encoding from "lib0/encoding";
 import { yjsConsts } from "../../yjs/yjsConsts";
 import { Editor } from "@tiptap/react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
+import { ConnStatusBox } from "./ConnStatusBox";
 
 export const TopToolBar = (props: { editor: Editor | null }) => {
   return (
