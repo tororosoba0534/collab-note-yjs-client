@@ -189,14 +189,7 @@ export const useChangeUserID = (): ReturnChangeUserID & {
         return { status: 401 };
       }
 
-      const { status, newSessionID } = await fetchChangeUserID(
-        sessionID,
-        newUserID
-      );
-
-      if (status === 200) {
-        localStorage.setItem(config.SESSION_ID_KEY, newSessionID);
-      }
+      const { status } = await fetchChangeUserID(sessionID, newUserID);
 
       setStatus(status);
       return { status };
@@ -223,14 +216,7 @@ export const useChangePassword = (): ReturnChangePassword & {
         return { status: 401 };
       }
 
-      const { status, newSessionID } = await fetchChangePassword(
-        sessionID,
-        newPassword
-      );
-
-      if (status === 200) {
-        localStorage.setItem(config.SESSION_ID_KEY, newSessionID);
-      }
+      const { status } = await fetchChangePassword(sessionID, newPassword);
 
       setStatus(status);
       return { status };

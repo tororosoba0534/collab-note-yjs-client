@@ -160,41 +160,20 @@ export type ReturnChangeUserID = ReturnBaseFetch<NumsChangeUserID>;
 export const fetchChangeUserID = async (
   sessionID: string,
   newUserID: string
-): Promise<
-  ReturnChangeUserID & {
-    newSessionID: string;
-  }
-> => {
-  const { status, resJSON } = await baseFetch("/personal/change-userid", {
+): Promise<ReturnChangeUserID> => {
+  const { status } = await baseFetch("/personal/change-userid", {
     sessionID,
     newUserID,
   });
 
-  if (isThrownErr(status)) return { status, newSessionID: "" };
-
-  if (!resJSON) {
-    return {
-      status: `Response JSON is nullable`,
-      newSessionID: "",
-    };
-  }
-
-  const newSessionID = resJSON.newSessionID;
-
-  if (typeof newSessionID !== "string") {
-    return {
-      status: `Invalid response type: "${typeof newSessionID}"`,
-      newSessionID: "",
-    };
-  }
+  if (isThrownErr(status)) return { status };
 
   if (status !== 200 && status !== 400 && status !== 401 && status !== 500)
     return {
       status: `Unexpected status code: ${status}`,
-      newSessionID: "",
     };
 
-  return { status, newSessionID };
+  return { status };
 };
 
 export type NumsChangePassword = 200 | 400 | 401 | 500;
@@ -202,39 +181,18 @@ export type ReturnChangePassword = ReturnBaseFetch<NumsChangePassword>;
 export const fetchChangePassword = async (
   sessionID: string,
   newPassword: string
-): Promise<
-  ReturnChangePassword & {
-    newSessionID: string;
-  }
-> => {
-  const { status, resJSON } = await baseFetch("/personal/change-password", {
+): Promise<ReturnChangePassword> => {
+  const { status } = await baseFetch("/personal/change-password", {
     sessionID,
     newPassword,
   });
 
-  if (isThrownErr(status)) return { status, newSessionID: "" };
-
-  if (!resJSON) {
-    return {
-      status: `Response JSON is nullable`,
-      newSessionID: "",
-    };
-  }
-
-  const newSessionID = resJSON.newSessionID;
-
-  if (typeof newSessionID !== "string") {
-    return {
-      status: `Invalid response type: "${typeof newSessionID}"`,
-      newSessionID: "",
-    };
-  }
+  if (isThrownErr(status)) return { status };
 
   if (status !== 200 && status !== 400 && status !== 401 && status !== 500)
     return {
       status: `Unexpected status code: ${status}`,
-      newSessionID: "",
     };
 
-  return { status, newSessionID };
+  return { status };
 };
