@@ -90,6 +90,7 @@ const CreateAccount = () => {
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center gap-10 p-5  shadow-[3px_3px_12px_rgba(0,0,0,0.3)]  rounded-2xl bg-white mt-20 mb-20">
         <FormTitle
+          title="Create new account"
           didSubmitOnce={didSubmitOnce}
           submitMsg={submitMsg}
           isLoading={isLoading}

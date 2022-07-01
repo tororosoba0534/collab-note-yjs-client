@@ -3,6 +3,7 @@ import { isThrownErr, Status } from "../../api/base";
 import { NumsCreateAccount } from "../../api/fetches";
 
 export const FormTitle = (props: {
+  title: string;
   didSubmitOnce: boolean;
   submitMsg: string;
   isLoading: boolean;
@@ -11,7 +12,7 @@ export const FormTitle = (props: {
 }) => {
   return (
     <div>
-      <h1 className="text-2xl">Create your account</h1>
+      <h1 className="text-2xl">{props.title}</h1>
 
       {!props.didSubmitOnce ? null : props.isLoading ? (
         <div className="w-full rounded-md  ">{"Wait for minutes..."}</div>
