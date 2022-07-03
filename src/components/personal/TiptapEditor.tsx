@@ -11,6 +11,7 @@ import { TopToolBar } from "./TopToolBar";
 import { Menu } from "./Menu";
 import { YjsWS } from "../../yjs/YjsWS";
 import { PopupsInPersonal } from "./PopupsInPersonal";
+import { ConnStatusBox } from "./ConnStatusBox";
 
 export type PopupStatus =
   | null
@@ -81,6 +82,9 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
     <div className="relative">
       <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex ">
         <TopToolBar editor={editor} />
+        <div className="flex-none w-40 h-16">
+          <ConnStatusBox provider={provider} />
+        </div>
         <Menu setPopupStatus={setPopupStatus} provider={provider} />
       </div>
       <div className="absolute inset-x-10 top-20 mb-10">

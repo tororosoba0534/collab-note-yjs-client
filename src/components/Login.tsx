@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { isThrownErr } from "../api/base";
 import { useLogin } from "../api/hooks";
 import { Validate } from "../utils/validation";
+import { BoxInput } from "./form/BoxInput";
 import { FloatingLabelInput } from "./form/FloatingLabelInput";
 import { FormTitle } from "./form/FormTitle";
 
@@ -84,7 +85,7 @@ const Login = () => {
         />
 
         <button
-          className="mt-20 px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
+          className=" px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
           onClick={() => handleSubmit()}
         >
           LOGIN

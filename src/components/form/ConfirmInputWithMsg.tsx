@@ -45,7 +45,7 @@ export const ConfirmInputWithMsg = (props: {
           handleChangeConfirm(e.currentTarget.value, props.original);
         }}
       />
-      <div className="h-10 w-full">
+      <div className="h-10 w-full pl-1">
         <ValMsgBox
           label={
             props.type === "password"

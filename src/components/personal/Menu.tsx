@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { YjsWS } from "../../yjs/YjsWS";
 import { ConnStatusBox } from "./ConnStatusBox";
+import { MenuSvg } from "./icons/MenuSvg";
 import { PopupStatus } from "./TiptapEditor";
 import { TooltipButton } from "./TooltipButton";
 
@@ -13,17 +14,18 @@ export const Menu = (props: {
   const [isOpenTest, setIsOpenTest] = useState(false);
 
   return (
-    <div className="flex-none w-56 h-16 bg-slate-500 relative">
-      <div
-        className=" m-2 p-2 border-2"
-        onClick={() => setIsOpenMenu((prev) => !prev)}
-      >
-        Menu
+    <div className="flex-none w-32 h-16 bg-slate-500 relative">
+      <div className="h-full w-full flex justify-center items-center">
+        <TooltipButton
+          img={MenuSvg}
+          tooltip="Menu"
+          onClick={() => setIsOpenMenu((prev) => !prev)}
+        />
       </div>
 
-      <ConnStatusBox provider={props.provider} />
+      {/* <ConnStatusBox provider={props.provider} /> */}
       <div
-        className="absolute w-56  bg-green-500 top-24 transition-all flex flex-col gap-5 items-center p-5"
+        className="absolute w-56  bg-green-500 top-24 right-0 rounded-bl-2xl transition-all flex flex-col gap-5 items-center p-5"
         style={{
           opacity: isOpenMenu ? 1 : 0,
           visibility: isOpenMenu ? "visible" : "hidden",
@@ -45,7 +47,7 @@ export const Menu = (props: {
           </div>
 
           <div
-            className="absolute right-56 top-0 bg-red-300 flex flex-col gap-4 p-4 transition-all"
+            className="absolute right-56 top-0 bg-red-300 rounded-2xl rounded-tr-none flex flex-col gap-4 p-4 transition-all"
             style={{
               opacity: isOpenTest ? 1 : 0,
               visibility: isOpenTest ? "visible" : "hidden",

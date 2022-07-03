@@ -88,7 +88,7 @@ const CreateAccount = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col justify-center items-center gap-10 p-5  shadow-[3px_3px_12px_rgba(0,0,0,0.3)]  rounded-2xl bg-white mt-20 mb-20">
+      <div className="flex flex-col justify-center items-center gap-8 p-5  shadow-[3px_3px_12px_rgba(0,0,0,0.3)]  rounded-2xl bg-white mt-10 mb-10">
         <FormTitle
           title="Create new account"
           didSubmitOnce={didSubmitOnce}
@@ -111,7 +111,7 @@ const CreateAccount = () => {
         />
 
         <ConfirmInputWithMsg
-          label="Confirm Password"
+          label="Input password again"
           type="password"
           original={password}
           confirm={confirmPassword}
@@ -119,7 +119,7 @@ const CreateAccount = () => {
         />
 
         <button
-          className="mt-20 px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
+          className="px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
           onClick={() => handleSubmit()}
         >
           CREATE

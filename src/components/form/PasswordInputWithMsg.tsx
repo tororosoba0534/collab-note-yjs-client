@@ -79,9 +79,9 @@ export const PasswordInputWithMsg = (props: {
           handleChangePassword(e.currentTarget.value);
         }}
       />
-      <div className="w-full">
+      <div className="w-full pl-1">
         <ValMsgBox
-          label="length: 5 ~ 20 "
+          label="length: 5 ~ 20"
           errStatus={
             isInit
               ? "disabled"
@@ -113,7 +113,7 @@ export const PasswordInputWithMsg = (props: {
           errMsg={ExclamationSvg()}
         />
         <ValMsgBox
-          label="at least one of a~z"
+          label="contains a~z"
           errStatus={
             !props.password
               ? "disabled"
@@ -124,7 +124,7 @@ export const PasswordInputWithMsg = (props: {
           errMsg={ExclamationSvg()}
         />
         <ValMsgBox
-          label="at least one of A~Z"
+          label="contains A~Z"
           errStatus={
             !props.password
               ? "disabled"
@@ -135,7 +135,7 @@ export const PasswordInputWithMsg = (props: {
           errMsg={ExclamationSvg()}
         />
         <ValMsgBox
-          label="at least one of 0~9"
+          label="contains 0~9"
           errStatus={
             !props.password
               ? "disabled"

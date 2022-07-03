@@ -28,7 +28,7 @@ export const CheckUserIDMsgBox = (props: { userID: string }) => {
 
   return (
     <div
-      className="w-full flex flex-col border-b-2"
+      className="w-full flex flex-col "
       style={{
         backgroundColor: boxStatus === "NG" ? "red" : "white",
         color:
@@ -36,7 +36,7 @@ export const CheckUserIDMsgBox = (props: { userID: string }) => {
         fontWeight: boxStatus === "NG" ? "bold" : "normal",
       }}
     >
-      <div className="w-full h-6 flex flex-row gap-3">
+      <div className="w-full h-6 flex flex-row gap-1">
         <div className="flex-none w-6">
           <CheckSvg status={boxStatus === "loading" ? "disabled" : boxStatus} />
         </div>

@@ -8,7 +8,7 @@ export const ValMsgBox = (props: {
 }) => {
   return (
     <div
-      className="w-full h-6 flex flex-row gap-3 border-b-2"
+      className="w-full flex flex-row gap-1"
       style={{
         backgroundColor: props.errStatus === "NG" ? "red" : "white",
         color:

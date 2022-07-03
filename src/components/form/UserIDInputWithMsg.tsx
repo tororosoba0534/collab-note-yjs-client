@@ -23,7 +23,7 @@ export const UserIDInputWithMsg = (props: {
           setIsInit(() => false);
         }}
       />
-      <div className="h-10 w-full">
+      <div className="w-full pl-1">
         <ValMsgBox
           label="length: 5 ~ 20 "
           errStatus={
