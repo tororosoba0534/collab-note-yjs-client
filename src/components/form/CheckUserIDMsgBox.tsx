@@ -5,7 +5,10 @@ import { Validate } from "../../utils/validation";
 import { CheckSvg } from "./CheckSvg";
 import { ExclamationSvg } from "./ExclamationSvg";
 
-export const CheckUserIDMsgBox = (props: { userID: string }) => {
+export const CheckUserIDMsgBox = (props: {
+  userID: string;
+  setIsUserIDAvailable?: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { checkUserID, status } = useCheckUserID();
   const [boxStatus, setBoxStatus] = useState<
     "disabled" | "loading" | "NG" | "OK"
@@ -20,11 +23,15 @@ export const CheckUserIDMsgBox = (props: { userID: string }) => {
     setBoxStatus("loading");
     checkUserID(props.userID).then(({ status }) => {
       setBoxStatus(() => {
-        if (status !== 200) return "NG";
+        if (status !== 200) {
+          if (props.setIsUserIDAvailable) props.setIsUserIDAvailable(false);
+          return "NG";
+        }
+        if (props.setIsUserIDAvailable) props.setIsUserIDAvailable(true);
         return "OK";
       });
     });
-  }, [checkUserID, props.userID]);
+  }, [checkUserID, props, props.userID]);
 
   return (
     <div

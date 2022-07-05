@@ -9,6 +9,7 @@ export const UserIDInputWithMsg = (props: {
   userID: string;
   setUserID: React.Dispatch<React.SetStateAction<string>>;
   label: string;
+  setIsUserIDAvailable?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [isInit, setIsInit] = useState(true);
 
@@ -56,7 +57,10 @@ export const UserIDInputWithMsg = (props: {
           }
           errMsg={ExclamationSvg()}
         />
-        <CheckUserIDMsgBox userID={props.userID} />
+        <CheckUserIDMsgBox
+          userID={props.userID}
+          setIsUserIDAvailable={props.setIsUserIDAvailable}
+        />
       </div>
     </div>
   );

@@ -14,6 +14,8 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [isUserIDUnused, setIsUserIDUnused] = useState(false);
+
   const [submitMsg, setSubmitMsg] = useState("");
   const [didSubmitOnce, setDidSubmitOnce] = useState(false);
 
@@ -102,6 +104,7 @@ const CreateAccount = () => {
           label="UserID"
           userID={userID}
           setUserID={setUserID}
+          setIsUserIDAvailable={setIsUserIDUnused}
         />
 
         <PasswordInputWithMsg
@@ -120,7 +123,8 @@ const CreateAccount = () => {
 
         {password !== confirmPassword ||
         Validate.isNotValidUserID(userID) ||
-        Validate.isNotValidPassword(password) ? (
+        Validate.isNotValidPassword(password) ||
+        !isUserIDUnused ? (
           <button
             className="px-4 py-2 rounded bg-gray-300 text-white font-semibold text-center block w-full cursor-not-allowed"
             disabled
