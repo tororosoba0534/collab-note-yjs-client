@@ -1,7 +1,7 @@
 const Tooltip = (props: { tooltip: string | null | undefined }) => {
   if (!props.tooltip) return null;
   return (
-    <div className="absolute top-10 bg-black text-white p-2 rounded-md opacity-0 peer-hover:opacity-100 transition pointer-events-none">
+    <div className="absolute top-10 bg-black text-white p-2 rounded-md opacity-0 peer-hover:opacity-100 transition pointer-events-none z-20">
       {props.tooltip}
     </div>
   );

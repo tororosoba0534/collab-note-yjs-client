@@ -80,14 +80,18 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
 
   return (
     <div className="relative">
-      <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex ">
+      <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex items-center">
         <TopToolBar editor={editor} />
         <div className="flex-none w-40 h-16">
           <ConnStatusBox provider={provider} />
         </div>
-        <Menu setPopupStatus={setPopupStatus} provider={provider} />
+        <Menu
+          setPopupStatus={setPopupStatus}
+          provider={provider}
+          userID={userID}
+        />
       </div>
-      <div className="absolute inset-x-10 top-20 mb-10">
+      <div className="absolute inset-x-10 top-32 mb-10">
         <EditorContent editor={editor} />
       </div>
 
