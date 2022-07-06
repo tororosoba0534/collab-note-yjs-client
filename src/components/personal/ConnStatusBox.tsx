@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
+import { LoadingCircleSvg } from "../LoadingCircleSvg";
 export type ConnStatus = "connected" | "connecting" | "disconnected";
 export const ConnStatusBox = (props: { provider: CustomWSProvider }) => {
   const [connStatus, setConnStatus] = useState<ConnStatus>("connecting");
@@ -17,11 +18,22 @@ export const ConnStatusBox = (props: { provider: CustomWSProvider }) => {
   }, [props.provider]);
 
   if (connStatus === "connected") {
-    return <div>connection OK</div>;
+    return (
+      <div className="flex items-center justify-center h-full w-full">
+        connection OK
+      </div>
+    );
   }
 
   if (connStatus === "connecting") {
-    return <div>Now connecting...</div>;
+    return (
+      <div className="flex items-center justify-center h-full w-full">
+        <div className="w-5 h-5 animate-spin">
+          <LoadingCircleSvg />
+        </div>
+        Now connecting...
+      </div>
+    );
   }
 
   return (
