@@ -13,6 +13,7 @@ export const PopupsInPersonal = (props: {
   provider: CustomWSProvider;
   popupStatus: PopupStatus;
   setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
+  userID: string;
 }) => {
   switch (props.popupStatus) {
     case null:
@@ -27,7 +28,12 @@ export const PopupsInPersonal = (props: {
         />
       );
     case "deleteAccountTry":
-      return <DeleteAccountTryWindow setPopupStatus={props.setPopupStatus} />;
+      return (
+        <DeleteAccountTryWindow
+          setPopupStatus={props.setPopupStatus}
+          realUserID={props.userID}
+        />
+      );
     case "changeUserIDTry":
       return <ChangeUserIDTryWindow setPopupStatus={props.setPopupStatus} />;
     case "changePasswordTry":
