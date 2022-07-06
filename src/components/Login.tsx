@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { isThrownErr } from "../api/base";
 import { useLogin } from "../api/hooks";
 import { Validate } from "../utils/validation";
-import { BoxInput } from "./form/BoxInput";
 import { FloatingLabelInput } from "./form/FloatingLabelInput";
 import { FormTitle } from "./form/FormTitle";
 
