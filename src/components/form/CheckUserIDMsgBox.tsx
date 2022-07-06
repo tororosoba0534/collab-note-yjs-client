@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { isThrownErr } from "../../api/base";
 import { useCheckUserID } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
+import { LoadingCircleSvg } from "../LoadingCircleSvg";
 import { CheckSvg } from "./CheckSvg";
 import { ExclamationSvg } from "./ExclamationSvg";
 
@@ -58,7 +59,12 @@ export const CheckUserIDMsgBox = (props: {
 
         <div className="mx-3">
           {boxStatus === "loading" ? (
-            "Loading..."
+            <div className="flex">
+              <div className="w-5 h-5">
+                <LoadingCircleSvg />
+                checking...
+              </div>
+            </div>
           ) : boxStatus === "NG" ? (
             <ExclamationSvg />
           ) : null}

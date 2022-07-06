@@ -28,7 +28,7 @@ export const ConnStatusBox = (props: { provider: CustomWSProvider }) => {
   if (connStatus === "connecting") {
     return (
       <div className="flex items-center justify-center h-full w-full">
-        <div className="w-5 h-5 animate-spin">
+        <div className="w-5 h-5">
           <LoadingCircleSvg />
         </div>
         Now connecting...

@@ -3,6 +3,7 @@ export const FloatingLabelInput = (props: {
   type: "text" | "password";
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement> | undefined;
 }) => {
   return (
     <div className="relative h-12 w-full">
@@ -12,6 +13,7 @@ export const FloatingLabelInput = (props: {
         placeholder="invisible but needed"
         value={props.value}
         onChange={props.onChange}
+        onKeyDown={props.onKeyDown}
       />
       <label className="absolute left-2 top-0 text-gray-600 text-sm peer-focus:top-0 z-10  bg-white px-1 peer-focus:z-10  peer-focus:text-gray-600 peer-focus:text-sm peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-placeholder-shown:z-0 transition-all">
         {props.label}

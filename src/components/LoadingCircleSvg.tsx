@@ -1,6 +1,6 @@
 export const LoadingCircleSvg = () => {
   return (
-    <svg viewBox="0 0 100 100">
+    <svg viewBox="0 0 100 100" className="animate-spin">
       <circle
         cx="50"
         cy="50"

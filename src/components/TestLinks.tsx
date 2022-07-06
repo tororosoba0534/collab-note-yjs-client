@@ -5,7 +5,7 @@ const TestLinks = () => {
   return (
     <div>
       TEST
-      <div className="w-40 h-40 animate-spin">
+      <div className="w-40 h-40">
         <LoadingCircleSvg />
       </div>
     </div>

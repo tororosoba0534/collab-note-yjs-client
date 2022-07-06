@@ -75,6 +75,11 @@ const Login = () => {
           onChange={(e) => {
             setUserID(e.currentTarget.value);
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSubmit();
+            }
+          }}
         />
 
         <FloatingLabelInput
@@ -82,6 +87,11 @@ const Login = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSubmit();
+            }
+          }}
         />
 
         {!password || !userID ? (
