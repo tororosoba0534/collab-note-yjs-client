@@ -5,6 +5,7 @@ import { isThrownErr } from "../../api/base";
 import { useCreateAccount } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
+import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { FormTitle } from "../form/FormTitle";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
@@ -13,6 +14,7 @@ const CreateAccount = () => {
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
 
   const [isUserIDUnused, setIsUserIDUnused] = useState(false);
 
@@ -31,7 +33,7 @@ const CreateAccount = () => {
     setSubmitMsg("");
     setIsLoading(true);
 
-    if (!userID || !password || !confirmPassword) {
+    if (!userID || !password || !confirmPassword || !adminPassword) {
       setSubmitMsg("fill in all the fields.");
       setIsLoading(false);
       return;
@@ -45,14 +47,16 @@ const CreateAccount = () => {
 
     if (
       Validate.isNotValidUserID(userID) ||
-      Validate.isNotValidPassword(password)
+      Validate.isNotValidPassword(password) ||
+      Validate.isNotValidPassword(adminPassword) ||
+      password === adminPassword
     ) {
-      setSubmitMsg("userID or password or both are invalid");
+      setSubmitMsg("contains invalid value");
       setIsLoading(false);
       return;
     }
 
-    createAccount(userID, password).then(({ status }) => {
+    createAccount(userID, password, adminPassword).then(({ status }) => {
       setIsLoading(false);
 
       if (status === 200) {
@@ -119,6 +123,13 @@ const CreateAccount = () => {
           original={password}
           confirm={confirmPassword}
           setConfirm={setConfirmPassword}
+        />
+
+        <FloatingLabelInput
+          label="Admin Password"
+          type="password"
+          value={adminPassword}
+          onChange={(e) => setAdminPassword(e.currentTarget.value)}
         />
 
         {password !== confirmPassword ||
