@@ -6,6 +6,7 @@ import TestLinks from "./components/TestLinks";
 import config from "./config";
 import { EditorWrapper } from "./components/personal/EditorWrapper";
 import CreateAccount from "./components/CreateAccount";
+import { CreateAccountProvider } from "./components/CreateAccount/CreateAccountContext";
 
 function App() {
   console.log(`url: ${config.wsserver.URL}`);
@@ -17,7 +18,14 @@ function App() {
         <Route path="/personal" element={<EditorWrapper />} />
 
         <Route path="/login" element={<Login />} />
-        <Route path="/create-account" element={<CreateAccount />} />
+        <Route
+          path="/create-account"
+          element={
+            <CreateAccountProvider>
+              <CreateAccount />
+            </CreateAccountProvider>
+          }
+        />
         <Route path="/test" element={<TestLinks />} />
       </Routes>
     </div>
