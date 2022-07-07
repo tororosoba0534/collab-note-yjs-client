@@ -3,6 +3,7 @@ import { useChangePassword } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import ErrorPage from "../errorPages/ErrorPage";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
+import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { PopupStatus } from "../personal/TiptapEditor";
 import { PopupTemplate } from "./PopupTemplate";
@@ -17,24 +18,29 @@ export const ChangePasswordTryWindow = (props: {
 
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [adminPassword, setAdminPassword] = useState<string>("");
 
   const handleClickChange = () => {
-    if (!password || !confirmPassword) {
+    if (!password || !confirmPassword || !adminPassword) {
       console.log("Fill in all blanks");
       return;
     }
 
     if (password !== confirmPassword) {
       console.log("two password NOT matched");
+      return;
     }
     if (Validate.isNotValidPassword(password)) {
       console.log("password invalid");
 
       return;
     }
+    if (password === adminPassword) {
+      console.log("new password should differ from admin password");
+    }
 
     setLoadingStatus("loading");
-    changePassword(password).then(({ status }) => {
+    changePassword(password, adminPassword).then(({ status }) => {
       setLoadingStatus("finish");
       if (status === 200) {
         props.setPopupStatus("changePasswordOK");
@@ -63,6 +69,13 @@ export const ChangePasswordTryWindow = (props: {
           original={password}
           type="password"
           label="Confirm Password"
+        />
+
+        <FloatingLabelInput
+          label="Admin Password"
+          type="password"
+          value={adminPassword}
+          onChange={(e) => setAdminPassword(e.currentTarget.value)}
         />
 
         <div className="flex items-center justify-around h-20">
