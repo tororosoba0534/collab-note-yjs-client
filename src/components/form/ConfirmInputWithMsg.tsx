@@ -35,37 +35,32 @@ export const ConfirmInputWithMsg = (props: {
   );
 
   return (
-    <div className="w-full">
-      <FloatingLabelInput
-        label={props.label}
-        type={props.type}
-        value={props.confirm}
-        onChange={(e) => {
-          props.setConfirm(e.currentTarget.value);
-          handleChangeConfirm(e.currentTarget.value, props.original);
-        }}
+    <FloatingLabelInput
+      label={props.label}
+      type={props.type}
+      value={props.confirm}
+      onChange={(e) => {
+        props.setConfirm(e.currentTarget.value);
+        handleChangeConfirm(e.currentTarget.value, props.original);
+      }}
+    >
+      <ValMsgBox
+        label={
+          props.type === "password" ? "the same password?" : "the same UserID?"
+        }
+        errStatus={
+          props.original && !props.confirm
+            ? "NG"
+            : props.confirm && !props.original
+            ? "NG"
+            : !props.original
+            ? "disabled"
+            : props.confirm === props.original
+            ? "OK"
+            : "NG"
+        }
+        errMsg={ExclamationSvg()}
       />
-      <div className="h-10 w-full pl-1">
-        <ValMsgBox
-          label={
-            props.type === "password"
-              ? "the same password?"
-              : "the same UserID?"
-          }
-          errStatus={
-            props.original && !props.confirm
-              ? "NG"
-              : props.confirm && !props.original
-              ? "NG"
-              : !props.original
-              ? "disabled"
-              : props.confirm === props.original
-              ? "OK"
-              : "NG"
-          }
-          errMsg={ExclamationSvg()}
-        />
-      </div>
-    </div>
+    </FloatingLabelInput>
   );
 };

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { ExclamationSvg } from "./ExclamationSvg";
@@ -8,6 +8,7 @@ export const PasswordInputWithMsg = (props: {
   label: string;
   password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
+  children?: ReactNode;
 }) => {
   const [isInit, setIsInit] = useState(true);
 
@@ -69,83 +70,81 @@ export const PasswordInputWithMsg = (props: {
   }, []);
 
   return (
-    <div className="w-full">
-      <FloatingLabelInput
-        label={props.label || "password"}
-        type="password"
-        value={props.password}
-        onChange={(e) => {
-          props.setPassword(e.currentTarget.value);
-          handleChangePassword(e.currentTarget.value);
-        }}
+    <FloatingLabelInput
+      label={props.label || "password"}
+      type="password"
+      value={props.password}
+      onChange={(e) => {
+        props.setPassword(e.currentTarget.value);
+        handleChangePassword(e.currentTarget.value);
+      }}
+    >
+      <ValMsgBox
+        label="length: 5 ~ 20"
+        errStatus={
+          isInit
+            ? "disabled"
+            : props.password.length < 5
+            ? "NG"
+            : props.password.length > 20
+            ? "NG"
+            : "OK"
+        }
+        errMsg={
+          isInit
+            ? ""
+            : props.password.length < 5
+            ? `${5 - props.password.length} more`
+            : props.password.length > 20
+            ? `${props.password.length - 20} less`
+            : ""
+        }
       />
-      <div className="w-full pl-1">
-        <ValMsgBox
-          label="length: 5 ~ 20"
-          errStatus={
-            isInit
-              ? "disabled"
-              : props.password.length < 5
-              ? "NG"
-              : props.password.length > 20
-              ? "NG"
-              : "OK"
-          }
-          errMsg={
-            isInit
-              ? ""
-              : props.password.length < 5
-              ? `${5 - props.password.length} more`
-              : props.password.length > 20
-              ? `${props.password.length - 20} less`
-              : ""
-          }
-        />
-        <ValMsgBox
-          label="a~z, A~Z, 0~9 only"
-          errStatus={
-            !props.password
-              ? "disabled"
-              : Validate.isUsedInvalidChar(props.password)
-              ? "NG"
-              : "OK"
-          }
-          errMsg={ExclamationSvg()}
-        />
-        <ValMsgBox
-          label="contains a~z"
-          errStatus={
-            !props.password
-              ? "disabled"
-              : Validate.doesNotContainLowercase(props.password)
-              ? "NG"
-              : "OK"
-          }
-          errMsg={ExclamationSvg()}
-        />
-        <ValMsgBox
-          label="contains A~Z"
-          errStatus={
-            !props.password
-              ? "disabled"
-              : Validate.doesNotContainUppercase(props.password)
-              ? "NG"
-              : "OK"
-          }
-          errMsg={ExclamationSvg()}
-        />
-        <ValMsgBox
-          label="contains 0~9"
-          errStatus={
-            !props.password
-              ? "disabled"
-              : Validate.doesNotContainNumber(props.password)
-              ? "NG"
-              : "OK"
-          }
-          errMsg={ExclamationSvg()}
-        />
-      </div>
-    </div>
+      <ValMsgBox
+        label="a~z, A~Z, 0~9 only"
+        errStatus={
+          !props.password
+            ? "disabled"
+            : Validate.isUsedInvalidChar(props.password)
+            ? "NG"
+            : "OK"
+        }
+        errMsg={ExclamationSvg()}
+      />
+      <ValMsgBox
+        label="contains a~z"
+        errStatus={
+          !props.password
+            ? "disabled"
+            : Validate.doesNotContainLowercase(props.password)
+            ? "NG"
+            : "OK"
+        }
+        errMsg={ExclamationSvg()}
+      />
+      <ValMsgBox
+        label="contains A~Z"
+        errStatus={
+          !props.password
+            ? "disabled"
+            : Validate.doesNotContainUppercase(props.password)
+            ? "NG"
+            : "OK"
+        }
+        errMsg={ExclamationSvg()}
+      />
+      <ValMsgBox
+        label="contains 0~9"
+        errStatus={
+          !props.password
+            ? "disabled"
+            : Validate.doesNotContainNumber(props.password)
+            ? "NG"
+            : "OK"
+        }
+        errMsg={ExclamationSvg()}
+      />
+      {props.children}
+    </FloatingLabelInput>
   );
 };

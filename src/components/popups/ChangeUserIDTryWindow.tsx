@@ -3,6 +3,7 @@ import { useChangeUserID } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import ErrorPage from "../errorPages/ErrorPage";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
+import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
 import { PopupStatus } from "../personal/TiptapEditor";
 import { PopupTemplate } from "./PopupTemplate";
@@ -17,9 +18,10 @@ export const ChangeUserIDTryWindow = (props: {
 
   const [newUserID, setNewUserID] = useState<string>("");
   const [confirmUserID, setConfirmUserID] = useState<string>("");
+  const [adminPassword, setAdminPassword] = useState<string>("");
 
   const handleClickChange = () => {
-    if (!newUserID || !confirmUserID) {
+    if (!newUserID || !confirmUserID || !adminPassword) {
       console.log("Fill in all blanks");
       return;
     }
@@ -34,7 +36,7 @@ export const ChangeUserIDTryWindow = (props: {
     }
 
     setLoadingStatus("loading");
-    changeUserID(newUserID).then(({ status }) => {
+    changeUserID(newUserID, adminPassword).then(({ status }) => {
       setLoadingStatus("finish");
       if (status === 200) {
         console.log("change userID succeeded!");
@@ -64,6 +66,13 @@ export const ChangeUserIDTryWindow = (props: {
           confirm={confirmUserID}
           setConfirm={setConfirmUserID}
           original={newUserID}
+        />
+
+        <FloatingLabelInput
+          label="Admin Password"
+          type="password"
+          value={adminPassword}
+          onChange={(e) => setAdminPassword(e.currentTarget.value)}
         />
 
         <div className="flex items-center justify-around h-20">

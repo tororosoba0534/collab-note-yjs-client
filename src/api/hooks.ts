@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import config from "../config";
 import { Status } from "./base";
 import {
+  fetchChangeAdminPassword,
   fetchChangePassword,
   fetchChangeUserID,
   fetchCheckAuth,
@@ -10,6 +11,7 @@ import {
   fetchDeleteAccount,
   fetchLogin,
   fetchLogout,
+  NumsChangeAdminPassword,
   NumsChangePassword,
   NumsChangeUserID,
   NumsCheckAuth,
@@ -18,6 +20,7 @@ import {
   NumsDeleteAccount,
   NumsLogin,
   NumsLogout,
+  ReturnChangeAdminPassword,
   ReturnChangePassword,
   ReturnChangeUserID,
   ReturnCheckAuth,
@@ -110,14 +113,23 @@ export const useLogout = (): ReturnLogout & {
 export const useCreateAccount = (): ReturnCreateAccount & {
   createAccount: (
     userID: string,
-    password: string
+    password: string,
+    adminPassword: string
   ) => Promise<ReturnCreateAccount>;
 } => {
   const [status, setStatus] = useState<Status<NumsCreateAccount>>(400);
 
   const createAccount = useCallback(
-    async (userID: string, password: string): Promise<ReturnCreateAccount> => {
-      const { status } = await fetchCreateAccount(userID, password);
+    async (
+      userID: string,
+      password: string,
+      adminPassword: string
+    ): Promise<ReturnCreateAccount> => {
+      const { status } = await fetchCreateAccount(
+        userID,
+        password,
+        adminPassword
+      );
 
       setStatus(status);
       return { status };
@@ -155,20 +167,23 @@ export const useCheckUserID = (): ReturnCheckUserID & {
 };
 
 export const useDeleteAccount = (): ReturnDeleteAccount & {
-  deleteAccount: () => Promise<ReturnDeleteAccount>;
+  deleteAccount: (adminPassword: string) => Promise<ReturnDeleteAccount>;
 } => {
   const [status, setStatus] = useState<Status<NumsDeleteAccount>>(401);
 
-  const deleteAccount = useCallback(async (): Promise<ReturnDeleteAccount> => {
-    const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
-    if (!sessionID) {
-      setStatus(401);
-      return { status: 401 };
-    }
-    const { status } = await fetchDeleteAccount(sessionID);
-    setStatus(status);
-    return { status };
-  }, []);
+  const deleteAccount = useCallback(
+    async (adminPassword: string): Promise<ReturnDeleteAccount> => {
+      const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
+      if (!sessionID) {
+        setStatus(401);
+        return { status: 401 };
+      }
+      const { status } = await fetchDeleteAccount(sessionID, adminPassword);
+      setStatus(status);
+      return { status };
+    },
+    []
+  );
 
   return {
     deleteAccount,
@@ -177,19 +192,29 @@ export const useDeleteAccount = (): ReturnDeleteAccount & {
 };
 
 export const useChangeUserID = (): ReturnChangeUserID & {
-  changeUserID: (newUserID: string) => Promise<ReturnChangeUserID>;
+  changeUserID: (
+    newUserID: string,
+    adminPassword: string
+  ) => Promise<ReturnChangeUserID>;
 } => {
   const [status, setStatus] = useState<Status<NumsChangeUserID>>(401);
 
   const changeUserID = useCallback(
-    async (newUserID: string): Promise<ReturnChangeUserID> => {
+    async (
+      newUserID: string,
+      adminPassword: string
+    ): Promise<ReturnChangeUserID> => {
       const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
       if (!sessionID) {
         setStatus(401);
         return { status: 401 };
       }
 
-      const { status } = await fetchChangeUserID(sessionID, newUserID);
+      const { status } = await fetchChangeUserID(
+        sessionID,
+        newUserID,
+        adminPassword
+      );
 
       setStatus(status);
       return { status };
@@ -204,19 +229,29 @@ export const useChangeUserID = (): ReturnChangeUserID & {
 };
 
 export const useChangePassword = (): ReturnChangePassword & {
-  changePassword: (newPassword: string) => Promise<ReturnChangePassword>;
+  changePassword: (
+    newPassword: string,
+    adminPassword: string
+  ) => Promise<ReturnChangePassword>;
 } => {
   const [status, setStatus] = useState<Status<NumsChangePassword>>(401);
 
   const changePassword = useCallback(
-    async (newPassword: string): Promise<ReturnChangePassword> => {
+    async (
+      newPassword: string,
+      adminPassword: string
+    ): Promise<ReturnChangePassword> => {
       const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
       if (!sessionID) {
         setStatus(401);
         return { status: 401 };
       }
 
-      const { status } = await fetchChangePassword(sessionID, newPassword);
+      const { status } = await fetchChangePassword(
+        sessionID,
+        newPassword,
+        adminPassword
+      );
 
       setStatus(status);
       return { status };
@@ -226,6 +261,43 @@ export const useChangePassword = (): ReturnChangePassword & {
 
   return {
     changePassword,
+    status,
+  };
+};
+
+export const useChangeAdminPassword = (): ReturnChangeAdminPassword & {
+  changeAdminPassword: (
+    oldAdminPassword: string,
+    newAdminPassword: string
+  ) => Promise<ReturnChangeAdminPassword>;
+} => {
+  const [status, setStatus] = useState<Status<NumsChangeAdminPassword>>(401);
+
+  const changeAdminPassword = useCallback(
+    async (
+      oldAdminPassword: string,
+      newAdminPassword: string
+    ): Promise<ReturnChangeAdminPassword> => {
+      const sessionID = localStorage.getItem(config.SESSION_ID_KEY);
+      if (!sessionID) {
+        setStatus(401);
+        return { status: 401 };
+      }
+
+      const { status } = await fetchChangeAdminPassword(
+        sessionID,
+        oldAdminPassword,
+        newAdminPassword
+      );
+
+      setStatus(status);
+      return { status };
+    },
+    []
+  );
+
+  return {
+    changeAdminPassword,
     status,
   };
 };

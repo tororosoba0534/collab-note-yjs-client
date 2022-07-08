@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDeleteAccount } from "../../api/hooks";
 import ErrorPage from "../errorPages/ErrorPage";
+import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PopupStatus } from "../personal/TiptapEditor";
 import { PopupTemplate } from "./PopupTemplate";
 
@@ -13,14 +14,19 @@ export const DeleteAccountTryWindow = (props: {
     "notYet" | "loading" | "finish"
   >("notYet");
   const [confirmUserID, setConfirmUserID] = useState("");
+  const [adminPassword, setAdminPassword] = useState("");
 
   const handleClickDeleteAccount = () => {
+    if (!confirmUserID || !adminPassword) {
+      console.log("Fill in all blanks");
+      return;
+    }
     if (confirmUserID !== props.realUserID) {
       console.log("User ID wrong.");
       return;
     }
     setLoadingStatus("loading");
-    deleteAccount().then(({ status }) => {
+    deleteAccount(adminPassword).then(({ status }) => {
       setLoadingStatus("finish");
       if (status === 200) {
         props.setPopupStatus("deleteAccountOK");
@@ -48,6 +54,12 @@ export const DeleteAccountTryWindow = (props: {
             onChange={(e) => setConfirmUserID(e.currentTarget.value)}
           />
         </div>
+        <FloatingLabelInput
+          label="Admin Password"
+          type="password"
+          value={adminPassword}
+          onChange={(e) => setAdminPassword(e.currentTarget.value)}
+        />
 
         <div className="flex items-center justify-around h-20">
           <button

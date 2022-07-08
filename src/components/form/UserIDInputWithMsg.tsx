@@ -14,54 +14,51 @@ export const UserIDInputWithMsg = (props: {
   const [isInit, setIsInit] = useState(true);
 
   return (
-    <div className="w-full">
-      <FloatingLabelInput
-        label={props.label || "userID"}
-        type="text"
-        value={props.userID}
-        onChange={(e) => {
-          props.setUserID(e.currentTarget.value);
-          setIsInit(() => false);
-        }}
+    <FloatingLabelInput
+      label={props.label || "userID"}
+      type="text"
+      value={props.userID}
+      onChange={(e) => {
+        props.setUserID(e.currentTarget.value);
+        setIsInit(() => false);
+      }}
+    >
+      <ValMsgBox
+        label="length: 5 ~ 20 "
+        errStatus={
+          isInit
+            ? "disabled"
+            : props.userID.length < 5
+            ? "NG"
+            : props.userID.length > 20
+            ? "NG"
+            : "OK"
+        }
+        errMsg={
+          isInit
+            ? ""
+            : props.userID.length < 5
+            ? `${5 - props.userID.length} more`
+            : props.userID.length > 20
+            ? `${props.userID.length - 20} less`
+            : ""
+        }
       />
-      <div className="w-full pl-1">
-        <ValMsgBox
-          label="length: 5 ~ 20 "
-          errStatus={
-            isInit
-              ? "disabled"
-              : props.userID.length < 5
-              ? "NG"
-              : props.userID.length > 20
-              ? "NG"
-              : "OK"
-          }
-          errMsg={
-            isInit
-              ? ""
-              : props.userID.length < 5
-              ? `${5 - props.userID.length} more`
-              : props.userID.length > 20
-              ? `${props.userID.length - 20} less`
-              : ""
-          }
-        />
-        <ValMsgBox
-          label="a~z, A~Z, 0~9 only"
-          errStatus={
-            !props.userID
-              ? "disabled"
-              : Validate.isUsedInvalidChar(props.userID)
-              ? "NG"
-              : "OK"
-          }
-          errMsg={ExclamationSvg()}
-        />
-        <CheckUserIDMsgBox
-          userID={props.userID}
-          setIsUserIDAvailable={props.setIsUserIDAvailable}
-        />
-      </div>
-    </div>
+      <ValMsgBox
+        label="a~z, A~Z, 0~9 only"
+        errStatus={
+          !props.userID
+            ? "disabled"
+            : Validate.isUsedInvalidChar(props.userID)
+            ? "NG"
+            : "OK"
+        }
+        errMsg={ExclamationSvg()}
+      />
+      <CheckUserIDMsgBox
+        userID={props.userID}
+        setIsUserIDAvailable={props.setIsUserIDAvailable}
+      />
+    </FloatingLabelInput>
   );
 };
