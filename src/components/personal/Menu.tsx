@@ -1,18 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { YjsWS } from "../../yjs/YjsWS";
-import { ConnStatusBox } from "./ConnStatusBox";
 import { MenuSvg } from "./icons/MenuSvg";
-import { PopupStatus } from "./TiptapEditor";
+import { PersonalContext } from "./PersonalContext";
 import { TooltipButton } from "./TooltipButton";
 
-export const Menu = (props: {
-  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
-  provider: CustomWSProvider;
-  userID: string;
-}) => {
+export const Menu = (props: { provider: CustomWSProvider; userID: string }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenTest, setIsOpenTest] = useState(false);
+
+  const { setPopupStatus } = useContext(PersonalContext);
 
   return (
     <div className="flex-none w-32 h-16 bg-gray-400 relative">
@@ -37,7 +34,7 @@ export const Menu = (props: {
         Hello {props.userID}
         <TooltipButton
           label="LOGOUT"
-          onClick={() => props.setPopupStatus("logout")}
+          onClick={() => setPopupStatus("logout")}
         />
         <div className="relative w-full">
           <div className="flex items-center justify-center">
@@ -90,19 +87,19 @@ export const Menu = (props: {
         </div>
         <TooltipButton
           label="Delete Account"
-          onClick={() => props.setPopupStatus("deleteAccountTry")}
+          onClick={() => setPopupStatus("deleteAccountTry")}
         />
         <TooltipButton
           label="Change User ID"
-          onClick={() => props.setPopupStatus("changeUserIDTry")}
+          onClick={() => setPopupStatus("changeUserIDTry")}
         />
         <TooltipButton
           label="Change Password"
-          onClick={() => props.setPopupStatus("changePasswordTry")}
+          onClick={() => setPopupStatus("changePasswordTry")}
         />
         <TooltipButton
           label="Change Admin Password"
-          onClick={() => props.setPopupStatus("changeAdminPasswordTry")}
+          onClick={() => setPopupStatus("changeAdminPasswordTry")}
         />
       </div>
     </div>

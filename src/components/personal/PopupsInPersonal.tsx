@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { ChangeAdminPasswordOKWindow } from "../popups/ChangeAdminPasswordOKWindow";
 import { ChangeAdminPasswordTryWindow } from "../popups/ChangeAdminPasswordTryWindow";
@@ -9,37 +10,27 @@ import { DeleteAccountOKWindow } from "../popups/DeleteAccountOKWindow";
 import { DeleteAccountTryWindow } from "../popups/DeleteAccountTryWindow";
 import { LogoutWindow } from "../popups/LogoutWindow";
 import { TestWindow } from "../popups/TestWindow";
-import { PopupStatus } from "./TiptapEditor";
+import { PersonalContext } from "./PersonalContext";
 
 export const PopupsInPersonal = (props: {
   provider: CustomWSProvider;
-  popupStatus: PopupStatus;
-  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
   userID: string;
 }) => {
-  switch (props.popupStatus) {
+  const { popupStatus } = useContext(PersonalContext);
+
+  switch (popupStatus) {
     case null:
       return null;
     case "test":
-      return <TestWindow setPopupStatus={props.setPopupStatus} />;
+      return <TestWindow />;
     case "logout":
-      return (
-        <LogoutWindow
-          provider={props.provider}
-          setPopupStatus={props.setPopupStatus}
-        />
-      );
+      return <LogoutWindow provider={props.provider} />;
     case "deleteAccountTry":
-      return (
-        <DeleteAccountTryWindow
-          setPopupStatus={props.setPopupStatus}
-          realUserID={props.userID}
-        />
-      );
+      return <DeleteAccountTryWindow realUserID={props.userID} />;
     case "changeUserIDTry":
-      return <ChangeUserIDTryWindow setPopupStatus={props.setPopupStatus} />;
+      return <ChangeUserIDTryWindow />;
     case "changePasswordTry":
-      return <ChangePasswordTryWindow setPopupStatus={props.setPopupStatus} />;
+      return <ChangePasswordTryWindow />;
     case "deleteAccountOK":
       return <DeleteAccountOKWindow />;
     case "changeUserIDOK":
@@ -47,9 +38,7 @@ export const PopupsInPersonal = (props: {
     case "changePasswordOK":
       return <ChangePasswordOKWindow />;
     case "changeAdminPasswordTry":
-      return (
-        <ChangeAdminPasswordTryWindow setPopupStatus={props.setPopupStatus} />
-      );
+      return <ChangeAdminPasswordTryWindow />;
     case "changeAdminPasswordOK":
       return <ChangeAdminPasswordOKWindow />;
 

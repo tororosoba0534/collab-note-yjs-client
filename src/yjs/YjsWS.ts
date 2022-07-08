@@ -3,7 +3,7 @@ import { CustomWSProvider } from "./CustomWSProvider";
 import * as decoding from "lib0/decoding";
 import * as encoding from "lib0/encoding";
 import { yjsConsts } from "./yjsConsts";
-import { PopupStatus } from "../components/personal/TiptapEditor";
+import { PopupStatus } from "../components/personal/PersonalContext";
 
 export class YjsWS {
   static sendTest = (provider: CustomWSProvider) => {

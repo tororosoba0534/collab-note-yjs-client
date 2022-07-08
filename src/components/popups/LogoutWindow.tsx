@@ -1,21 +1,20 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../api/hooks";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import ErrorPage from "../errorPages/ErrorPage";
-import { PopupStatus } from "../personal/TiptapEditor";
+import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const LogoutWindow = (props: {
-  provider: CustomWSProvider;
-  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
-}) => {
+export const LogoutWindow = (props: { provider: CustomWSProvider }) => {
   const { logout, status } = useLogout();
 
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
   const [didTryOnce, setDidTryOnce] = useState(false);
+
+  const { setPopupStatus } = useContext(PersonalContext);
 
   const handleClickLogout = () => {
     setDidTryOnce(true);
@@ -25,7 +24,7 @@ export const LogoutWindow = (props: {
 
       if (status === 200 || status === 401) {
         console.log("logout succeeded!");
-        props.setPopupStatus(null);
+        setPopupStatus(null);
         props.provider.destroy();
         navigate("/login");
         return;
@@ -38,10 +37,10 @@ export const LogoutWindow = (props: {
   if (!isLoading && didTryOnce) return <ErrorPage status={status} />;
 
   return (
-    <PopupTemplate handleClose={() => props.setPopupStatus(null)}>
+    <PopupTemplate handleClose={() => setPopupStatus(null)}>
       <div className="text-center">Really log out?</div>
 
-      <div className="flex justify-center items-center justify-around h-20">
+      <div className="flex  items-center justify-around h-20">
         <button
           className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
           onClick={() => {
@@ -52,7 +51,7 @@ export const LogoutWindow = (props: {
         </button>
         <button
           className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-          onClick={() => props.setPopupStatus(null)}
+          onClick={() => setPopupStatus(null)}
         >
           Cancel
         </button>

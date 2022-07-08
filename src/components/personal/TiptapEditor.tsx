@@ -5,29 +5,17 @@ import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import * as Y from "yjs";
 import config from "../../config";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { TopToolBar } from "./TopToolBar";
 import { Menu } from "./Menu";
 import { YjsWS } from "../../yjs/YjsWS";
 import { PopupsInPersonal } from "./PopupsInPersonal";
 import { ConnStatusBox } from "./ConnStatusBox";
-
-export type PopupStatus =
-  | null
-  | "logout"
-  | "test"
-  | "deleteAccountTry"
-  | "deleteAccountOK"
-  | "changeUserIDTry"
-  | "changeUserIDOK"
-  | "changePasswordTry"
-  | "changePasswordOK"
-  | "changeAdminPasswordTry"
-  | "changeAdminPasswordOK";
+import { PersonalContext } from "./PersonalContext";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
-  const [popupStatus, setPopupStatus] = useState<PopupStatus>(null);
+  const { setPopupStatus } = useContext(PersonalContext);
 
   // ydoc should be recreated when user changes
   // so "userID" should be in the dependency array of useMemo.
@@ -52,6 +40,7 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
     }
 
     return provider;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userID, ydoc]);
 
   const editor = useEditor({
@@ -87,22 +76,13 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
         <div className="flex-none w-40 h-16">
           <ConnStatusBox provider={provider} />
         </div>
-        <Menu
-          setPopupStatus={setPopupStatus}
-          provider={provider}
-          userID={userID}
-        />
+        <Menu provider={provider} userID={userID} />
       </div>
       <div className="absolute inset-x-10 top-32 mb-10">
         <EditorContent editor={editor} />
       </div>
 
-      <PopupsInPersonal
-        provider={provider}
-        popupStatus={popupStatus}
-        setPopupStatus={setPopupStatus}
-        userID={userID}
-      />
+      <PopupsInPersonal provider={provider} userID={userID} />
     </div>
   );
 };

@@ -1,20 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useDeleteAccount } from "../../api/hooks";
 import ErrorPage from "../errorPages/ErrorPage";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
-import { PopupStatus } from "../personal/TiptapEditor";
+import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const DeleteAccountTryWindow = (props: {
-  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
-  realUserID: string;
-}) => {
+export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
   const { deleteAccount, status } = useDeleteAccount();
   const [loadingStatus, setLoadingStatus] = useState<
     "notYet" | "loading" | "finish"
   >("notYet");
   const [confirmUserID, setConfirmUserID] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
+
+  const { setPopupStatus } = useContext(PersonalContext);
 
   const handleClickDeleteAccount = () => {
     if (!confirmUserID || !adminPassword) {
@@ -29,7 +28,7 @@ export const DeleteAccountTryWindow = (props: {
     deleteAccount(adminPassword).then(({ status }) => {
       setLoadingStatus("finish");
       if (status === 200) {
-        props.setPopupStatus("deleteAccountOK");
+        setPopupStatus("deleteAccountOK");
       }
     });
   };
@@ -39,7 +38,7 @@ export const DeleteAccountTryWindow = (props: {
   }
 
   return (
-    <PopupTemplate handleClose={() => props.setPopupStatus(null)}>
+    <PopupTemplate handleClose={() => setPopupStatus(null)}>
       <div className="">
         <div className="text-center">Delete Account</div>
         <div className="flex flex-col">
@@ -72,7 +71,7 @@ export const DeleteAccountTryWindow = (props: {
           </button>
           <button
             className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-            onClick={() => props.setPopupStatus(null)}
+            onClick={() => setPopupStatus(null)}
           >
             Cancel
           </button>

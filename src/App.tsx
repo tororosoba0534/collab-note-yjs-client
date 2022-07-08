@@ -7,6 +7,7 @@ import config from "./config";
 import { EditorWrapper } from "./components/personal/EditorWrapper";
 import CreateAccount from "./components/CreateAccount";
 import { CreateAccountProvider } from "./components/CreateAccount/CreateAccountContext";
+import { PersonalProvider } from "./components/personal/PersonalContext";
 
 function App() {
   console.log(`url: ${config.wsserver.URL}`);
@@ -15,7 +16,14 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/personal" element={<EditorWrapper />} />
+        <Route
+          path="/personal"
+          element={
+            <PersonalProvider>
+              <EditorWrapper />
+            </PersonalProvider>
+          }
+        />
 
         <Route path="/login" element={<Login />} />
         <Route

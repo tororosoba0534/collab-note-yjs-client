@@ -1,4 +1,3 @@
-import { PopupStatus } from "../personal/TiptapEditor";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const ChangeUserIDOKWindow = () => {

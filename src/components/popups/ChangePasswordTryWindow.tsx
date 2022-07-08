@@ -1,16 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useChangePassword } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import ErrorPage from "../errorPages/ErrorPage";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
-import { PopupStatus } from "../personal/TiptapEditor";
+import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const ChangePasswordTryWindow = (props: {
-  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
-}) => {
+export const ChangePasswordTryWindow = () => {
   const { changePassword, status } = useChangePassword();
   const [loadingStatus, setLoadingStatus] = useState<
     "notYet" | "loading" | "finish"
@@ -19,6 +17,8 @@ export const ChangePasswordTryWindow = (props: {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [adminPassword, setAdminPassword] = useState<string>("");
+
+  const { setPopupStatus } = useContext(PersonalContext);
 
   const handleClickChange = () => {
     if (!password || !confirmPassword || !adminPassword) {
@@ -43,7 +43,7 @@ export const ChangePasswordTryWindow = (props: {
     changePassword(password, adminPassword).then(({ status }) => {
       setLoadingStatus("finish");
       if (status === 200) {
-        props.setPopupStatus("changePasswordOK");
+        setPopupStatus("changePasswordOK");
       }
     });
   };
@@ -53,7 +53,7 @@ export const ChangePasswordTryWindow = (props: {
   }
 
   return (
-    <PopupTemplate handleClose={() => props.setPopupStatus(null)}>
+    <PopupTemplate handleClose={() => setPopupStatus(null)}>
       <div className="flex flex-col justify-around gap-10">
         <div className="text-center">Change User ID</div>
 
@@ -89,7 +89,7 @@ export const ChangePasswordTryWindow = (props: {
           </button>
           <button
             className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-            onClick={() => props.setPopupStatus(null)}
+            onClick={() => setPopupStatus(null)}
           >
             Cancel
           </button>

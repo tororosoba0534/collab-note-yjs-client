@@ -1,16 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useChangeUserID } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
 import ErrorPage from "../errorPages/ErrorPage";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
-import { PopupStatus } from "../personal/TiptapEditor";
+import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const ChangeUserIDTryWindow = (props: {
-  setPopupStatus: React.Dispatch<React.SetStateAction<PopupStatus>>;
-}) => {
+export const ChangeUserIDTryWindow = () => {
   const { changeUserID, status } = useChangeUserID();
   const [loadingStatus, setLoadingStatus] = useState<
     "notYet" | "loading" | "finish"
@@ -19,6 +17,8 @@ export const ChangeUserIDTryWindow = (props: {
   const [newUserID, setNewUserID] = useState<string>("");
   const [confirmUserID, setConfirmUserID] = useState<string>("");
   const [adminPassword, setAdminPassword] = useState<string>("");
+
+  const { setPopupStatus } = useContext(PersonalContext);
 
   const handleClickChange = () => {
     if (!newUserID || !confirmUserID || !adminPassword) {
@@ -40,7 +40,7 @@ export const ChangeUserIDTryWindow = (props: {
       setLoadingStatus("finish");
       if (status === 200) {
         console.log("change userID succeeded!");
-        props.setPopupStatus("changeUserIDOK");
+        setPopupStatus("changeUserIDOK");
       }
     });
   };
@@ -50,7 +50,7 @@ export const ChangeUserIDTryWindow = (props: {
   }
 
   return (
-    <PopupTemplate handleClose={() => props.setPopupStatus(null)}>
+    <PopupTemplate handleClose={() => setPopupStatus(null)}>
       <div className="flex flex-col justify-around gap-10">
         <div className="text-center">Change User ID</div>
 
@@ -86,7 +86,7 @@ export const ChangeUserIDTryWindow = (props: {
           </button>
           <button
             className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-            onClick={() => props.setPopupStatus(null)}
+            onClick={() => setPopupStatus(null)}
           >
             Cancel
           </button>
