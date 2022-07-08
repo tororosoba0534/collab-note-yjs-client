@@ -100,6 +100,10 @@ export const Menu = (props: {
           label="Change Password"
           onClick={() => props.setPopupStatus("changePasswordTry")}
         />
+        <TooltipButton
+          label="Change Admin Password"
+          onClick={() => props.setPopupStatus("changeAdminPasswordTry")}
+        />
       </div>
     </div>
   );

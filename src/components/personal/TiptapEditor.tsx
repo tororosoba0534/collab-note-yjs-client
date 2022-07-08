@@ -18,11 +18,13 @@ export type PopupStatus =
   | "logout"
   | "test"
   | "deleteAccountTry"
-  | "changeUserIDTry"
-  | "changePasswordTry"
   | "deleteAccountOK"
+  | "changeUserIDTry"
   | "changeUserIDOK"
-  | "changePasswordOK";
+  | "changePasswordTry"
+  | "changePasswordOK"
+  | "changeAdminPasswordTry"
+  | "changeAdminPasswordOK";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   const [popupStatus, setPopupStatus] = useState<PopupStatus>(null);

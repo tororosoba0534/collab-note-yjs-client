@@ -124,3 +124,13 @@ messageHandlers[yjsConsts.MESSAGE_CHANGE_PASSWORD] = (
 ) => {
   console.log("MESSAGE_CHANGE_PASSWORD detected!");
 };
+
+messageHandlers[yjsConsts.MESSAGE_CHANGE_ADMIN_PASSWORD] = (
+  encoder,
+  decoder,
+  provider,
+  emitSynced,
+  messageType
+) => {
+  console.log("MESSAGE_CHANGE_ADMIN_PASSWORD detected!");
+};

@@ -225,7 +225,7 @@ export const fetchChangeAdminPassword = async (
   oldAdminPassword: string,
   newAdminPassword: string
 ): Promise<ReturnChangeAdminPassword> => {
-  const { status } = await baseFetch("/personal/change-password", {
+  const { status } = await baseFetch("/personal/change-admin-password", {
     sessionID,
     oldAdminPassword,
     newAdminPassword,

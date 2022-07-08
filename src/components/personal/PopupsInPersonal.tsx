@@ -1,4 +1,6 @@
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
+import { ChangeAdminPasswordOKWindow } from "../popups/ChangeAdminPasswordOKWindow";
+import { ChangeAdminPasswordTryWindow } from "../popups/ChangeAdminPasswordTryWindow";
 import { ChangePasswordOKWindow } from "../popups/ChangePasswordOKWindow";
 import { ChangePasswordTryWindow } from "../popups/ChangePasswordTryWindow";
 import { ChangeUserIDOKWindow } from "../popups/ChangeUserIDOKWindow";
@@ -44,6 +46,12 @@ export const PopupsInPersonal = (props: {
       return <ChangeUserIDOKWindow />;
     case "changePasswordOK":
       return <ChangePasswordOKWindow />;
+    case "changeAdminPasswordTry":
+      return (
+        <ChangeAdminPasswordTryWindow setPopupStatus={props.setPopupStatus} />
+      );
+    case "changeAdminPasswordOK":
+      return <ChangeAdminPasswordOKWindow />;
 
     default:
       return null;
