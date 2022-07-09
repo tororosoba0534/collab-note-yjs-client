@@ -1,5 +1,6 @@
 import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
+import { IsCmd } from "../../utils/IsCmd";
 import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { ExclamationSvg } from "../form/ExclamationSvg";
@@ -65,9 +66,27 @@ const CreateAccount = () => {
             setUserID={setUserID}
             setIsUserIDAvailable={setIsUserIDUnused}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (IsCmd.next(e)) {
                 if (Validate.isNotValidUserID(userID)) return;
                 confirmUserIDRef.current?.focus();
+                return;
+              } else if (IsCmd.down(e)) {
+                confirmUserIDRef.current?.focus();
+                return;
+              } else if (IsCmd.up(e)) {
+                switch (step) {
+                  case 1: {
+                    confirmUserIDRef.current?.focus();
+                    break;
+                  }
+                  case 2: {
+                    confirmPasswordRef.current?.focus();
+                    break;
+                  }
+                  default: {
+                    confirmAdminRef.current?.focus();
+                  }
+                }
               }
             }}
           />
@@ -79,7 +98,7 @@ const CreateAccount = () => {
             setConfirm={setConfirmUserID}
             original={userID}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (IsCmd.next(e)) {
                 if (
                   userID !== confirmUserID ||
                   Validate.isNotValidUserID(userID)
@@ -90,6 +109,19 @@ const CreateAccount = () => {
                   next1Ref.current?.click();
                 }
                 passwordRef.current?.focus();
+              } else if (IsCmd.down(e)) {
+                switch (step) {
+                  case 1: {
+                    userIDRef.current?.focus();
+                    break;
+                  }
+                  default: {
+                    passwordRef.current?.focus();
+                    break;
+                  }
+                }
+              } else if (IsCmd.up(e)) {
+                userIDRef.current?.focus();
               }
             }}
           />
@@ -115,9 +147,13 @@ const CreateAccount = () => {
               password={password}
               setPassword={setPassword}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
+                if (IsCmd.next(e)) {
                   if (Validate.isNotValidPassword(password)) return;
                   confirmPasswordRef.current?.focus();
+                } else if (IsCmd.down(e)) {
+                  confirmPasswordRef.current?.focus();
+                } else if (IsCmd.up(e)) {
+                  confirmUserIDRef.current?.focus();
                 }
               }}
               onFirstRender={() => passwordRef.current?.focus()}
@@ -131,7 +167,7 @@ const CreateAccount = () => {
               confirm={confirmPassword}
               setConfirm={setConfirmPassword}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
+                if (IsCmd.next(e)) {
                   if (
                     password !== confirmPassword ||
                     Validate.isNotValidPassword(password)
@@ -139,8 +175,17 @@ const CreateAccount = () => {
                     return;
                   if (step === 2) {
                     next2Ref.current?.click();
+                  } else {
+                    adminRef.current?.focus();
                   }
-                  adminRef.current?.focus();
+                } else if (IsCmd.down(e)) {
+                  if (step === 2) {
+                    userIDRef.current?.focus();
+                  } else {
+                    adminRef.current?.focus();
+                  }
+                } else if (IsCmd.up(e)) {
+                  passwordRef.current?.focus();
                 }
               }}
             />
@@ -168,13 +213,17 @@ const CreateAccount = () => {
               password={adminPassword}
               setPassword={setAdminPassword}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
+                if (IsCmd.next(e)) {
                   if (
                     adminPassword === password ||
                     Validate.isNotValidPassword(adminPassword)
                   )
                     return;
                   confirmAdminRef.current?.focus();
+                } else if (IsCmd.down(e)) {
+                  confirmAdminRef.current?.focus();
+                } else if (IsCmd.up(e)) {
+                  confirmPasswordRef.current?.focus();
                 }
               }}
               onFirstRender={() => adminRef.current?.focus()}
@@ -200,7 +249,7 @@ const CreateAccount = () => {
               type="password"
               label="input Admin Password again"
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
+                if (IsCmd.next(e)) {
                   if (
                     adminPassword !== confirmAdmin ||
                     adminPassword === password ||
@@ -208,6 +257,10 @@ const CreateAccount = () => {
                   )
                     return;
                   next3Ref.current?.click();
+                } else if (IsCmd.down(e)) {
+                  userIDRef.current?.focus();
+                } else if (IsCmd.up(e)) {
+                  adminRef.current?.focus();
                 }
               }}
             />
