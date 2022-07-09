@@ -62,22 +62,42 @@ const CreateAccount = () => {
               if (IsCmd.next(e)) {
                 if (Validate.isNotValidUserID(userID)) return;
                 confirmUserIDRef.current?.focus();
+                confirmUserIDRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
                 return;
               } else if (IsCmd.down(e)) {
                 confirmUserIDRef.current?.focus();
+                confirmUserIDRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
                 return;
               } else if (IsCmd.up(e)) {
                 switch (step) {
                   case 1: {
                     confirmUserIDRef.current?.focus();
+                    confirmUserIDRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
                     break;
                   }
                   case 2: {
                     confirmPasswordRef.current?.focus();
+                    confirmPasswordRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
                     break;
                   }
                   default: {
                     confirmAdminRef.current?.focus();
+                    confirmAdminRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
                   }
                 }
               }
@@ -102,19 +122,35 @@ const CreateAccount = () => {
                   next1Ref.current?.click();
                 }
                 passwordRef.current?.focus();
+                passwordRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
               } else if (IsCmd.down(e)) {
                 switch (step) {
                   case 1: {
                     userIDRef.current?.focus();
+                    userIDRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
                     break;
                   }
                   default: {
                     passwordRef.current?.focus();
+                    passwordRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
                     break;
                   }
                 }
               } else if (IsCmd.up(e)) {
                 userIDRef.current?.focus();
+                userIDRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
               }
             }}
           />
@@ -143,13 +179,31 @@ const CreateAccount = () => {
                 if (IsCmd.next(e)) {
                   if (Validate.isNotValidPassword(password)) return;
                   confirmPasswordRef.current?.focus();
+                  confirmPasswordRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
                 } else if (IsCmd.down(e)) {
                   confirmPasswordRef.current?.focus();
+                  confirmPasswordRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
                 } else if (IsCmd.up(e)) {
                   confirmUserIDRef.current?.focus();
+                  confirmUserIDRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
                 }
               }}
-              onFirstRender={() => passwordRef.current?.focus()}
+              onFirstRender={() => {
+                passwordRef.current?.focus();
+                passwordRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }}
             />
 
             <ConfirmInputWithMsg
@@ -170,15 +224,31 @@ const CreateAccount = () => {
                     next2Ref.current?.click();
                   } else {
                     adminRef.current?.focus();
+                    adminRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
                   }
                 } else if (IsCmd.down(e)) {
                   if (step === 2) {
                     userIDRef.current?.focus();
+                    userIDRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
                   } else {
                     adminRef.current?.focus();
+                    adminRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
                   }
                 } else if (IsCmd.up(e)) {
                   passwordRef.current?.focus();
+                  passwordRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
                 }
               }}
             />
@@ -213,13 +283,31 @@ const CreateAccount = () => {
                   )
                     return;
                   confirmAdminRef.current?.focus();
+                  confirmAdminRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
                 } else if (IsCmd.down(e)) {
                   confirmAdminRef.current?.focus();
+                  confirmAdminRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
                 } else if (IsCmd.up(e)) {
                   confirmPasswordRef.current?.focus();
+                  confirmPasswordRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
                 }
               }}
-              onFirstRender={() => adminRef.current?.focus()}
+              onFirstRender={() => {
+                adminRef.current?.focus();
+                adminRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }}
             >
               <ValMsgBox
                 label="NOT same as password?"
@@ -252,8 +340,16 @@ const CreateAccount = () => {
                   next3Ref.current?.click();
                 } else if (IsCmd.down(e)) {
                   userIDRef.current?.focus();
+                  userIDRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
                 } else if (IsCmd.up(e)) {
                   adminRef.current?.focus();
+                  adminRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
                 }
               }}
             />
