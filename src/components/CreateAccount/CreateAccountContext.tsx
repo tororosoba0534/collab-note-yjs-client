@@ -4,7 +4,8 @@ import { isThrownErr, Status } from "../../api/base";
 import { NumsCreateAccount, ReturnCreateAccount } from "../../api/fetches";
 import { useCreateAccount } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
-import { CAStepNum } from "./CAStep";
+
+export type CAStepNum = 1 | 2 | 3 | 4;
 
 export const CreateAccountContext = createContext<{
   userID: string;

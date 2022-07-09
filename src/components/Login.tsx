@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { isThrownErr } from "../api/base";
 import { useLogin } from "../api/hooks";
 import { Validate } from "../utils/validation";
+import { VividButton } from "./buttons/VividButton";
 import { FloatingLabelInput } from "./form/FloatingLabelInput";
+import { FormBase } from "./form/FormBase";
+import { FormFrame } from "./form/FormFrame";
 import { FormTitle } from "./form/FormTitle";
 
 const Login = () => {
@@ -56,71 +59,64 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-col justify-center items-center gap-10 p-5  shadow-[3px_3px_12px_rgba(0,0,0,0.3)]  rounded-2xl bg-white mt-20 mb-20">
-        <FormTitle
-          title="Login"
-          didSubmitOnce={didSubmitOnce}
-          submitMsg={submitMsg}
-          isLoading={isLoading}
-          redirectRoute="/personal"
-          redirectLabel="editor page"
-        />
-
-        <FloatingLabelInput
-          label="userID"
-          type="text"
-          value={userID}
-          onChange={(e) => {
-            setUserID(e.currentTarget.value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSubmit();
-            }
-          }}
-        />
-
-        <FloatingLabelInput
-          label="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.currentTarget.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSubmit();
-            }
-          }}
-        />
-
-        {!password || !userID ? (
-          <button
-            className="px-4 py-2 rounded bg-gray-300 text-white font-semibold text-center block w-full cursor-not-allowed"
-            disabled
-          >
-            LOGIN
-          </button>
-        ) : (
-          <button
-            className="px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
-            onClick={() => handleSubmit()}
-          >
-            LOGIN
-          </button>
-        )}
-
-        <div>
-          ... or{" "}
-          <Link
-            className="font-bold text-rose-500 hover:text-rose-400"
-            to="/create-account"
-          >
-            CREATE ACCOUNT
-          </Link>
-          {"?"}
-        </div>
+    <FormBase>
+      <FormTitle
+        title="Login"
+        didSubmitOnce={didSubmitOnce}
+        submitMsg={submitMsg}
+        isLoading={isLoading}
+        redirectRoute="/personal"
+        redirectLabel="editor page"
+      />
+      <div className="w-full">
+        <FormFrame>
+          <FloatingLabelInput
+            label="userID"
+            type="text"
+            value={userID}
+            onChange={(e) => {
+              setUserID(e.currentTarget.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSubmit();
+              }
+            }}
+          />
+        </FormFrame>
+        <FormFrame>
+          <FloatingLabelInput
+            label="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSubmit();
+              }
+            }}
+          />
+        </FormFrame>
       </div>
-    </div>
+      <div className="w-full p-5 pb-0 bg-gray-100">
+        <VividButton
+          disable={!password || !userID}
+          label="LOGIN"
+          onClick={() => handleSubmit()}
+        />
+      </div>
+
+      <div className="p-5 pt-0">
+        ... or{" "}
+        <Link
+          className="font-bold text-rose-500 hover:text-rose-400"
+          to="/create-account"
+        >
+          CREATE ACCOUNT
+        </Link>
+        {"?"}
+      </div>
+    </FormBase>
   );
 };
 
