@@ -8,7 +8,6 @@ import { VividButton } from "./buttons/VividButton";
 import { FloatingLabelInput } from "./form/FloatingLabelInput";
 import { FormBase } from "./form/FormBase";
 import { FormFrame } from "./form/FormFrame";
-import { FormTitle } from "./form/FormTitle";
 
 const Login = () => {
   const [userID, setUserID] = useState("");
@@ -17,25 +16,26 @@ const Login = () => {
   const navigate = useNavigate();
 
   const { login, status } = useLogin();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [submitMsg, setSubmitMsg] = useState("");
-  const [didSubmitOnce, setDidSubmitOnce] = useState(false);
 
   const handleSubmit = () => {
     console.log("submit clicked.");
-    setDidSubmitOnce(true);
-    setIsLoading(true);
-    setSubmitMsg;
+
+    if (!userID || !password) {
+      setSubmitMsg("Fill in all the blanks.");
+      return;
+    }
 
     if (
       Validate.isNotValidUserID(userID) ||
       Validate.isNotValidPassword(password)
     ) {
       setSubmitMsg("userID or password or both are wrong.");
-      setIsLoading(false);
       return;
     }
 
+    setIsLoading(true);
     login(userID, password).then(({ status }) => {
       setIsLoading(false);
 
@@ -45,7 +45,7 @@ const Login = () => {
       }
 
       if (isThrownErr(status)) {
-        setSubmitMsg(status);
+        setSubmitMsg(`Thrown ERR: ${status}`);
         return;
       }
 
@@ -60,14 +60,14 @@ const Login = () => {
 
   return (
     <FormBase>
-      <FormTitle
-        title="Login"
-        didSubmitOnce={didSubmitOnce}
-        submitMsg={submitMsg}
-        isLoading={isLoading}
-        redirectRoute="/personal"
-        redirectLabel="editor page"
-      />
+      <div className="text-2xl">Login</div>
+      {isLoading ? (
+        <div>Wait for minutes...</div>
+      ) : !submitMsg ? null : (
+        <div className="w-full rounded-md bg-red-400 text-white font-bold">
+          {submitMsg}
+        </div>
+      )}
       <div className="w-full">
         <FormFrame>
           <FloatingLabelInput

@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { isThrownErr, Status } from "../../api/base";
 import { NumsCreateAccount, ReturnCreateAccount } from "../../api/fetches";
 import { useCreateAccount } from "../../api/hooks";
@@ -26,8 +25,7 @@ export const CreateAccountContext = createContext<{
   setIsUserIDUnused: React.Dispatch<React.SetStateAction<boolean>>;
   submitMsg: string;
   setSubmitMsg: React.Dispatch<React.SetStateAction<string>>;
-  didSubmitOnce: boolean;
-  setDidSubmitOnce: React.Dispatch<React.SetStateAction<boolean>>;
+
   createAccount: (
     userID: string,
     password: string,
@@ -37,6 +35,7 @@ export const CreateAccountContext = createContext<{
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmit: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 }>(null!);
 
 export const CreateAccountProvider = (props: { children: ReactNode }) => {
@@ -52,58 +51,65 @@ export const CreateAccountProvider = (props: { children: ReactNode }) => {
   const [isUserIDUnused, setIsUserIDUnused] = useState(false);
 
   const [submitMsg, setSubmitMsg] = useState("");
-  const [didSubmitOnce, setDidSubmitOnce] = useState(false);
 
   const { createAccount, status } = useCreateAccount();
-  const [isLoading, setIsLoading] = useState(true);
-
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = () => {
     console.log("submit clicked");
 
-    setDidSubmitOnce(true);
-    setSubmitMsg("");
-    setIsLoading(true);
-
-    if (!userID || !password || !confirmPassword || !adminPassword) {
+    if (
+      !userID ||
+      !confirmUserID ||
+      !password ||
+      !confirmPassword ||
+      !adminPassword ||
+      !confirmAdmin
+    ) {
       setSubmitMsg("fill in all the fields.");
-      setIsLoading(false);
+      return;
+    }
+
+    if (userID !== confirmUserID) {
+      setSubmitMsg("two userIDs are different.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setSubmitMsg("two passwords are NOT matched.");
-      setIsLoading(false);
+      setSubmitMsg("two passwords are different.");
+      return;
+    }
+
+    if (adminPassword !== confirmAdmin) {
+      setSubmitMsg("two admin passwords are different.");
+      return;
+    }
+
+    if (password === adminPassword) {
+      setSubmitMsg("admin password has to be different from password.");
       return;
     }
 
     if (
       Validate.isNotValidUserID(userID) ||
       Validate.isNotValidPassword(password) ||
-      Validate.isNotValidPassword(adminPassword) ||
-      password === adminPassword
+      Validate.isNotValidPassword(adminPassword)
     ) {
       setSubmitMsg("contains invalid value");
-      setIsLoading(false);
       return;
     }
 
+    setIsLoading(true);
     createAccount(userID, password, adminPassword).then(({ status }) => {
       setIsLoading(false);
 
       if (status === 200) {
-        navigate("/login");
+        setSubmitMsg("");
         return;
-        // console.log("create account succeeded!");
-        // return;
       }
 
-      setPassword("");
-      setConfirmPassword("");
-
       if (isThrownErr(status)) {
-        setSubmitMsg(status);
+        setSubmitMsg(`Thrown ERR: ${status}`);
         return;
       }
 
@@ -115,9 +121,7 @@ export const CreateAccountProvider = (props: { children: ReactNode }) => {
       }
 
       if (status === 400) {
-        setSubmitMsg(
-          "400 Bad Request: If you see this message, please tell us!"
-        );
+        setSubmitMsg("400 Bad Request: Retry with different value.");
         return;
       }
 
@@ -146,8 +150,6 @@ export const CreateAccountProvider = (props: { children: ReactNode }) => {
         setIsUserIDUnused,
         submitMsg,
         setSubmitMsg,
-        didSubmitOnce,
-        setDidSubmitOnce,
         createAccount,
         status,
         isLoading,

@@ -6,19 +6,17 @@ import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { ExclamationSvg } from "../form/ExclamationSvg";
 import { FormBase } from "../form/FormBase";
 import { FormFrame } from "../form/FormFrame";
-import { FormTitle } from "../form/FormTitle";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
 import { ValMsgBox } from "../form/ValMsgBox";
+import { CreateAccountOKWindow } from "../popups/CreateAccountOKWindow";
 import { CreateAccountTryWindow } from "../popups/CreateAccountTryWindow";
 import { CANextButton } from "./CANextButton";
+import { CASubmitMsg } from "./CASubmitMsg";
 import { CreateAccountContext } from "./CreateAccountContext";
 
 const CreateAccount = () => {
   const {
-    didSubmitOnce,
-    submitMsg,
-    isLoading,
     userID,
     setUserID,
     confirmUserID,
@@ -34,6 +32,7 @@ const CreateAccount = () => {
     confirmAdmin,
     setConfirmAdmin,
     isUserIDUnused,
+    status,
   } = useContext(CreateAccountContext);
 
   const userIDRef = useRef<HTMLInputElement | null>(null);
@@ -49,14 +48,8 @@ const CreateAccount = () => {
 
   return (
     <FormBase>
-      <FormTitle
-        title="Create new account"
-        didSubmitOnce={didSubmitOnce}
-        submitMsg={submitMsg}
-        isLoading={isLoading}
-        redirectLabel="login page"
-        redirectRoute="/login"
-      />
+      <h1 className="text-2xl">Create Account</h1>
+      <CASubmitMsg />
       <div className="w-full">
         <FormFrame>
           <UserIDInputWithMsg
@@ -295,7 +288,11 @@ const CreateAccount = () => {
         </Link>
       </div>
 
-      {step !== 4 ? null : <CreateAccountTryWindow />}
+      {status === 200 ? (
+        <CreateAccountOKWindow />
+      ) : step !== 4 ? null : (
+        <CreateAccountTryWindow />
+      )}
     </FormBase>
   );
 };
