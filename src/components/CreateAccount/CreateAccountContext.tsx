@@ -9,12 +9,16 @@ import { CAStepNum } from "./CAStep";
 export const CreateAccountContext = createContext<{
   userID: string;
   setUserID: React.Dispatch<React.SetStateAction<string>>;
+  confirmUserID: string;
+  setConfirmUserID: React.Dispatch<React.SetStateAction<string>>;
   password: string;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   confirmPassword: string;
   setConfirmPassword: React.Dispatch<React.SetStateAction<string>>;
   adminPassword: string;
   setAdminPassword: React.Dispatch<React.SetStateAction<string>>;
+  confirmAdmin: string;
+  setConfirmAdmin: React.Dispatch<React.SetStateAction<string>>;
   step: CAStepNum;
   setStep: React.Dispatch<React.SetStateAction<CAStepNum>>;
   isUserIDUnused: boolean;
@@ -36,9 +40,11 @@ export const CreateAccountContext = createContext<{
 
 export const CreateAccountProvider = (props: { children: ReactNode }) => {
   const [userID, setUserID] = useState("");
+  const [confirmUserID, setConfirmUserID] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
+  const [confirmAdmin, setConfirmAdmin] = useState("");
 
   const [step, setStep] = useState<CAStepNum>(1);
 
@@ -123,12 +129,16 @@ export const CreateAccountProvider = (props: { children: ReactNode }) => {
       value={{
         userID,
         setUserID,
+        confirmUserID,
+        setConfirmUserID,
         password,
         setPassword,
         confirmPassword,
         setConfirmPassword,
         adminPassword,
         setAdminPassword,
+        confirmAdmin,
+        setConfirmAdmin,
         step,
         setStep,
         isUserIDUnused,

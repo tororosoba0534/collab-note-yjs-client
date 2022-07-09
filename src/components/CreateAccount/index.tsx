@@ -2,17 +2,16 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
+import { ExclamationSvg } from "../form/ExclamationSvg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { FormTitle } from "../form/FormTitle";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
+import { ValMsgBox } from "../form/ValMsgBox";
 import { CreateAccountTryWindow } from "../popups/CreateAccountTryWindow";
 import { CANextButton } from "./CANextButton";
 import { CAStep } from "./CAStep";
-import {
-  CreateAccountContext,
-  CreateAccountProvider,
-} from "./CreateAccountContext";
+import { CreateAccountContext } from "./CreateAccountContext";
 
 const CreateAccount = () => {
   const {
@@ -21,6 +20,8 @@ const CreateAccount = () => {
     isLoading,
     userID,
     setUserID,
+    confirmUserID,
+    setConfirmUserID,
     setIsUserIDUnused,
     step,
     password,
@@ -29,6 +30,8 @@ const CreateAccount = () => {
     setConfirmPassword,
     adminPassword,
     setAdminPassword,
+    confirmAdmin,
+    setConfirmAdmin,
     isUserIDUnused,
   } = useContext(CreateAccountContext);
   return (
@@ -50,11 +53,22 @@ const CreateAccount = () => {
               setUserID={setUserID}
               setIsUserIDAvailable={setIsUserIDUnused}
             />
+            <ConfirmInputWithMsg
+              label={"input UserID again"}
+              type="text"
+              confirm={confirmUserID}
+              setConfirm={setConfirmUserID}
+              original={userID}
+            />
           </CAStep>
 
           {step === 1 ? (
             <CANextButton
-              disable={Validate.isNotValidUserID(userID) || !isUserIDUnused}
+              disable={
+                Validate.isNotValidUserID(userID) ||
+                !isUserIDUnused ||
+                userID !== confirmUserID
+              }
             />
           ) : (
             <CAStep step={2}>
@@ -85,11 +99,30 @@ const CreateAccount = () => {
             />
           ) : (
             <CAStep step={3}>
-              <FloatingLabelInput
+              <PasswordInputWithMsg
                 label="Admin Password"
+                password={adminPassword}
+                setPassword={setAdminPassword}
+              >
+                <ValMsgBox
+                  label="NOT same as password?"
+                  errStatus={
+                    Validate.isNotValidPassword(adminPassword)
+                      ? "disabled"
+                      : adminPassword === password
+                      ? "NG"
+                      : "OK"
+                  }
+                  errMsg={ExclamationSvg()}
+                />
+              </PasswordInputWithMsg>
+
+              <ConfirmInputWithMsg
+                confirm={confirmAdmin}
+                setConfirm={setConfirmAdmin}
+                original={adminPassword}
                 type="password"
-                value={adminPassword}
-                onChange={(e) => setAdminPassword(e.currentTarget.value)}
+                label="input Admin Password again"
               />
             </CAStep>
           )}
@@ -104,30 +137,12 @@ const CreateAccount = () => {
                 Validate.isNotValidPassword(password) ||
                 !isUserIDUnused ||
                 Validate.isNotValidPassword(adminPassword) ||
-                adminPassword === password
+                adminPassword === password ||
+                adminPassword !== confirmAdmin
               }
             />
           )}
         </div>
-
-        {/* {password !== confirmPassword ||
-        Validate.isNotValidUserID(userID) ||
-        Validate.isNotValidPassword(password) ||
-        !isUserIDUnused ? (
-          <button
-            className="px-4 py-2 rounded bg-gray-300 text-white font-semibold text-center block w-full cursor-not-allowed"
-            disabled
-          >
-            CREATE
-          </button>
-        ) : (
-          <button
-            className="px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
-            onClick={() => handleSubmit()}
-          >
-            CREATE
-          </button>
-        )} */}
 
         <div className="p-5 pt-0">
           ... or already have an account?{" "}

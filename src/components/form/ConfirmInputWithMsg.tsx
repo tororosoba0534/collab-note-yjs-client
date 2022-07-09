@@ -45,9 +45,7 @@ export const ConfirmInputWithMsg = (props: {
       }}
     >
       <ValMsgBox
-        label={
-          props.type === "password" ? "the same password?" : "the same UserID?"
-        }
+        label="same as above?"
         errStatus={
           props.original && !props.confirm
             ? "NG"
