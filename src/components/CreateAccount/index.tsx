@@ -1,9 +1,8 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { ExclamationSvg } from "../form/ExclamationSvg";
-import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { FormTitle } from "../form/FormTitle";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
@@ -34,6 +33,18 @@ const CreateAccount = () => {
     setConfirmAdmin,
     isUserIDUnused,
   } = useContext(CreateAccountContext);
+
+  const userIDRef = useRef<HTMLInputElement | null>(null);
+  const confirmUserIDRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
+  const adminRef = useRef<HTMLInputElement | null>(null);
+  const confirmAdminRef = useRef<HTMLInputElement | null>(null);
+
+  const next1Ref = useRef<HTMLButtonElement | null>(null);
+  const next2Ref = useRef<HTMLButtonElement | null>(null);
+  const next3Ref = useRef<HTMLButtonElement | null>(null);
+
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center gap-8 py-5  shadow-[3px_3px_12px_rgba(0,0,0,0.3)]  rounded-2xl bg-gray-100 mt-10 mb-10">
@@ -48,61 +59,125 @@ const CreateAccount = () => {
         <div className="w-full">
           <CAStep step={1}>
             <UserIDInputWithMsg
+              ref={userIDRef}
               label="UserID"
               userID={userID}
               setUserID={setUserID}
               setIsUserIDAvailable={setIsUserIDUnused}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (Validate.isNotValidUserID(userID)) return;
+                  confirmUserIDRef.current?.focus();
+                }
+              }}
             />
             <ConfirmInputWithMsg
+              ref={confirmUserIDRef}
               label={"input UserID again"}
               type="text"
               confirm={confirmUserID}
               setConfirm={setConfirmUserID}
               original={userID}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (
+                    userID !== confirmUserID ||
+                    Validate.isNotValidUserID(userID)
+                  ) {
+                    return;
+                  }
+                  if (step === 1) {
+                    next1Ref.current?.click();
+                  }
+                  passwordRef.current?.focus();
+                }
+              }}
             />
           </CAStep>
 
           {step === 1 ? (
             <CANextButton
+              ref={next1Ref}
               disable={
                 Validate.isNotValidUserID(userID) ||
                 !isUserIDUnused ||
                 userID !== confirmUserID
               }
+              // nextFocusHandler={() => {
+              //   passwordRef.current?.focus();
+              // }}
             />
           ) : (
             <CAStep step={2}>
               <PasswordInputWithMsg
+                ref={passwordRef}
                 label="Password"
                 password={password}
                 setPassword={setPassword}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    if (Validate.isNotValidPassword(password)) return;
+                    confirmPasswordRef.current?.focus();
+                  }
+                }}
+                onFirstRender={() => passwordRef.current?.focus()}
               />
 
               <ConfirmInputWithMsg
+                ref={confirmPasswordRef}
                 label="Input password again"
                 type="password"
                 original={password}
                 confirm={confirmPassword}
                 setConfirm={setConfirmPassword}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    if (
+                      password !== confirmPassword ||
+                      Validate.isNotValidPassword(password)
+                    )
+                      return;
+                    if (step === 2) {
+                      next2Ref.current?.click();
+                    }
+                    adminRef.current?.focus();
+                  }
+                }}
               />
             </CAStep>
           )}
 
           {step === 1 ? null : step === 2 ? (
             <CANextButton
+              ref={next2Ref}
               disable={
                 Validate.isNotValidUserID(userID) ||
                 !isUserIDUnused ||
                 Validate.isNotValidPassword(password) ||
                 password !== confirmPassword
               }
+              // nextFocusHandler={() => {
+              //   adminRef.current?.focus();
+              // }}
             />
           ) : (
             <CAStep step={3}>
               <PasswordInputWithMsg
+                ref={adminRef}
                 label="Admin Password"
                 password={adminPassword}
                 setPassword={setAdminPassword}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    if (
+                      adminPassword === password ||
+                      Validate.isNotValidPassword(adminPassword)
+                    )
+                      return;
+                    confirmAdminRef.current?.focus();
+                  }
+                }}
+                onFirstRender={() => adminRef.current?.focus()}
               >
                 <ValMsgBox
                   label="NOT same as password?"
@@ -118,17 +193,30 @@ const CreateAccount = () => {
               </PasswordInputWithMsg>
 
               <ConfirmInputWithMsg
+                ref={confirmAdminRef}
                 confirm={confirmAdmin}
                 setConfirm={setConfirmAdmin}
                 original={adminPassword}
                 type="password"
                 label="input Admin Password again"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    if (
+                      adminPassword !== confirmAdmin ||
+                      adminPassword === password ||
+                      Validate.isNotValidPassword(adminPassword)
+                    )
+                      return;
+                    next3Ref.current?.click();
+                  }
+                }}
               />
             </CAStep>
           )}
 
           {step < 3 ? null : (
             <CANextButton
+              ref={next3Ref}
               label="Confirm"
               disableLabel="NEXT"
               disable={
