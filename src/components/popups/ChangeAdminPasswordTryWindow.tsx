@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { isThrownErr } from "../../api/base";
 import { useChangeAdminPassword } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
@@ -18,6 +18,12 @@ export const ChangeAdminPasswordTryWindow = () => {
   const [newAdmin, setNewAdmin] = useState("");
   const [confirmNewAdmin, setConfirmNewAdmin] = useState("");
   const [oldAdmin, setOldAdmin] = useState("");
+
+  // Prevent abusing too many fetches
+  const canSubmit = useRef(true);
+  useEffect(() => {
+    canSubmit.current = true;
+  }, [newAdmin, oldAdmin]);
 
   const handleClickChange = () => {
     if (!newAdmin || !confirmNewAdmin || !oldAdmin) {
@@ -39,6 +45,8 @@ export const ChangeAdminPasswordTryWindow = () => {
       return;
     }
 
+    if (!canSubmit.current) return;
+    canSubmit.current = false;
     setIsLoading(true);
     changeAdminPassword(oldAdmin, newAdmin).then(({ status }) => {
       setIsLoading(false);

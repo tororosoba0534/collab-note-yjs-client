@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { isThrownErr } from "../../api/base";
 import { useChangePassword } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
@@ -19,6 +19,12 @@ export const ChangePasswordTryWindow = () => {
 
   const { setPopupStatus } = useContext(PersonalContext);
 
+  // Prevent abusing too many fetches
+  const canSubmit = useRef(true);
+  useEffect(() => {
+    canSubmit.current = true;
+  }, [password, adminPassword]);
+
   const handleClickChange = () => {
     if (!password || !confirmPassword || !adminPassword) {
       setSubmitMsg("Fill in all the blanks");
@@ -38,6 +44,8 @@ export const ChangePasswordTryWindow = () => {
       return;
     }
 
+    if (!canSubmit.current) return;
+    canSubmit.current = false;
     setIsLoading(true);
     changePassword(password, adminPassword).then(({ status }) => {
       setIsLoading(false);

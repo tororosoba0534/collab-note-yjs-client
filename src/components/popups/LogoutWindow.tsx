@@ -18,6 +18,9 @@ export const LogoutWindow = (props: { provider: CustomWSProvider }) => {
 
   const handleClickLogout = () => {
     setDidTryOnce(true);
+
+    // Needed to prevent multiple clicks
+    if (isLoading) return;
     setIsLoading(true);
     logout().then(({ status }) => {
       setIsLoading(false);

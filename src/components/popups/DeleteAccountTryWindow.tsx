@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { isThrownErr } from "../../api/base";
 import { useDeleteAccount } from "../../api/hooks";
+import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
@@ -16,6 +17,12 @@ export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
 
   const { setPopupStatus } = useContext(PersonalContext);
 
+  // Prevent abusing too many fetches
+  const canSubmit = useRef(true);
+  useEffect(() => {
+    canSubmit.current = true;
+  }, [confirmUserID, adminPassword]);
+
   const handleClickDeleteAccount = () => {
     if (!confirmUserID || !adminPassword) {
       setSubmitMsg("Fill in all blanks");
@@ -25,7 +32,13 @@ export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
       setSubmitMsg("User ID wrong.");
       return;
     }
+    if (Validate.isNotValidPassword(adminPassword)) {
+      setSubmitMsg("admin password is wrong");
+      return;
+    }
 
+    if (!canSubmit.current) return;
+    canSubmit.current = false;
     setIsLoading(true);
     deleteAccount(adminPassword).then(({ status }) => {
       setIsLoading(false);

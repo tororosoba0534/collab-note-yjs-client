@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import { isThrownErr, Status } from "../../api/base";
 import { NumsCreateAccount, ReturnCreateAccount } from "../../api/fetches";
 import { useCreateAccount } from "../../api/hooks";
@@ -52,6 +52,12 @@ export const CreateAccountProvider = (props: { children: ReactNode }) => {
 
   const [submitMsg, setSubmitMsg] = useState("");
 
+  // Prevent abusing too many fetch
+  const canSubmit = useRef(true);
+  useEffect(() => {
+    canSubmit.current = true;
+  }, [userID]);
+
   const { createAccount, status } = useCreateAccount();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -99,6 +105,9 @@ export const CreateAccountProvider = (props: { children: ReactNode }) => {
       return;
     }
 
+    if (!canSubmit.current) return;
+    console.log("loading start");
+    canSubmit.current = false;
     setIsLoading(true);
     createAccount(userID, password, adminPassword).then(({ status }) => {
       setIsLoading(false);

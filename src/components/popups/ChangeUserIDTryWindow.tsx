@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { isThrownErr } from "../../api/base";
 import { useChangeUserID } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
@@ -19,6 +19,12 @@ export const ChangeUserIDTryWindow = () => {
 
   const { setPopupStatus } = useContext(PersonalContext);
 
+  // Prevent abusing too many fetches
+  const canSubmit = useRef(true);
+  useEffect(() => {
+    canSubmit.current = true;
+  }, [newUserID, adminPassword]);
+
   const handleClickChange = () => {
     if (!newUserID || !confirmUserID || !adminPassword) {
       setSubmitMsg("Fill in all the blanks");
@@ -36,6 +42,8 @@ export const ChangeUserIDTryWindow = () => {
       return;
     }
 
+    if (!canSubmit.current) return;
+    canSubmit.current = false;
     setIsLoading(true);
     changeUserID(newUserID, adminPassword).then(({ status }) => {
       setIsLoading(false);

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { isThrownErr } from "../api/base";
@@ -24,6 +24,12 @@ const Login = () => {
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const submitRef = useRef<HTMLButtonElement | null>(null);
 
+  // Needed to prevent abusing too many fetch
+  const canSubmit = useRef(true);
+  useEffect(() => {
+    canSubmit.current = true;
+  }, [userID, password]);
+
   const handleSubmit = () => {
     console.log("submit clicked.");
 
@@ -39,6 +45,10 @@ const Login = () => {
       setSubmitMsg("userID or password or both are wrong.");
       return;
     }
+
+    if (!canSubmit.current) return;
+    canSubmit.current = false;
+    console.log("fetching start...");
 
     setIsLoading(true);
     login(userID, password).then(({ status }) => {
