@@ -41,6 +41,7 @@ export const ChangeAdminPasswordTryWindow = () => {
 
     setIsLoading(true);
     changeAdminPassword(oldAdmin, newAdmin).then(({ status }) => {
+      setIsLoading(false);
       if (isThrownErr(status)) {
         setSubmitMsg(`Thrown ERR: ${status}`);
       } else if (status === 200) {
@@ -49,6 +50,10 @@ export const ChangeAdminPasswordTryWindow = () => {
         setPopupStatus("sessionTimeout");
       } else if (status === 403) {
         setSubmitMsg("admin password is wrong.");
+      } else if (status === 409) {
+        setSubmitMsg(
+          "New admin password should be different from current password."
+        );
       } else if (status === 500) {
         setSubmitMsg(
           "500 Internal Server Error: Please wait for a minutes till the server is recovered."

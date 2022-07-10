@@ -61,6 +61,12 @@ export const ChangePasswordTryWindow = () => {
         setSubmitMsg("admin password is wrong.");
         return;
       }
+      if (status === 409) {
+        setSubmitMsg(
+          "New password should be different from current admin password."
+        );
+        return;
+      }
       if (status === 500) {
         setSubmitMsg(
           "500 Internal Server Error: Please wait for a minutes till the server is recovered."

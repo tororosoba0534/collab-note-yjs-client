@@ -189,7 +189,7 @@ export const fetchChangeUserID = async (
   return { status };
 };
 
-export type NumsChangePassword = 200 | 400 | 401 | 403 | 500;
+export type NumsChangePassword = 200 | 400 | 401 | 403 | 409 | 500;
 export type ReturnChangePassword = ReturnBaseFetch<NumsChangePassword>;
 export const fetchChangePassword = async (
   sessionID: string,
@@ -209,6 +209,7 @@ export const fetchChangePassword = async (
     status !== 400 &&
     status !== 401 &&
     status !== 403 &&
+    status !== 409 &&
     status !== 500
   )
     return {
@@ -218,7 +219,7 @@ export const fetchChangePassword = async (
   return { status };
 };
 
-export type NumsChangeAdminPassword = 200 | 400 | 401 | 403 | 500;
+export type NumsChangeAdminPassword = 200 | 400 | 401 | 403 | 409 | 500;
 export type ReturnChangeAdminPassword =
   ReturnBaseFetch<NumsChangeAdminPassword>;
 export const fetchChangeAdminPassword = async (
@@ -239,6 +240,7 @@ export const fetchChangeAdminPassword = async (
     status !== 400 &&
     status !== 401 &&
     status !== 403 &&
+    status !== 409 &&
     status !== 500
   )
     return {
