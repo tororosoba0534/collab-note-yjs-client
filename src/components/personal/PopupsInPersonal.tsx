@@ -25,7 +25,7 @@ export const PopupsInPersonal = (props: {
     case "test":
       return <TestWindow />;
     case "sessionTimeout":
-      return <SessionTimeoutWindow />;
+      return <SessionTimeoutWindow provider={props.provider} />;
     case "logout":
       return <LogoutWindow provider={props.provider} />;
     case "deleteAccountTry":

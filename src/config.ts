@@ -16,6 +16,7 @@ const config = {
         : "http://localhost:3001",
   },
   SESSION_ID_KEY: "sessionID",
+  CHECK_AUTH_INTERVAL: 60 * 1000, // ms
 };
 
 export default config;

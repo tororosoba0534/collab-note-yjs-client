@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
+import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const SessionTimeoutWindow = () => {
+export const SessionTimeoutWindow = (props: { provider: CustomWSProvider }) => {
+  const navigate = useNavigate();
   return (
     <PopupTemplate handleClose={null}>
       <div>Your session has been expired!</div>
@@ -8,7 +11,10 @@ export const SessionTimeoutWindow = () => {
 
       <button
         className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-        onClick={() => window.location.reload()}
+        onClick={() => {
+          props.provider.destroy();
+          navigate("/login");
+        }}
       >
         OK
       </button>

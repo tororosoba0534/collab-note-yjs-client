@@ -13,9 +13,11 @@ import { YjsWS } from "../../yjs/YjsWS";
 import { PopupsInPersonal } from "./PopupsInPersonal";
 import { ConnStatusBox } from "./ConnStatusBox";
 import { PersonalContext } from "./PersonalContext";
+import { useCheckAuth } from "../../api/hooks";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   const { setPopupStatus } = useContext(PersonalContext);
+  const { checkAuth } = useCheckAuth();
 
   // ydoc should be recreated when user changes
   // so "userID" should be in the dependency array of useMemo.
@@ -68,6 +70,21 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       },
     },
   });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("checking auth in useEffect...");
+      checkAuth().then(({ status }) => {
+        if (status !== 200) {
+          console.log("SESSION TIMEOUT!!");
+          setPopupStatus("sessionTimeout");
+          clearInterval(interval);
+          provider.destroy();
+        }
+      });
+    }, config.CHECK_AUTH_INTERVAL);
+    return () => clearInterval(interval);
+  }, [checkAuth, provider, setPopupStatus]);
 
   return (
     <div className="relative">
