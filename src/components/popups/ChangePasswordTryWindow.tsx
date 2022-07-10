@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
+import { isThrownErr } from "../../api/base";
 import { useChangePassword } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
-import ErrorPage from "../errorPages/ErrorPage";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
@@ -9,10 +9,9 @@ import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const ChangePasswordTryWindow = () => {
-  const { changePassword, status } = useChangePassword();
-  const [loadingStatus, setLoadingStatus] = useState<
-    "notYet" | "loading" | "finish"
-  >("notYet");
+  const { changePassword } = useChangePassword();
+  const [submitMsg, setSubmitMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -22,78 +21,102 @@ export const ChangePasswordTryWindow = () => {
 
   const handleClickChange = () => {
     if (!password || !confirmPassword || !adminPassword) {
-      console.log("Fill in all blanks");
+      setSubmitMsg("Fill in all the blanks");
       return;
     }
 
     if (password !== confirmPassword) {
-      console.log("two password NOT matched");
+      setSubmitMsg("two password NOT matched");
       return;
     }
     if (Validate.isNotValidPassword(password)) {
-      console.log("password invalid");
-
+      setSubmitMsg("password invalid");
       return;
     }
     if (password === adminPassword) {
-      console.log("new password should differ from admin password");
+      setSubmitMsg("new password should differ from admin password");
+      return;
     }
 
-    setLoadingStatus("loading");
+    setIsLoading(true);
     changePassword(password, adminPassword).then(({ status }) => {
-      setLoadingStatus("finish");
+      setIsLoading(false);
+
       if (status === 200) {
         setPopupStatus("changePasswordOK");
+        return;
       }
+      if (isThrownErr(status)) {
+        setSubmitMsg(`Thrown ERR: ${status}`);
+        return;
+      }
+      if (status === 400) {
+        setSubmitMsg("contains invalid value.");
+      }
+      if (status === 401) {
+        setPopupStatus("sessionTimeout");
+        return;
+      }
+      if (status === 403) {
+        setSubmitMsg("admin password is wrong.");
+        return;
+      }
+      if (status === 500) {
+        setSubmitMsg(
+          "500 Internal Server Error: Please wait for a minutes till the server is recovered."
+        );
+        return;
+      }
+      console.error("unexpected status code.");
     });
   };
 
-  if (loadingStatus === "finish" && status !== 200) {
-    return <ErrorPage status={status} />;
-  }
-
   return (
     <PopupTemplate handleClose={() => setPopupStatus(null)}>
-      <div className="flex flex-col justify-around gap-10">
-        <div className="text-center">Change User ID</div>
-
-        <PasswordInputWithMsg
-          label="new password"
-          password={password}
-          setPassword={setPassword}
-        />
-
-        <ConfirmInputWithMsg
-          confirm={confirmPassword}
-          setConfirm={setConfirmPassword}
-          original={password}
-          type="password"
-          label="Confirm Password"
-        />
-
-        <FloatingLabelInput
-          label="Admin Password"
-          type="password"
-          value={adminPassword}
-          onChange={(e) => setAdminPassword(e.currentTarget.value)}
-        />
-
-        <div className="flex items-center justify-around h-20">
-          <button
-            className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-            onClick={() => {
-              handleClickChange();
-            }}
-          >
-            Change
-          </button>
-          <button
-            className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-            onClick={() => setPopupStatus(null)}
-          >
-            Cancel
-          </button>
+      <div className="text-center">Change Password</div>
+      {isLoading ? (
+        <div>Now waiting response...</div>
+      ) : !submitMsg ? null : (
+        <div className="w-full rounded-md bg-red-400 text-white font-bold">
+          {submitMsg}
         </div>
+      )}
+      <PasswordInputWithMsg
+        label="new password"
+        password={password}
+        setPassword={setPassword}
+      />
+
+      <ConfirmInputWithMsg
+        confirm={confirmPassword}
+        setConfirm={setConfirmPassword}
+        original={password}
+        type="password"
+        label="Confirm Password"
+      />
+
+      <FloatingLabelInput
+        label="Admin Password"
+        type="password"
+        value={adminPassword}
+        onChange={(e) => setAdminPassword(e.currentTarget.value)}
+      />
+
+      <div className="flex items-center justify-around h-20">
+        <button
+          className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
+          onClick={() => {
+            handleClickChange();
+          }}
+        >
+          Change
+        </button>
+        <button
+          className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
+          onClick={() => setPopupStatus(null)}
+        >
+          Cancel
+        </button>
       </div>
     </PopupTemplate>
   );

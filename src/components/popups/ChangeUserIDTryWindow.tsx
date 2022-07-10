@@ -21,7 +21,7 @@ export const ChangeUserIDTryWindow = () => {
 
   const handleClickChange = () => {
     if (!newUserID || !confirmUserID || !adminPassword) {
-      setSubmitMsg("Fill in all blanks");
+      setSubmitMsg("Fill in all the blanks");
 
       return;
     }

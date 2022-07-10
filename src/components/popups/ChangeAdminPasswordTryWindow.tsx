@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
+import { isThrownErr } from "../../api/base";
 import { useChangeAdminPassword } from "../../api/hooks";
 import { Validate } from "../../utils/validation";
-import ErrorPage from "../errorPages/ErrorPage";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
@@ -9,10 +9,9 @@ import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const ChangeAdminPasswordTryWindow = () => {
-  const { changeAdminPassword, status } = useChangeAdminPassword();
-  const [loadingStatus, setLoadingStatus] = useState<
-    "notYet" | "loading" | "finish"
-  >("notYet");
+  const { changeAdminPassword } = useChangeAdminPassword();
+  const [submitMsg, setSubmitMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { setPopupStatus } = useContext(PersonalContext);
 
@@ -22,41 +21,55 @@ export const ChangeAdminPasswordTryWindow = () => {
 
   const handleClickChange = () => {
     if (!newAdmin || !confirmNewAdmin || !oldAdmin) {
-      console.log("Fill in all blanks");
+      setSubmitMsg("Fill in all the blanks");
       return;
     }
 
     if (newAdmin !== confirmNewAdmin) {
-      console.log("two password NOT matched");
+      setSubmitMsg("two password NOT matched");
       return;
     }
     if (Validate.isNotValidPassword(newAdmin)) {
-      console.log("password invalid");
+      setSubmitMsg("password invalid");
 
       return;
     }
     if (newAdmin === oldAdmin) {
-      console.log("new admin password doesn't change.");
+      setSubmitMsg("new admin password doesn't change.");
+      return;
     }
 
-    setLoadingStatus("loading");
+    setIsLoading(true);
     changeAdminPassword(oldAdmin, newAdmin).then(({ status }) => {
-      setLoadingStatus("finish");
-      if (status === 200) {
+      if (isThrownErr(status)) {
+        setSubmitMsg(`Thrown ERR: ${status}`);
+      } else if (status === 200) {
         setPopupStatus("changeAdminPasswordOK");
+      } else if (status === 401) {
+        setPopupStatus("sessionTimeout");
+      } else if (status === 403) {
+        setSubmitMsg("admin password is wrong.");
+      } else if (status === 500) {
+        setSubmitMsg(
+          "500 Internal Server Error: Please wait for a minutes till the server is recovered."
+        );
+      } else {
+        console.error("unexpected status code.");
       }
     });
   };
-
-  if (loadingStatus === "finish" && status !== 200) {
-    return <ErrorPage status={status} />;
-  }
 
   return (
     <PopupTemplate handleClose={() => setPopupStatus(null)}>
       <div className="flex flex-col justify-around gap-10">
         <div className="text-center">Change User ID</div>
-
+        {isLoading ? (
+          <div>Now waiting response...</div>
+        ) : !submitMsg ? null : (
+          <div className="w-full rounded-md bg-red-400 text-white font-bold">
+            {submitMsg}
+          </div>
+        )}
         <PasswordInputWithMsg
           label="new admin password"
           password={newAdmin}
