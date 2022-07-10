@@ -9,6 +9,7 @@ import { ChangeUserIDTryWindow } from "../popups/ChangeUserIDTryWindow";
 import { DeleteAccountOKWindow } from "../popups/DeleteAccountOKWindow";
 import { DeleteAccountTryWindow } from "../popups/DeleteAccountTryWindow";
 import { LogoutWindow } from "../popups/LogoutWindow";
+import { SessionTimeoutWindow } from "../popups/SessionTimeoutWindow";
 import { TestWindow } from "../popups/TestWindow";
 import { PersonalContext } from "./PersonalContext";
 
@@ -23,6 +24,8 @@ export const PopupsInPersonal = (props: {
       return null;
     case "test":
       return <TestWindow />;
+    case "sessionTimeout":
+      return <SessionTimeoutWindow />;
     case "logout":
       return <LogoutWindow provider={props.provider} />;
     case "deleteAccountTry":

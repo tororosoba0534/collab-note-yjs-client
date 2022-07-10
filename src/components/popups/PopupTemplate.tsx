@@ -20,7 +20,9 @@ export const PopupTemplate = (props: {
             X
           </div>
         ) : null}
-        <div className="p-5 pt-10">{props.children}</div>
+        <div className="p-5 pt-10 flex flex-col justify-center">
+          {props.children}
+        </div>
       </div>
     </div>
   );

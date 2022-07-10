@@ -4,6 +4,7 @@ export type PopupStatus =
   | null
   | "logout"
   | "test"
+  | "sessionTimeout"
   | "deleteAccountTry"
   | "deleteAccountOK"
   | "changeUserIDTry"
