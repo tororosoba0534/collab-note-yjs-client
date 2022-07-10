@@ -74,7 +74,7 @@ export const CheckUserIDMsgBox = (props: {
       <div className="pl-9">
         {boxStatus !== "NG" || status === 200
           ? null
-          : status === 403
+          : status === 409
           ? "already used"
           : isThrownErr(status)
           ? status

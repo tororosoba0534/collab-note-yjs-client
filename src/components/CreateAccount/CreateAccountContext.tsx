@@ -113,7 +113,7 @@ export const CreateAccountProvider = (props: { children: ReactNode }) => {
         return;
       }
 
-      if (status === 403) {
+      if (status === 409) {
         setSubmitMsg(
           "The same userID is already used! Please use different one."
         );

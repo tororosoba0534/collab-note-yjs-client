@@ -96,7 +96,7 @@ export const fetchLogout = async (sessionID: string): Promise<ReturnLogout> => {
   return { status };
 };
 
-export type NumsCreateAccount = 200 | 400 | 403 | 500;
+export type NumsCreateAccount = 200 | 400 | 409 | 500;
 export type ReturnCreateAccount = ReturnBaseFetch<NumsCreateAccount>;
 export const fetchCreateAccount = async (
   userID: string,
@@ -111,7 +111,7 @@ export const fetchCreateAccount = async (
 
   if (isThrownErr(status)) return { status };
 
-  if (status !== 200 && status !== 400 && status !== 403 && status !== 500)
+  if (status !== 200 && status !== 400 && status !== 409 && status !== 500)
     return {
       status: `Unexpected status code: ${status}`,
     };
@@ -119,7 +119,7 @@ export const fetchCreateAccount = async (
   return { status };
 };
 
-export type NumsCheckUserID = 200 | 400 | 403 | 500;
+export type NumsCheckUserID = 200 | 400 | 409 | 500;
 export type ReturnCheckUserID = ReturnBaseFetch<NumsCheckUserID>;
 export const fetchCheckUserID = async (
   userID: string
@@ -130,7 +130,7 @@ export const fetchCheckUserID = async (
 
   if (isThrownErr(status)) return { status };
 
-  if (status !== 200 && status !== 400 && status !== 403 && status !== 500)
+  if (status !== 200 && status !== 400 && status !== 409 && status !== 500)
     return {
       status: `Unexpected status code: ${status}`,
     };
@@ -159,7 +159,7 @@ export const fetchDeleteAccount = async (
   return { status };
 };
 
-export type NumsChangeUserID = 200 | 400 | 401 | 403 | 500;
+export type NumsChangeUserID = 200 | 400 | 401 | 403 | 409 | 500;
 export type ReturnChangeUserID = ReturnBaseFetch<NumsChangeUserID>;
 export const fetchChangeUserID = async (
   sessionID: string,
@@ -179,6 +179,7 @@ export const fetchChangeUserID = async (
     status !== 400 &&
     status !== 401 &&
     status !== 403 &&
+    status !== 409 &&
     status !== 500
   )
     return {
