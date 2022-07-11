@@ -3,16 +3,52 @@ import { Block, LeadingBlock, RawBlock } from "./utils";
 
 export const DndItem = (props: {
   rblock: RawBlock;
+  setRawBlocks: React.Dispatch<React.SetStateAction<RawBlock[]>>;
   index: number;
   allBlocks: React.MutableRefObject<(Block | null)[]>;
   leadingBlock: React.MutableRefObject<LeadingBlock | null>;
 }) => {
-  const handlingBtnElm = useRef<HTMLButtonElement>(null);
+  // const handlingBtnElm = useRef<HTMLButtonElement>(null);
 
   const onMouseMove = (e: MouseEvent) => {
-    if (!props.leadingBlock.current) return;
-    const dx = e.clientX - props.leadingBlock.current.initMousePt.x;
-    const dy = e.clientY - props.leadingBlock.current.initMousePt.y;
+    const leadingBlock = props.leadingBlock.current;
+    if (!leadingBlock) return;
+
+    const dx = e.clientX - leadingBlock.initMousePt.x;
+    const dy = e.clientY - leadingBlock.initMousePt.y;
+
+    if (!leadingBlock.beingFollowedByOthers && (dx > 10 || dx < -10)) {
+      leadingBlock.beingFollowedByOthers = true;
+      const stayBefore: Block[] = [];
+      const moveBefore: Block[] = [];
+      const moveAfter: Block[] = [];
+      const stayAfter: Block[] = [];
+      props.allBlocks.current.forEach((block, index) => {
+        if (!block) return;
+        if (index < leadingBlock.index) {
+          if (block.isSelected) {
+            moveBefore.push(block);
+          } else {
+            stayBefore.push(block);
+          }
+        } else {
+          if (block.isSelected) {
+            moveAfter.push(block);
+          } else {
+            stayAfter.push(block);
+          }
+        }
+      });
+      const newAllBlocks = [
+        ...stayBefore,
+        ...moveBefore,
+        ...moveAfter,
+        ...stayAfter,
+      ];
+      props.allBlocks.current = newAllBlocks;
+      props.setRawBlocks(newAllBlocks);
+    }
+
     props.allBlocks.current.forEach((block) => {
       if (!block) return;
       if (block.isSelected) {
@@ -26,6 +62,7 @@ export const DndItem = (props: {
       if (!block) return;
       block.elm.style.transform = "";
     });
+    props.leadingBlock.current = null;
     window.removeEventListener("mousemove", onMouseMove);
     window.removeEventListener("mouseup", onMouseUp);
   };
@@ -84,7 +121,7 @@ export const DndItem = (props: {
       {props.rblock.value}
       <button
         className="h-full bg-lime-100 rounded-lg px-2"
-        ref={handlingBtnElm}
+        // ref={handlingBtnElm}
         onMouseDown={(e) => {
           const currentBlock = props.allBlocks.current[props.index];
           if (!currentBlock) return;

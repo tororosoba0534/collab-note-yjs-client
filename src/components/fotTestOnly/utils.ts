@@ -68,9 +68,11 @@ export type Position = {
 export class LeadingBlock extends Block {
   index: number;
   initMousePt: Position;
+  beingFollowedByOthers: boolean;
   constructor(block: Block, index: number, initMousePt: Position) {
     super(block, block.elm);
     this.index = index;
     this.initMousePt = initMousePt;
+    this.beingFollowedByOthers = false;
   }
 }

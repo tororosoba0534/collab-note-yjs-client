@@ -1,13 +1,12 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { DndItem } from "./DndItem";
 import { Block, LeadingBlock, rawBlocksGen } from "./utils";
 
 const BLOCKS_NUM = 10;
 
-const rawBlocks = rawBlocksGen(BLOCKS_NUM);
-
 export const DivDnD = () => {
+  const [rawBlocks, setRawBlocks] = useState(rawBlocksGen(BLOCKS_NUM));
   const allBlocks = useRef<(Block | null)[]>([null]);
   const leadingBlock = useRef<LeadingBlock | null>(null);
   return (
@@ -17,6 +16,7 @@ export const DivDnD = () => {
           <DndItem
             key={rblock.key}
             rblock={rblock}
+            setRawBlocks={setRawBlocks}
             index={i}
             allBlocks={allBlocks}
             leadingBlock={leadingBlock}
