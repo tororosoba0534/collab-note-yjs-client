@@ -13,7 +13,13 @@ export const DndItem = (props: {
   muxOnMouseMove: React.MutableRefObject<boolean>;
 }) => {
   const callbackRef = (elm: HTMLElement | null) => {
-    if (props.leadingBlock.current) return;
+    if (props.leadingBlock.current) {
+      const leadingBlock: LeadingBlock = props.leadingBlock.current;
+      if (!props.gathered.current) return;
+      if (props.index !== leadingBlock.index) return;
+
+      return;
+    }
 
     if (!elm) {
       console.log("elm removed.");
@@ -106,7 +112,7 @@ export const DndItem = (props: {
     props.muxOnMouseMove.current = false;
     setTimeout(() => {
       props.muxOnMouseMove.current = true;
-    }, 300);
+    }, 100);
 
     const gathered = props.gathered.current;
 
@@ -161,6 +167,8 @@ export const DndItem = (props: {
           movingTopElm: gathered.movingTopElm,
           movingButtomElm: gathered.movingButtomElm,
         };
+        leadingBlock.index = leadingBlock.index - hovered.length;
+        leadingBlock.initMousePt.y -= 80 * hovered.length;
       } else if (hoveredAfter.length !== 0) {
         const before = allBlocks.slice(0, gathered.movingTopIndex);
         const moving = allBlocks.slice(
@@ -179,15 +187,17 @@ export const DndItem = (props: {
           movingTopElm: gathered.movingTopElm,
           movingButtomElm: gathered.movingButtomElm,
         };
+        leadingBlock.index = leadingBlock.index + hovered.length;
+        leadingBlock.initMousePt.y += 80 * hovered.length;
       } else {
         return;
       }
       props.allBlocks.current = newAllBlocks;
       props.gathered.current = newGathered;
-      newAllBlocks.forEach((b) => {
-        if (!b) return;
-        b.elm.style.transform = "";
-      });
+      // newAllBlocks.forEach((b) => {
+      //   if (!b) return;
+      //   b.elm.style.transform = "";
+      // });
       props.setRawBlocks(newAllBlocks);
     }
   };
