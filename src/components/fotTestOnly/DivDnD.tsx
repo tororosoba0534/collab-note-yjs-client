@@ -1,7 +1,7 @@
 import { useReducer, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { DndItem } from "./DndItem";
-import { Block, LeadingBlock, RawBlock, rawBlocksGen } from "./utils";
+import { Block, Gathered, LeadingBlock, RawBlock, rawBlocksGen } from "./utils";
 
 const BLOCKS_NUM = 10;
 
@@ -11,6 +11,7 @@ export const DivDnD = () => {
   );
   const allBlocks = useRef<(Block | null)[]>([]);
   const leadingBlock = useRef<LeadingBlock | null>(null);
+  const gathered = useRef<Gathered | null>(null);
   const muxOnMouseMove = useRef(true);
   return (
     <div className=" w-full flex flex-col gap-10 p-10">
@@ -25,6 +26,7 @@ export const DivDnD = () => {
             index={i}
             allBlocks={allBlocks}
             leadingBlock={leadingBlock}
+            gathered={gathered}
           />
         );
       })}
