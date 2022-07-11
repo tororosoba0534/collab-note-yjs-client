@@ -69,10 +69,17 @@ export class LeadingBlock extends Block {
   index: number;
   initMousePt: Position;
   beingFollowedByOthers: boolean;
+  gathered: null | {
+    movingTopIndex: number;
+    movingButtomIndex: number;
+    movingTopElm: HTMLElement;
+    movingButtomElm: HTMLElement;
+  };
   constructor(block: Block, index: number, initMousePt: Position) {
     super(block, block.elm);
     this.index = index;
     this.initMousePt = initMousePt;
     this.beingFollowedByOthers = false;
+    this.gathered = null;
   }
 }

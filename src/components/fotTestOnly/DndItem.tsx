@@ -5,7 +5,7 @@ const GATHER_VAL = 10;
 
 export const DndItem = (props: {
   rblock: RawBlock;
-  setRawBlocks: React.Dispatch<React.SetStateAction<RawBlock[]>>;
+  setRawBlocks: React.Dispatch<React.SetStateAction<(RawBlock | null)[]>>;
   index: number;
   allBlocks: React.MutableRefObject<(Block | null)[]>;
   leadingBlock: React.MutableRefObject<LeadingBlock | null>;
@@ -15,60 +15,105 @@ export const DndItem = (props: {
   const onMouseMove = (e: MouseEvent) => {
     const leadingBlock = props.leadingBlock.current;
     if (!leadingBlock) return;
+    const allBlocks = props.allBlocks.current;
 
     const dx = e.clientX - leadingBlock.initMousePt.x;
     const dy = e.clientY - leadingBlock.initMousePt.y;
 
-    if (
-      !leadingBlock.beingFollowedByOthers &&
-      dy < GATHER_VAL &&
-      dy > -GATHER_VAL
-    ) {
-      leadingBlock.elm.style.transform = `translate(${dx}px,${dy}px)`;
-      return;
+    if (!leadingBlock.beingFollowedByOthers) {
+      if (dy < GATHER_VAL && dy > -GATHER_VAL) {
+        leadingBlock.elm.style.transform = `translate(${dx}px,${dy}px)`;
+        return;
+      } else {
+        leadingBlock.beingFollowedByOthers = true;
+        const stayBefore: Block[] = [];
+        const moveBefore: Block[] = [];
+        const moveAfter: Block[] = [];
+        const stayAfter: Block[] = [];
+        allBlocks.forEach((block, index) => {
+          if (!block) return;
+          if (index < leadingBlock.index) {
+            if (block.isSelected) {
+              moveBefore.push(block);
+            } else {
+              stayBefore.push(block);
+            }
+          } else {
+            if (block.isSelected) {
+              moveAfter.push(block);
+            } else {
+              stayAfter.push(block);
+            }
+          }
+        });
+
+        const newAllBlocks = [
+          ...stayBefore,
+          ...moveBefore,
+          ...moveAfter,
+          ...stayAfter,
+        ];
+        leadingBlock.gathered = {
+          movingTopIndex: stayBefore.length,
+          movingButtomIndex: newAllBlocks.length - stayAfter.length - 1,
+          movingTopElm: moveBefore[0].elm,
+          movingButtomElm: moveAfter[moveAfter.length - 1].elm,
+        };
+        props.allBlocks.current = newAllBlocks;
+        props.setRawBlocks(newAllBlocks);
+      }
     }
 
-    if (
-      !leadingBlock.beingFollowedByOthers &&
-      (dy > GATHER_VAL || dy < -GATHER_VAL)
-    ) {
-      leadingBlock.beingFollowedByOthers = true;
-      const stayBefore: Block[] = [];
-      const moveBefore: Block[] = [];
-      const moveAfter: Block[] = [];
-      const stayAfter: Block[] = [];
-      props.allBlocks.current.forEach((block, index) => {
-        if (!block) return;
-        if (index < leadingBlock.index) {
-          if (block.isSelected) {
-            moveBefore.push(block);
-          } else {
-            stayBefore.push(block);
-          }
-        } else {
-          if (block.isSelected) {
-            moveAfter.push(block);
-          } else {
-            stayAfter.push(block);
-          }
-        }
-      });
-      const newAllBlocks = [
-        ...stayBefore,
-        ...moveBefore,
-        ...moveAfter,
-        ...stayAfter,
-      ];
-      props.allBlocks.current = newAllBlocks;
-      props.setRawBlocks(newAllBlocks);
-    }
-
-    props.allBlocks.current.forEach((block) => {
+    allBlocks.forEach((block) => {
       if (!block) return;
       if (block.isSelected) {
         block.elm.style.transform = `translate(${dx}px,${dy}px)`;
       }
     });
+
+    if (!leadingBlock.gathered) return;
+    const gathered = leadingBlock.gathered;
+
+    const movingTopY = gathered.movingTopElm.getBoundingClientRect().top;
+    const movingButtomY =
+      gathered.movingButtomElm.getBoundingClientRect().bottom;
+
+    const newAllBlocks = [...allBlocks];
+    // let shouldSetAllBlocks = false;
+    allBlocks.forEach((block, index) => {
+      if (!block) return;
+      if (index < gathered.movingTopIndex) {
+        const { top, bottom } = block.elm.getBoundingClientRect();
+        const line = (top + bottom) / 2;
+        if (movingTopY < line) {
+          console.log("hover detected!");
+
+          // newAllBlocks.splice(index, 1);
+          // newAllBlocks.splice(movingButtomY, 0, block);
+          // shouldSetAllBlocks = true;
+        }
+      } else if (index > gathered.movingButtomIndex) {
+        const { top, bottom } = block.elm.getBoundingClientRect();
+        const line = (top + bottom) / 2;
+        if (movingButtomY > line) {
+          console.log("hover detected!");
+
+          // newAllBlocks.splice(index, 1);
+          // newAllBlocks.splice(movingTopY - 1, 0, block);
+          // shouldSetAllBlocks = true;
+        }
+      } else {
+        return;
+      }
+    });
+    // if (shouldSetAllBlocks) {
+    //   props.allBlocks.current = newAllBlocks;
+    //   newAllBlocks.forEach((b) => {
+    //     if (!b) return;
+    //     b.elm.style.transform = "";
+    //   });
+    //   props.setRawBlocks(newAllBlocks);
+    // }
   };
 
   const onMouseUp = (e: MouseEvent) => {
