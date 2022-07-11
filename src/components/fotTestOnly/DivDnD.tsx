@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useReducer, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { DndItem } from "./DndItem";
 import { Block, LeadingBlock, RawBlock, rawBlocksGen } from "./utils";
@@ -11,12 +11,14 @@ export const DivDnD = () => {
   );
   const allBlocks = useRef<(Block | null)[]>([]);
   const leadingBlock = useRef<LeadingBlock | null>(null);
+  const muxOnMouseMove = useRef(true);
   return (
     <div className=" w-full flex flex-col gap-10 p-10">
       {rawBlocks.map((rblock, i) => {
         if (!rblock) return;
         return (
           <DndItem
+            muxOnMouseMove={muxOnMouseMove}
             key={rblock.key}
             rblock={rblock}
             setRawBlocks={setRawBlocks}

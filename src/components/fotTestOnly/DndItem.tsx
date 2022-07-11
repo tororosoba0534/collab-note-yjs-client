@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { MouseEventHandler, useRef } from "react";
 import { Block, LeadingBlock, RawBlock } from "./utils";
 
 const GATHER_VAL = 10;
@@ -9,8 +9,31 @@ export const DndItem = (props: {
   index: number;
   allBlocks: React.MutableRefObject<(Block | null)[]>;
   leadingBlock: React.MutableRefObject<LeadingBlock | null>;
+  muxOnMouseMove: React.MutableRefObject<boolean>;
 }) => {
-  // const handlingBtnElm = useRef<HTMLButtonElement>(null);
+  const callbackRef = (elm: HTMLElement | null) => {
+    if (props.leadingBlock.current) return;
+
+    if (!elm) {
+      console.log("elm removed.");
+      props.allBlocks.current[props.index] = null;
+      return;
+    }
+    console.log("elm mounted.");
+    props.allBlocks.current[props.index] = new Block(props.rblock, elm);
+  };
+
+  const onMouseDown: MouseEventHandler<HTMLButtonElement> = (e) => {
+    const currentBlock = props.allBlocks.current[props.index];
+    if (!currentBlock) return;
+
+    props.leadingBlock.current = new LeadingBlock(currentBlock, props.index, {
+      x: e.clientX,
+      y: e.clientY,
+    });
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+  };
 
   const onMouseMove = (e: MouseEvent) => {
     const leadingBlock = props.leadingBlock.current;
@@ -38,6 +61,8 @@ export const DndItem = (props: {
             } else {
               stayBefore.push(block);
             }
+          } else if (index === leadingBlock.index) {
+            return;
           } else {
             if (block.isSelected) {
               moveAfter.push(block);
@@ -50,14 +75,16 @@ export const DndItem = (props: {
         const newAllBlocks = [
           ...stayBefore,
           ...moveBefore,
+          leadingBlock,
           ...moveAfter,
           ...stayAfter,
         ];
         leadingBlock.gathered = {
           movingTopIndex: stayBefore.length,
           movingButtomIndex: newAllBlocks.length - stayAfter.length - 1,
-          movingTopElm: moveBefore[0].elm,
-          movingButtomElm: moveAfter[moveAfter.length - 1].elm,
+          movingTopElm: moveBefore[0]?.elm || leadingBlock.elm,
+          movingButtomElm:
+            moveAfter[moveAfter.length - 1]?.elm || leadingBlock.elm,
         };
         props.allBlocks.current = newAllBlocks;
         props.setRawBlocks(newAllBlocks);
@@ -72,13 +99,20 @@ export const DndItem = (props: {
     });
 
     if (!leadingBlock.gathered) return;
+
+    if (!props.muxOnMouseMove.current) return;
+    props.muxOnMouseMove.current = false;
+    setTimeout(() => {
+      props.muxOnMouseMove.current = true;
+    }, 300);
+
     const gathered = leadingBlock.gathered;
 
     const movingTopY = gathered.movingTopElm.getBoundingClientRect().top;
     const movingButtomY =
       gathered.movingButtomElm.getBoundingClientRect().bottom;
 
-    const newAllBlocks = [...allBlocks];
+    // const newAllBlocks = [...allBlocks];
     // let shouldSetAllBlocks = false;
     allBlocks.forEach((block, index) => {
       if (!block) return;
@@ -130,43 +164,7 @@ export const DndItem = (props: {
     <div
       className="w-40 h-10 p-2 flex items-center gap-3"
       key={props.rblock.key}
-      ref={(elm) => {
-        if (!elm) {
-          console.log("elm removed.");
-          props.allBlocks.current[props.index] = null;
-          return;
-        }
-        console.log("elm mounted.");
-        props.allBlocks.current[props.index] = new Block(props.rblock, elm);
-      }}
-      // onClick={(e) => {
-      //   if (!allBlocks.current[i + 1] && allBlocks.current[0]) {
-      //     allBlocks.current[0].elm.style.backgroundColor = "red";
-      //     return;
-      //   }
-      //   if (allBlocks.current[i + 1]) {
-      //     const next = allBlocks.current[i + 1]?.elm;
-      //     if (next) {
-      //       next.style.backgroundColor = "red";
-      //     }
-      //   }
-      // }}
-      // onMouseUp={(e) => {
-      //   allBlocks.current.forEach((b) => {
-      //     if (!b) return;
-      //     if (b.isSelected) {
-      //       b.elm.style.backgroundColor = "red";
-      //     }
-      //   });
-      // }}
-      // onMouseDown={(e) => {
-      //   allBlocks.current.forEach((b) => {
-      //     if (!b) return;
-      //     if (b.isSelected) {
-      //       b.elm.style.backgroundColor = "black";
-      //     }
-      //   });
-      // }}
+      ref={callbackRef}
     >
       <button
         className="h-full bg-lime-100 rounded-lg px-2"
@@ -181,18 +179,7 @@ export const DndItem = (props: {
       <button
         className="h-full bg-lime-100 rounded-lg px-2"
         // ref={handlingBtnElm}
-        onMouseDown={(e) => {
-          const currentBlock = props.allBlocks.current[props.index];
-          if (!currentBlock) return;
-
-          props.leadingBlock.current = new LeadingBlock(
-            currentBlock,
-            props.index,
-            { x: e.clientX, y: e.clientY }
-          );
-          window.addEventListener("mousemove", onMouseMove);
-          window.addEventListener("mouseup", onMouseUp);
-        }}
+        onMouseDown={onMouseDown}
       >
         ・
       </button>
