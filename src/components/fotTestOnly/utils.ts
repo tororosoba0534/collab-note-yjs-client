@@ -68,11 +68,18 @@ export type Position = {
 export class LeadingBlock extends Block {
   index: number;
   initMousePt: Position;
+  initElmPt: Position;
   beingFollowedByOthers: boolean;
-  constructor(block: Block, index: number, initMousePt: Position) {
+  constructor(
+    block: Block,
+    index: number,
+    initMousePt: Position,
+    initElmPt: Position
+  ) {
     super(block, block.elm);
     this.index = index;
     this.initMousePt = initMousePt;
+    this.initElmPt = initElmPt;
     this.beingFollowedByOthers = false;
   }
 }
@@ -82,4 +89,8 @@ export type Gathered = {
   movingButtomIndex: number;
   movingTopElm: HTMLElement;
   movingButtomElm: HTMLElement;
+};
+
+export type OverRendering = {
+  cursorPt: Position;
 };
