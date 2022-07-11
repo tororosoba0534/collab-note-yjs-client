@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Block, LeadingBlock, RawBlock } from "./utils";
 
-const GATHER_VAL = 40;
+const GATHER_VAL = 10;
 
 export const DndItem = (props: {
   rblock: RawBlock;
