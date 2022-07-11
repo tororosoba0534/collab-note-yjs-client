@@ -12,6 +12,7 @@ export const DndItem = (props: {
   gathered: React.MutableRefObject<Gathered | null>;
   muxOnMouseMove: React.MutableRefObject<boolean>;
 }) => {
+  const handlingBtnElm = useRef<HTMLButtonElement>(null);
   const callbackRef = (elm: HTMLElement | null) => {
     if (props.leadingBlock.current) {
       const leadingBlock: LeadingBlock = props.leadingBlock.current;
@@ -33,6 +34,13 @@ export const DndItem = (props: {
   const onMouseDown: MouseEventHandler<HTMLButtonElement> = (e) => {
     const currentBlock = props.allBlocks.current[props.index];
     if (!currentBlock) return;
+
+    if (!currentBlock.isSelected) return;
+
+    if (handlingBtnElm.current) {
+      const btn = handlingBtnElm.current;
+      btn.style.cursor = "grabbing";
+    }
 
     props.leadingBlock.current = new LeadingBlock(currentBlock, props.index, {
       x: e.clientX,
@@ -203,6 +211,10 @@ export const DndItem = (props: {
   };
 
   const onMouseUp = (e: MouseEvent) => {
+    if (handlingBtnElm.current) {
+      const btn = handlingBtnElm.current;
+      btn.style.cursor = "grab";
+    }
     props.allBlocks.current.forEach((block) => {
       if (!block) return;
       block.elm.style.transform = "";
@@ -229,9 +241,11 @@ export const DndItem = (props: {
       </button>
       {props.rblock.value}
       <button
+        ref={handlingBtnElm}
         className="h-full bg-lime-100 rounded-lg px-2"
         // ref={handlingBtnElm}
         onMouseDown={onMouseDown}
+        style={{ cursor: "grab" }}
       >
         ・
       </button>
