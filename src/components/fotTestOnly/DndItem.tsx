@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { Block, LeadingBlock, RawBlock } from "./utils";
 
+const GATHER_VAL = 40;
+
 export const DndItem = (props: {
   rblock: RawBlock;
   setRawBlocks: React.Dispatch<React.SetStateAction<RawBlock[]>>;
@@ -17,7 +19,19 @@ export const DndItem = (props: {
     const dx = e.clientX - leadingBlock.initMousePt.x;
     const dy = e.clientY - leadingBlock.initMousePt.y;
 
-    if (!leadingBlock.beingFollowedByOthers && (dx > 10 || dx < -10)) {
+    if (
+      !leadingBlock.beingFollowedByOthers &&
+      dy < GATHER_VAL &&
+      dy > -GATHER_VAL
+    ) {
+      leadingBlock.elm.style.transform = `translate(${dx}px,${dy}px)`;
+      return;
+    }
+
+    if (
+      !leadingBlock.beingFollowedByOthers &&
+      (dy > GATHER_VAL || dy < -GATHER_VAL)
+    ) {
       leadingBlock.beingFollowedByOthers = true;
       const stayBefore: Block[] = [];
       const moveBefore: Block[] = [];
