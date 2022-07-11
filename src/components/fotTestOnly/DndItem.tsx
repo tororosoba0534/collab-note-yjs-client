@@ -88,6 +88,7 @@ export const DndItem = (props: {
         };
         props.allBlocks.current = newAllBlocks;
         props.setRawBlocks(newAllBlocks);
+        return;
       }
     }
 
@@ -112,8 +113,8 @@ export const DndItem = (props: {
     const movingButtomY =
       gathered.movingButtomElm.getBoundingClientRect().bottom;
 
-    // const newAllBlocks = [...allBlocks];
-    // let shouldSetAllBlocks = false;
+    const newAllBlocks = [...allBlocks];
+    let shouldSetAllBlocks = false;
     allBlocks.forEach((block, index) => {
       if (!block) return;
       if (index < gathered.movingTopIndex) {
@@ -122,9 +123,9 @@ export const DndItem = (props: {
         if (movingTopY < line) {
           console.log("hover detected!");
 
-          // newAllBlocks.splice(index, 1);
-          // newAllBlocks.splice(movingButtomY, 0, block);
-          // shouldSetAllBlocks = true;
+          newAllBlocks.splice(index, 1);
+          newAllBlocks.splice(gathered.movingButtomIndex, 0, block);
+          shouldSetAllBlocks = true;
         }
       } else if (index > gathered.movingButtomIndex) {
         const { top, bottom } = block.elm.getBoundingClientRect();
@@ -132,22 +133,22 @@ export const DndItem = (props: {
         if (movingButtomY > line) {
           console.log("hover detected!");
 
-          // newAllBlocks.splice(index, 1);
-          // newAllBlocks.splice(movingTopY - 1, 0, block);
-          // shouldSetAllBlocks = true;
+          newAllBlocks.splice(index, 1);
+          newAllBlocks.splice(gathered.movingTopIndex, 0, block);
+          shouldSetAllBlocks = true;
         }
       } else {
         return;
       }
     });
-    // if (shouldSetAllBlocks) {
-    //   props.allBlocks.current = newAllBlocks;
-    //   newAllBlocks.forEach((b) => {
-    //     if (!b) return;
-    //     b.elm.style.transform = "";
-    //   });
-    //   props.setRawBlocks(newAllBlocks);
-    // }
+    if (shouldSetAllBlocks) {
+      props.allBlocks.current = newAllBlocks;
+      newAllBlocks.forEach((b) => {
+        if (!b) return;
+        b.elm.style.transform = "";
+      });
+      props.setRawBlocks(newAllBlocks);
+    }
   };
 
   const onMouseUp = (e: MouseEvent) => {
