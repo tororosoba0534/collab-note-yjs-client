@@ -10,7 +10,6 @@ export const onMouseUp = (
     btn.style.cursor = "grab";
   }
   props.allBlocks.current.forEach((block) => {
-    if (!block) return;
     block.elm.style.transform = "";
     block.elm.style.transition = "";
   });

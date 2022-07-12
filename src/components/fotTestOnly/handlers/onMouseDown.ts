@@ -50,7 +50,6 @@ export const onMouseDown = (
     const newHovereds: Hovereds = {};
     let shouldSetAllBlocks = false;
     allBlocks.forEach((block, index) => {
-      if (!block) return;
       if (index < gathereds.movingTopIndex) {
         const { top, bottom, left } = block.elm.getBoundingClientRect();
         const line = (top + bottom) / 2;
@@ -58,7 +57,6 @@ export const onMouseDown = (
           console.log("hover detected!");
           hoveredBefore.push(index);
           shouldSetAllBlocks = true;
-          // newHovereds.push({ key: block.key, xBefore: left, yBefore: top });
           newHovereds[block.key] = { xBefore: left, yBefore: top };
         }
       } else if (index > gathereds.movingButtomIndex) {
@@ -75,7 +73,7 @@ export const onMouseDown = (
       }
     });
     if (shouldSetAllBlocks) {
-      let newAllBlocks: (Block | null)[];
+      let newAllBlocks: Block[];
       let newGathereds: Gathereds;
 
       if (hoveredBefore.length !== 0) {
@@ -97,7 +95,6 @@ export const onMouseDown = (
           movingButtomElm: gathereds.movingButtomElm,
         };
         leadingBlock.index = leadingBlock.index - hovered.length;
-        // leadingBlock.initMousePt.y -= 80 * hovered.length;
       } else if (hoveredAfter.length !== 0) {
         const before = allBlocks.slice(0, gathereds.movingTopIndex);
         const moving = allBlocks.slice(
@@ -117,17 +114,12 @@ export const onMouseDown = (
           movingButtomElm: gathereds.movingButtomElm,
         };
         leadingBlock.index = leadingBlock.index + hovered.length;
-        // leadingBlock.initMousePt.y += 80 * hovered.length;
       } else {
         return;
       }
       props.hovereds.current = newHovereds;
       props.allBlocks.current = newAllBlocks;
       props.gathereds.current = newGathereds;
-      // newAllBlocks.forEach((b) => {
-      //   if (!b) return;
-      //   b.elm.style.transform = "";
-      // });
       props.setRawBlocks(newAllBlocks);
     }
   }, dndConsts.HOVER_CHECK_MS);

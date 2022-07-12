@@ -16,7 +16,7 @@ export type DndProps = {
   rblock: RawBlock;
   setRawBlocks: React.Dispatch<React.SetStateAction<(RawBlock | null)[]>>;
   index: number;
-  allBlocks: React.MutableRefObject<(Block | null)[]>;
+  allBlocks: React.MutableRefObject<Block[]>;
   leadingBlock: React.MutableRefObject<LeadingBlock | null>;
   gathereds: React.MutableRefObject<Gathereds | null>;
   hovereds: React.MutableRefObject<Hovereds | null>;
@@ -26,18 +26,18 @@ export type DndProps = {
 export const DndItem = (props: DndProps) => {
   const handlingBtnElm = useRef<HTMLButtonElement>(null);
   const callbackRef = (elm: HTMLElement | null) => {
+    if (!elm) {
+      console.log("elm removed.");
+      return;
+    }
+
+    console.log("elm mounted");
     const leadingBlock = props.leadingBlock.current;
     if (!leadingBlock) {
-      if (!elm) {
-        console.log("elm removed.");
-        props.allBlocks.current[props.index] = null;
-        return;
-      }
       console.log("elm mounted.");
       props.allBlocks.current[props.index] = new Block(props.rblock, elm);
       return;
     }
-    if (!elm) return;
     onReorder(elm, props);
   };
 

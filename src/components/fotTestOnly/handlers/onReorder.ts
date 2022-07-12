@@ -10,7 +10,6 @@ export const onReorder = (elm: HTMLElement, props: DndProps) => {
   if (!hovereds) return;
 
   if (props.index !== leadingBlock.index) return;
-  if (!elm) return;
 
   props.observing.current.reorderMux = false;
   setTimeout(() => {

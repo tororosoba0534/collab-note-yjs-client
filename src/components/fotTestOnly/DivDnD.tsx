@@ -16,7 +16,7 @@ export const DivDnD = () => {
   const [rawBlocks, setRawBlocks] = useState<(RawBlock | null)[]>(
     genRawBlocks(BLOCKS_NUM)
   );
-  const allBlocks = useRef<(Block | null)[]>([]);
+  const allBlocks = useRef<Block[]>([]);
   const leadingBlock = useRef<LeadingBlock | null>(null);
   const gathereds = useRef<Gathereds | null>(null);
   const hovereds = useRef<Hovereds | null>(null);

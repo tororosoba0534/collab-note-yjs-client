@@ -21,7 +21,6 @@ export const onMouseMove = (e: MouseEvent, props: DndProps) => {
       const moveAfter: Block[] = [];
       const stayAfter: Block[] = [];
       allBlocks.forEach((block, index) => {
-        if (!block) return;
         if (index < leadingBlock.index) {
           if (block.isSelected) {
             moveBefore.push(block);
@@ -60,7 +59,6 @@ export const onMouseMove = (e: MouseEvent, props: DndProps) => {
   }
 
   allBlocks.forEach((block) => {
-    if (!block) return;
     if (block.isSelected) {
       block.elm.style.transform = `translate(${dx}px,${dy}px)`;
     }
