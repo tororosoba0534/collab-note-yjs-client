@@ -1,5 +1,4 @@
 import { DndProps } from "../DndItem";
-import { onMouseMove } from "./onMouseMove";
 
 export const onMouseUp = (
   e: MouseEvent,
@@ -16,7 +15,9 @@ export const onMouseUp = (
     block.elm.style.transition = "";
   });
   props.leadingBlock.current = null;
-  props.overRenderingInfo.current = null;
+  props.gathereds.current = null;
+  props.hovereds.current = null;
 
-  window.clearInterval(props.checkHoverInterval.current);
+  props.observing.current.reorderMux = true;
+  window.clearInterval(props.observing.current.checkHoverInterval);
 };

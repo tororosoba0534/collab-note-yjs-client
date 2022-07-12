@@ -3,18 +3,18 @@ import { DndProps } from "../DndItem";
 
 export const onReorder = (elm: HTMLElement, props: DndProps) => {
   const leadingBlock = props.leadingBlock.current;
-  const overRenderingInfo = props.overRenderingInfo.current;
-  const gathered = props.gathered.current;
+  const gathereds = props.gathereds.current;
+  const hovereds = props.hovereds.current;
   if (!leadingBlock) return;
-  if (!gathered) return;
-  if (!overRenderingInfo) return;
+  if (!gathereds) return;
+  if (!hovereds) return;
 
   if (props.index !== leadingBlock.index) return;
   if (!elm) return;
 
-  props.muxReordering.current = false;
+  props.observing.current.reorderMux = false;
   setTimeout(() => {
-    props.muxReordering.current = true;
+    props.observing.current.reorderMux = true;
   }, dndConsts.MUX_REORDERING_MS);
 
   const { x: elmBeforeX, y: elmBeforeY } = leadingBlock.initElmPt;
@@ -28,18 +28,17 @@ export const onReorder = (elm: HTMLElement, props: DndProps) => {
   leadingBlock.initMousePt = { x: cursorAfterX, y: cursorAfterY };
   leadingBlock.initElmPt = { x: elmAfterX, y: elmAfterY };
 
-  const DX = props.currentCursorPt.current.x - cursorAfterX;
-  const DY = props.currentCursorPt.current.y - cursorAfterY;
+  const DX = props.observing.current.currentCursorPt.x - cursorAfterX;
+  const DY = props.observing.current.currentCursorPt.y - cursorAfterY;
 
   // elm.style.transform = `translate(${
   //   DX
   // }px,${DY}px)`;
 
-  const ptBefores = overRenderingInfo.hoveredsInfo;
   props.allBlocks.current.forEach((block, index) => {
     if (!block) return;
-    if (ptBefores[block.key]) {
-      const { xBefore, yBefore } = ptBefores[block.key];
+    if (hovereds[block.key]) {
+      const { xBefore, yBefore } = hovereds[block.key];
       const { left: xAfter, top: yAfter } = block.elm.getBoundingClientRect();
       block.elm.style.transition = "";
       block.elm.style.transform = `translate(${xBefore - xAfter}px,${
@@ -50,8 +49,8 @@ export const onReorder = (elm: HTMLElement, props: DndProps) => {
         block.elm.style.transition = `all ${dndConsts.ANIMATION_MS}ms`;
       });
     } else if (
-      index >= gathered.movingTopIndex &&
-      index <= gathered.movingButtomIndex
+      index >= gathereds.movingTopIndex &&
+      index <= gathereds.movingButtomIndex
     ) {
       block.elm.style.transform = `translate(${DX}px,${DY}px)`;
     }

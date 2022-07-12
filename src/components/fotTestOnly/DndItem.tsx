@@ -1,16 +1,14 @@
-import { MouseEventHandler, useRef } from "react";
-import { dndConsts } from "./dndConsts";
+import { useRef } from "react";
 import { onMouseDown } from "./handlers/onMouseDown";
 import { onMouseMove } from "./handlers/onMouseMove";
 import { onMouseUp } from "./handlers/onMouseUp";
 import { onReorder } from "./handlers/onReorder";
 import {
   Block,
-  Gathered,
-  HoveredsInfo,
+  Gathereds,
+  Hovereds,
   LeadingBlock,
-  OverRendering,
-  Position,
+  Observing,
   RawBlock,
 } from "./utils";
 
@@ -20,11 +18,9 @@ export type DndProps = {
   index: number;
   allBlocks: React.MutableRefObject<(Block | null)[]>;
   leadingBlock: React.MutableRefObject<LeadingBlock | null>;
-  gathered: React.MutableRefObject<Gathered | null>;
-  overRenderingInfo: React.MutableRefObject<OverRendering | null>;
-  muxReordering: React.MutableRefObject<boolean>;
-  checkHoverInterval: React.MutableRefObject<number | undefined>;
-  currentCursorPt: React.MutableRefObject<Position>;
+  gathereds: React.MutableRefObject<Gathereds | null>;
+  hovereds: React.MutableRefObject<Hovereds | null>;
+  observing: React.MutableRefObject<Observing>;
 };
 
 export const DndItem = (props: DndProps) => {

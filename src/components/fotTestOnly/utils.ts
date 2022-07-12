@@ -16,7 +16,7 @@ export class RawBlock {
   }
 }
 
-export const rawBlocksGen = (num: number): RawBlock[] => {
+export const genRawBlocks = (num: number): RawBlock[] => {
   const result: RawBlock[] = [];
 
   for (let i = 0; i < num; i++) {
@@ -71,7 +71,6 @@ export class LeadingBlock extends Block {
   index: number;
   initMousePt: Position;
   initElmPt: Position;
-  beingFollowedByOthers: boolean;
   constructor(
     block: Block,
     index: number,
@@ -82,25 +81,25 @@ export class LeadingBlock extends Block {
     this.index = index;
     this.initMousePt = initMousePt;
     this.initElmPt = initElmPt;
-    this.beingFollowedByOthers = false;
   }
 }
 
-export type Gathered = {
+export type Gathereds = {
   movingTopIndex: number;
   movingButtomIndex: number;
   movingTopElm: HTMLElement;
   movingButtomElm: HTMLElement;
 };
 
-// export type Hovered = { key: string; xBefore: number; yBefore: number };
-export type HoveredsInfo = {
+export type Hovereds = {
   [key: string]: {
     xBefore: number;
     yBefore: number;
   };
 };
 
-export type OverRendering = {
-  hoveredsInfo: HoveredsInfo;
+export type Observing = {
+  currentCursorPt: Position;
+  checkHoverInterval: number | undefined;
+  reorderMux: boolean;
 };

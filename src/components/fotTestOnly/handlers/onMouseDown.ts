@@ -1,6 +1,6 @@
 import { dndConsts } from "../dndConsts";
 import { DndProps } from "../DndItem";
-import { Block, Gathered, HoveredsInfo, LeadingBlock } from "../utils";
+import { Block, Gathereds, Hovereds, LeadingBlock } from "../utils";
 
 export const onMouseDown = (
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -29,45 +29,46 @@ export const onMouseDown = (
       y: currentBlock.elm.getBoundingClientRect().top,
     }
   );
-  props.currentCursorPt.current = { x: e.clientX, y: e.clientY };
+  props.observing.current.currentCursorPt = { x: e.clientX, y: e.clientY };
 
-  props.checkHoverInterval.current = window.setInterval(() => {
-    if (!props.muxReordering.current) return;
+  props.observing.current.reorderMux = true;
+  props.observing.current.checkHoverInterval = window.setInterval(() => {
+    if (!props.observing.current.reorderMux) return;
 
     const allBlocks = props.allBlocks.current;
     const leadingBlock = props.leadingBlock.current;
     if (!leadingBlock) return;
-    const gathered = props.gathered.current;
-    if (!gathered) return;
+    const gathereds = props.gathereds.current;
+    if (!gathereds) return;
 
-    const movingTopY = gathered.movingTopElm.getBoundingClientRect().top;
+    const movingTopY = gathereds.movingTopElm.getBoundingClientRect().top;
     const movingButtomY =
-      gathered.movingButtomElm.getBoundingClientRect().bottom;
+      gathereds.movingButtomElm.getBoundingClientRect().bottom;
 
     const hoveredBefore: number[] = [];
     const hoveredAfter: number[] = [];
-    const hoveredsInfo: HoveredsInfo = {};
+    const newHovereds: Hovereds = {};
     let shouldSetAllBlocks = false;
     allBlocks.forEach((block, index) => {
       if (!block) return;
-      if (index < gathered.movingTopIndex) {
+      if (index < gathereds.movingTopIndex) {
         const { top, bottom, left } = block.elm.getBoundingClientRect();
         const line = (top + bottom) / 2;
         if (movingTopY < line) {
           console.log("hover detected!");
           hoveredBefore.push(index);
           shouldSetAllBlocks = true;
-          // hoveredsInfo.push({ key: block.key, xBefore: left, yBefore: top });
-          hoveredsInfo[block.key] = { xBefore: left, yBefore: top };
+          // newHovereds.push({ key: block.key, xBefore: left, yBefore: top });
+          newHovereds[block.key] = { xBefore: left, yBefore: top };
         }
-      } else if (index > gathered.movingButtomIndex) {
+      } else if (index > gathereds.movingButtomIndex) {
         const { top, bottom, left } = block.elm.getBoundingClientRect();
         const line = (top + bottom) / 2;
         if (movingButtomY > line) {
           console.log("hover detected!");
           hoveredAfter.push(index);
           shouldSetAllBlocks = true;
-          hoveredsInfo[block.key] = { xBefore: left, yBefore: top };
+          newHovereds[block.key] = { xBefore: left, yBefore: top };
         }
       } else {
         return;
@@ -75,7 +76,7 @@ export const onMouseDown = (
     });
     if (shouldSetAllBlocks) {
       let newAllBlocks: (Block | null)[];
-      let newGathered: Gathered;
+      let newGathereds: Gathereds;
 
       if (hoveredBefore.length !== 0) {
         const before = allBlocks.slice(0, hoveredBefore[0]);
@@ -84,24 +85,24 @@ export const onMouseDown = (
           hoveredBefore[0] + hoveredBefore.length
         );
         const moving = allBlocks.slice(
-          gathered.movingTopIndex,
-          gathered.movingButtomIndex + 1
+          gathereds.movingTopIndex,
+          gathereds.movingButtomIndex + 1
         );
-        const after = allBlocks.slice(gathered.movingButtomIndex + 1);
+        const after = allBlocks.slice(gathereds.movingButtomIndex + 1);
         newAllBlocks = [...before, ...moving, ...hovered, ...after];
-        newGathered = {
-          movingTopIndex: gathered.movingTopIndex - hovered.length,
-          movingButtomIndex: gathered.movingButtomIndex - hovered.length,
-          movingTopElm: gathered.movingTopElm,
-          movingButtomElm: gathered.movingButtomElm,
+        newGathereds = {
+          movingTopIndex: gathereds.movingTopIndex - hovered.length,
+          movingButtomIndex: gathereds.movingButtomIndex - hovered.length,
+          movingTopElm: gathereds.movingTopElm,
+          movingButtomElm: gathereds.movingButtomElm,
         };
         leadingBlock.index = leadingBlock.index - hovered.length;
         // leadingBlock.initMousePt.y -= 80 * hovered.length;
       } else if (hoveredAfter.length !== 0) {
-        const before = allBlocks.slice(0, gathered.movingTopIndex);
+        const before = allBlocks.slice(0, gathereds.movingTopIndex);
         const moving = allBlocks.slice(
-          gathered.movingTopIndex,
-          gathered.movingButtomIndex + 1
+          gathereds.movingTopIndex,
+          gathereds.movingButtomIndex + 1
         );
         const hovered = allBlocks.slice(
           hoveredAfter[0],
@@ -109,22 +110,20 @@ export const onMouseDown = (
         );
         const after = allBlocks.slice(hoveredAfter[0] + hoveredAfter.length);
         newAllBlocks = [...before, ...hovered, ...moving, ...after];
-        newGathered = {
-          movingTopIndex: gathered.movingTopIndex + hovered.length,
-          movingButtomIndex: gathered.movingButtomIndex + hovered.length,
-          movingTopElm: gathered.movingTopElm,
-          movingButtomElm: gathered.movingButtomElm,
+        newGathereds = {
+          movingTopIndex: gathereds.movingTopIndex + hovered.length,
+          movingButtomIndex: gathereds.movingButtomIndex + hovered.length,
+          movingTopElm: gathereds.movingTopElm,
+          movingButtomElm: gathereds.movingButtomElm,
         };
         leadingBlock.index = leadingBlock.index + hovered.length;
         // leadingBlock.initMousePt.y += 80 * hovered.length;
       } else {
         return;
       }
-      props.overRenderingInfo.current = {
-        hoveredsInfo: hoveredsInfo,
-      };
+      props.hovereds.current = newHovereds;
       props.allBlocks.current = newAllBlocks;
-      props.gathered.current = newGathered;
+      props.gathereds.current = newGathereds;
       // newAllBlocks.forEach((b) => {
       //   if (!b) return;
       //   b.elm.style.transform = "";
