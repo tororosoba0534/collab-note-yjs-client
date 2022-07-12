@@ -46,10 +46,12 @@ export class Block extends RawBlock {
   select = () => {
     this.isSelected = true;
     this.elm.style.backgroundColor = "red";
+    this.elm.style.zIndex = "10";
   };
   deselect = () => {
     this.isSelected = false;
     this.elm.style.backgroundColor = "#bef264";
+    this.elm.style.zIndex = "0";
   };
   toggleSelect = () => {
     if (this.isSelected) {
