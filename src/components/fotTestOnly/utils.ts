@@ -102,6 +102,5 @@ export type HoveredsInfo = {
 };
 
 export type OverRendering = {
-  cursorPt: Position;
   hoveredsInfo: HoveredsInfo;
 };

@@ -6,6 +6,7 @@ import {
   Gathered,
   LeadingBlock,
   OverRendering,
+  Position,
   RawBlock,
   rawBlocksGen,
 } from "./utils";
@@ -19,8 +20,9 @@ export const DivDnD = () => {
   const allBlocks = useRef<(Block | null)[]>([]);
   const leadingBlock = useRef<LeadingBlock | null>(null);
   const gathered = useRef<Gathered | null>(null);
-  const muxOnMouseMove = useRef(true);
+  const muxReordering = useRef(true);
   const overRenderingInfo = useRef<OverRendering | null>(null);
+  const currentCursorPt = useRef<Position>({ x: 0, y: 0 });
   const checkHoverInterval = useRef<number | undefined>(undefined);
   return (
     <div className=" w-full flex flex-col gap-5 p-10">
@@ -28,7 +30,7 @@ export const DivDnD = () => {
         if (!rblock) return;
         return (
           <DndItem
-            muxOnMouseMove={muxOnMouseMove}
+            muxReordering={muxReordering}
             key={rblock.key}
             rblock={rblock}
             setRawBlocks={setRawBlocks}
@@ -38,6 +40,7 @@ export const DivDnD = () => {
             gathered={gathered}
             overRenderingInfo={overRenderingInfo}
             checkHoverInterval={checkHoverInterval}
+            currentCursorPt={currentCursorPt}
           />
         );
       })}

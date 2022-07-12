@@ -5,10 +5,15 @@ import {
   HoveredsInfo,
   LeadingBlock,
   OverRendering,
+  Position,
   RawBlock,
 } from "./utils";
 
 const GATHER_VAL = 10;
+
+const HOVER_CHECK_MS = 300;
+const MUX_REORDERING_MS = 1000;
+const ANIMATION_MS = 300;
 
 export const DndItem = (props: {
   rblock: RawBlock;
@@ -18,29 +23,44 @@ export const DndItem = (props: {
   leadingBlock: React.MutableRefObject<LeadingBlock | null>;
   gathered: React.MutableRefObject<Gathered | null>;
   overRenderingInfo: React.MutableRefObject<OverRendering | null>;
-  muxOnMouseMove: React.MutableRefObject<boolean>;
+  muxReordering: React.MutableRefObject<boolean>;
   checkHoverInterval: React.MutableRefObject<number | undefined>;
+  currentCursorPt: React.MutableRefObject<Position>;
 }) => {
   const handlingBtnElm = useRef<HTMLButtonElement>(null);
   const callbackRef = (elm: HTMLElement | null) => {
     const leadingBlock = props.leadingBlock.current;
     if (leadingBlock) {
       const overRenderingInfo = props.overRenderingInfo.current;
-      if (!props.gathered.current) return;
+      const gathered = props.gathered.current;
+      if (!gathered) return;
       if (!overRenderingInfo) return;
 
       if (props.index !== leadingBlock.index) return;
       if (!elm) return;
+
+      props.muxReordering.current = false;
+      setTimeout(() => {
+        props.muxReordering.current = true;
+      }, MUX_REORDERING_MS);
+
+      const { x: elmBeforeX, y: elmBeforeY } = leadingBlock.initElmPt;
+      const { x: cursorBeforeX, y: cursorBeforeY } = leadingBlock.initMousePt;
+
       elm.style.transform = "";
-      const { left: xAfter, top: yAfter } = elm.getBoundingClientRect();
-      const baseDX = xAfter - leadingBlock.initElmPt.x;
-      const baseDY = yAfter - leadingBlock.initElmPt.y;
-      leadingBlock.initMousePt.x += baseDX;
-      leadingBlock.initMousePt.y += baseDY;
-      elm.style.transform = `translate(${
-        overRenderingInfo.cursorPt.x - leadingBlock.initMousePt.x
-      }px,${overRenderingInfo.cursorPt.y - leadingBlock.initMousePt.y}px)`;
-      leadingBlock.initElmPt = { x: xAfter, y: yAfter };
+      const { left: elmAfterX, top: elmAfterY } = elm.getBoundingClientRect();
+      const cursorAfterX = cursorBeforeX + elmAfterX - elmBeforeX;
+      const cursorAfterY = cursorBeforeY + elmAfterY - elmBeforeY;
+
+      leadingBlock.initMousePt = { x: cursorAfterX, y: cursorAfterY };
+      leadingBlock.initElmPt = { x: elmAfterX, y: elmAfterY };
+
+      const DX = props.currentCursorPt.current.x - cursorAfterX;
+      const DY = props.currentCursorPt.current.y - cursorAfterY;
+
+      // elm.style.transform = `translate(${
+      //   DX
+      // }px,${DY}px)`;
 
       const ptBefores = overRenderingInfo.hoveredsInfo;
       props.allBlocks.current.forEach((block, index) => {
@@ -55,8 +75,13 @@ export const DndItem = (props: {
           }px)`;
           requestAnimationFrame(() => {
             block.elm.style.transform = "";
-            block.elm.style.transition = "all 300ms";
+            block.elm.style.transition = `all ${ANIMATION_MS}ms`;
           });
+        } else if (
+          index >= gathered.movingTopIndex &&
+          index <= gathered.movingButtomIndex
+        ) {
+          block.elm.style.transform = `translate(${DX}px,${DY}px)`;
         }
       });
       return;
@@ -94,10 +119,13 @@ export const DndItem = (props: {
         y: currentBlock.elm.getBoundingClientRect().top,
       }
     );
+    props.currentCursorPt.current = { x: e.clientX, y: e.clientY };
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
 
     props.checkHoverInterval.current = window.setInterval(() => {
+      if (!props.muxReordering.current) return;
+
       const allBlocks = props.allBlocks.current;
       const leadingBlock = props.leadingBlock.current;
       if (!leadingBlock) return;
@@ -185,7 +213,6 @@ export const DndItem = (props: {
           return;
         }
         props.overRenderingInfo.current = {
-          cursorPt: { x: e.clientX, y: e.clientY },
           hoveredsInfo: hoveredsInfo,
         };
         props.allBlocks.current = newAllBlocks;
@@ -196,13 +223,14 @@ export const DndItem = (props: {
         // });
         props.setRawBlocks(newAllBlocks);
       }
-    }, 200);
+    }, HOVER_CHECK_MS);
   };
 
   const onMouseMove = (e: MouseEvent) => {
     const leadingBlock = props.leadingBlock.current;
     if (!leadingBlock) return;
     const allBlocks = props.allBlocks.current;
+    props.currentCursorPt.current = { x: e.clientX, y: e.clientY };
 
     const dx = e.clientX - leadingBlock.initMousePt.x;
     const dy = e.clientY - leadingBlock.initMousePt.y;
