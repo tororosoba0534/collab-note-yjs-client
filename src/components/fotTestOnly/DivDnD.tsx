@@ -21,6 +21,7 @@ export const DivDnD = () => {
   const gathered = useRef<Gathered | null>(null);
   const muxOnMouseMove = useRef(true);
   const overRenderingInfo = useRef<OverRendering | null>(null);
+  const checkHoverInterval = useRef<number | undefined>(undefined);
   return (
     <div className=" w-full flex flex-col gap-5 p-10">
       {rawBlocks.map((rblock, i) => {
@@ -36,6 +37,7 @@ export const DivDnD = () => {
             leadingBlock={leadingBlock}
             gathered={gathered}
             overRenderingInfo={overRenderingInfo}
+            checkHoverInterval={checkHoverInterval}
           />
         );
       })}
