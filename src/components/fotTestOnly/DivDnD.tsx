@@ -22,7 +22,7 @@ export const DivDnD = () => {
   const muxOnMouseMove = useRef(true);
   const overRenderingInfo = useRef<OverRendering | null>(null);
   return (
-    <div className=" w-full flex flex-col gap-10 p-10">
+    <div className=" w-full flex flex-col gap-5 p-10">
       {rawBlocks.map((rblock, i) => {
         if (!rblock) return;
         return (

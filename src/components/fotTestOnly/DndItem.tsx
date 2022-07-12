@@ -2,6 +2,7 @@ import { MouseEventHandler, useRef } from "react";
 import {
   Block,
   Gathered,
+  HoveredsInfo,
   LeadingBlock,
   OverRendering,
   RawBlock,
@@ -39,6 +40,24 @@ export const DndItem = (props: {
         overRenderingInfo.cursorPt.x - leadingBlock.initMousePt.x
       }px,${overRenderingInfo.cursorPt.y - leadingBlock.initMousePt.y}px)`;
       leadingBlock.initElmPt = { x: xAfter, y: yAfter };
+
+      const ptBefores = overRenderingInfo.hoveredsInfo;
+      props.allBlocks.current.forEach((block, index) => {
+        if (!block) return;
+        if (ptBefores[block.key]) {
+          const { xBefore, yBefore } = ptBefores[block.key];
+          const { left: xAfter, top: yAfter } =
+            block.elm.getBoundingClientRect();
+          block.elm.style.transition = "";
+          block.elm.style.transform = `translate(${xBefore - xAfter}px,${
+            yBefore - yAfter
+          }px)`;
+          requestAnimationFrame(() => {
+            block.elm.style.transform = "";
+            block.elm.style.transition = "all 300ms";
+          });
+        }
+      });
       return;
     }
 
@@ -148,7 +167,7 @@ export const DndItem = (props: {
     props.muxOnMouseMove.current = false;
     setTimeout(() => {
       props.muxOnMouseMove.current = true;
-    }, 100);
+    }, 300);
 
     const gathered = props.gathered.current;
 
@@ -158,24 +177,28 @@ export const DndItem = (props: {
 
     const hoveredBefore: number[] = [];
     const hoveredAfter: number[] = [];
+    const hoveredsInfo: HoveredsInfo = {};
     let shouldSetAllBlocks = false;
     allBlocks.forEach((block, index) => {
       if (!block) return;
       if (index < gathered.movingTopIndex) {
-        const { top, bottom } = block.elm.getBoundingClientRect();
+        const { top, bottom, left } = block.elm.getBoundingClientRect();
         const line = (top + bottom) / 2;
         if (movingTopY < line) {
           console.log("hover detected!");
           hoveredBefore.push(index);
           shouldSetAllBlocks = true;
+          // hoveredsInfo.push({ key: block.key, xBefore: left, yBefore: top });
+          hoveredsInfo[block.key] = { xBefore: left, yBefore: top };
         }
       } else if (index > gathered.movingButtomIndex) {
-        const { top, bottom } = block.elm.getBoundingClientRect();
+        const { top, bottom, left } = block.elm.getBoundingClientRect();
         const line = (top + bottom) / 2;
         if (movingButtomY > line) {
           console.log("hover detected!");
           hoveredAfter.push(index);
           shouldSetAllBlocks = true;
+          hoveredsInfo[block.key] = { xBefore: left, yBefore: top };
         }
       } else {
         return;
@@ -230,6 +253,7 @@ export const DndItem = (props: {
       }
       props.overRenderingInfo.current = {
         cursorPt: { x: e.clientX, y: e.clientY },
+        hoveredsInfo: hoveredsInfo,
       };
       props.allBlocks.current = newAllBlocks;
       props.gathered.current = newGathered;
@@ -249,6 +273,7 @@ export const DndItem = (props: {
     props.allBlocks.current.forEach((block) => {
       if (!block) return;
       block.elm.style.transform = "";
+      block.elm.style.transition = "";
     });
     props.leadingBlock.current = null;
     props.overRenderingInfo.current = null;

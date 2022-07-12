@@ -91,6 +91,15 @@ export type Gathered = {
   movingButtomElm: HTMLElement;
 };
 
+// export type Hovered = { key: string; xBefore: number; yBefore: number };
+export type HoveredsInfo = {
+  [key: string]: {
+    xBefore: number;
+    yBefore: number;
+  };
+};
+
 export type OverRendering = {
   cursorPt: Position;
+  hoveredsInfo: HoveredsInfo;
 };
