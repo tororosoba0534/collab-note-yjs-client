@@ -3,24 +3,13 @@ import { onMouseDown } from "./handlers/onMouseDown";
 import { onMouseMove } from "./handlers/onMouseMove";
 import { onMouseUp } from "./handlers/onMouseUp";
 import { onReorder } from "./handlers/onReorder";
-import {
-  Block,
-  Gathereds,
-  Hovereds,
-  LeadingBlock,
-  Observing,
-  RawBlock,
-} from "./utils";
+import { Block, DnDInfo, RawBlock } from "./utils";
 
 export type DndProps = {
   rblock: RawBlock;
   setRawBlocks: React.Dispatch<React.SetStateAction<(RawBlock | null)[]>>;
   index: number;
-  allBlocks: React.MutableRefObject<Block[]>;
-  leadingBlock: React.MutableRefObject<LeadingBlock | null>;
-  gathereds: React.MutableRefObject<Gathereds | null>;
-  hovereds: React.MutableRefObject<Hovereds | null>;
-  observing: React.MutableRefObject<Observing>;
+  dndInfo: React.MutableRefObject<DnDInfo>;
 };
 
 export const DndItem = (props: DndProps) => {
@@ -32,10 +21,13 @@ export const DndItem = (props: DndProps) => {
     }
 
     console.log("elm mounted");
-    const leadingBlock = props.leadingBlock.current;
+    const leadingBlock = props.dndInfo.current.leadingBlock;
     if (!leadingBlock) {
       console.log("elm mounted.");
-      props.allBlocks.current[props.index] = new Block(props.rblock, elm);
+      props.dndInfo.current.allBlocks[props.index] = new Block(
+        props.rblock,
+        elm
+      );
       return;
     }
     onReorder(elm, props);
@@ -68,7 +60,7 @@ export const DndItem = (props: DndProps) => {
         className="h-full bg-lime-100 rounded-lg px-2"
         onClick={(e) => {
           e.stopPropagation();
-          props.allBlocks.current[props.index]?.toggleSelect();
+          props.dndInfo.current.allBlocks[props.index]?.toggleSelect();
         }}
       >
         SELECT

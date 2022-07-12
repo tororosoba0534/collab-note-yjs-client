@@ -2,18 +2,19 @@ import { dndConsts } from "../dndConsts";
 import { DndProps } from "../DndItem";
 
 export const onReorder = (elm: HTMLElement, props: DndProps) => {
-  const leadingBlock = props.leadingBlock.current;
-  const gathereds = props.gathereds.current;
-  const hovereds = props.hovereds.current;
+  const dndInfo = props.dndInfo.current;
+  const leadingBlock = dndInfo.leadingBlock;
+  const gathereds = dndInfo.gathereds;
+  const hovereds = dndInfo.hovereds;
   if (!leadingBlock) return;
   if (!gathereds) return;
   if (!hovereds) return;
 
   if (props.index !== leadingBlock.index) return;
 
-  props.observing.current.reorderMux = false;
+  dndInfo.observing.reorderMux = false;
   setTimeout(() => {
-    props.observing.current.reorderMux = true;
+    dndInfo.observing.reorderMux = true;
   }, dndConsts.MUX_REORDERING_MS);
 
   const { x: elmBeforeX, y: elmBeforeY } = leadingBlock.initElmPt;
@@ -27,15 +28,14 @@ export const onReorder = (elm: HTMLElement, props: DndProps) => {
   leadingBlock.initMousePt = { x: cursorAfterX, y: cursorAfterY };
   leadingBlock.initElmPt = { x: elmAfterX, y: elmAfterY };
 
-  const DX = props.observing.current.currentCursorPt.x - cursorAfterX;
-  const DY = props.observing.current.currentCursorPt.y - cursorAfterY;
+  const DX = dndInfo.observing.currentCursorPt.x - cursorAfterX;
+  const DY = dndInfo.observing.currentCursorPt.y - cursorAfterY;
 
   // elm.style.transform = `translate(${
   //   DX
   // }px,${DY}px)`;
 
-  props.allBlocks.current.forEach((block, index) => {
-    if (!block) return;
+  dndInfo.allBlocks.forEach((block, index) => {
     if (hovereds[block.key]) {
       const { xBefore, yBefore } = hovereds[block.key];
       const { left: xAfter, top: yAfter } = block.elm.getBoundingClientRect();

@@ -3,15 +3,19 @@ import { DndProps } from "../DndItem";
 import { Block } from "../utils";
 
 export const onMouseMove = (e: MouseEvent, props: DndProps) => {
-  const leadingBlock = props.leadingBlock.current;
+  const dndInfo = props.dndInfo.current;
+  const leadingBlock = dndInfo.leadingBlock;
   if (!leadingBlock) return;
-  const allBlocks = props.allBlocks.current;
-  props.observing.current.currentCursorPt = { x: e.clientX, y: e.clientY };
+  const allBlocks = dndInfo.allBlocks;
+  dndInfo.observing.currentCursorPt = {
+    x: e.clientX,
+    y: e.clientY,
+  };
 
   const dx = e.clientX - leadingBlock.initMousePt.x;
   const dy = e.clientY - leadingBlock.initMousePt.y;
 
-  if (!props.gathereds.current) {
+  if (!dndInfo.gathereds) {
     if (dy < dndConsts.GATHER_VAL && dy > -dndConsts.GATHER_VAL) {
       leadingBlock.elm.style.transform = `translate(${dx}px,${dy}px)`;
       return;
@@ -45,14 +49,14 @@ export const onMouseMove = (e: MouseEvent, props: DndProps) => {
         ...moveAfter,
         ...stayAfter,
       ];
-      props.gathereds.current = {
+      dndInfo.gathereds = {
         movingTopIndex: stayBefore.length,
         movingButtomIndex: newAllBlocks.length - stayAfter.length - 1,
         movingTopElm: moveBefore[0]?.elm || leadingBlock.elm,
         movingButtomElm:
           moveAfter[moveAfter.length - 1]?.elm || leadingBlock.elm,
       };
-      props.allBlocks.current = newAllBlocks;
+      dndInfo.allBlocks = newAllBlocks;
       props.setRawBlocks(newAllBlocks);
       return;
     }

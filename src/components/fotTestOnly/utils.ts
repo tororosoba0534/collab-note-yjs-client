@@ -103,3 +103,36 @@ export type Observing = {
   checkHoverInterval: number | undefined;
   reorderMux: boolean;
 };
+
+export class DnDInfo {
+  allBlocks: Block[];
+  leadingBlock: LeadingBlock | null;
+  gathereds: Gathereds | null;
+  hovereds: Hovereds | null;
+  observing: Observing;
+
+  constructor() {
+    this.allBlocks = [];
+    this.leadingBlock = null;
+    this.gathereds = null;
+    this.hovereds = null;
+    this.observing = {
+      currentCursorPt: { x: 0, y: 0 },
+      checkHoverInterval: undefined,
+      reorderMux: true,
+    };
+  }
+
+  onMouseUp = () => {
+    this.allBlocks.forEach((block) => {
+      block.elm.style.transform = "";
+      block.elm.style.transition = "";
+    });
+    this.leadingBlock = null;
+    this.gathereds = null;
+    this.hovereds = null;
+
+    this.observing.reorderMux = true;
+    window.clearInterval(this.observing.checkHoverInterval);
+  };
+}

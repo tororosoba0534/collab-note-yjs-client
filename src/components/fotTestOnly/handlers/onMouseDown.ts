@@ -7,7 +7,8 @@ export const onMouseDown = (
   props: DndProps,
   handlingBtnElm: React.RefObject<HTMLButtonElement>
 ) => {
-  const currentBlock = props.allBlocks.current[props.index];
+  const dndInfo = props.dndInfo.current;
+  const currentBlock = dndInfo.allBlocks[props.index];
   if (!currentBlock) return;
 
   if (!currentBlock.isSelected) return;
@@ -17,7 +18,7 @@ export const onMouseDown = (
     btn.style.cursor = "grabbing";
   }
 
-  props.leadingBlock.current = new LeadingBlock(
+  dndInfo.leadingBlock = new LeadingBlock(
     currentBlock,
     props.index,
     {
@@ -29,16 +30,19 @@ export const onMouseDown = (
       y: currentBlock.elm.getBoundingClientRect().top,
     }
   );
-  props.observing.current.currentCursorPt = { x: e.clientX, y: e.clientY };
+  dndInfo.observing.currentCursorPt = {
+    x: e.clientX,
+    y: e.clientY,
+  };
 
-  props.observing.current.reorderMux = true;
-  props.observing.current.checkHoverInterval = window.setInterval(() => {
-    if (!props.observing.current.reorderMux) return;
+  dndInfo.observing.reorderMux = true;
+  dndInfo.observing.checkHoverInterval = window.setInterval(() => {
+    if (!dndInfo.observing.reorderMux) return;
 
-    const allBlocks = props.allBlocks.current;
-    const leadingBlock = props.leadingBlock.current;
+    const allBlocks = dndInfo.allBlocks;
+    const leadingBlock = dndInfo.leadingBlock;
     if (!leadingBlock) return;
-    const gathereds = props.gathereds.current;
+    const gathereds = dndInfo.gathereds;
     if (!gathereds) return;
 
     const movingTopY = gathereds.movingTopElm.getBoundingClientRect().top;
@@ -117,9 +121,9 @@ export const onMouseDown = (
       } else {
         return;
       }
-      props.hovereds.current = newHovereds;
-      props.allBlocks.current = newAllBlocks;
-      props.gathereds.current = newGathereds;
+      dndInfo.hovereds = newHovereds;
+      dndInfo.allBlocks = newAllBlocks;
+      dndInfo.gathereds = newGathereds;
       props.setRawBlocks(newAllBlocks);
     }
   }, dndConsts.HOVER_CHECK_MS);
