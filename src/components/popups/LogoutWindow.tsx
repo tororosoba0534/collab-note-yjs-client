@@ -11,7 +11,7 @@ export const LogoutWindow = (props: { provider: CustomWSProvider }) => {
 
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [didTryOnce, setDidTryOnce] = useState(false);
 
   const { setPopupStatus } = useContext(PersonalContext);
