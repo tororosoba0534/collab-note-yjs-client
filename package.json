@@ -69,5 +69,10 @@
       "no-useless-catch": "off",
       "react-hooks/exhaustive-deps": "error"
     }
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!(y-protocols|y-prosemirror|lib0)/)"
+    ]
   }
 }
