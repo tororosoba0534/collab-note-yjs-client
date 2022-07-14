@@ -58,8 +58,13 @@ export const ChangePasswordTryWindow = () => {
         setSubmitMsg(`Thrown ERR: ${status}`);
         return;
       }
+      if (status === 204) {
+        setSubmitMsg("new password is completely same as current one.");
+        return;
+      }
       if (status === 400) {
         setSubmitMsg("contains invalid value.");
+        return;
       }
       if (status === 401) {
         setPopupStatus("sessionTimeout");

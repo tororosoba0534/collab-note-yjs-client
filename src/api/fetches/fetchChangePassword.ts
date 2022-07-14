@@ -1,6 +1,6 @@
 import { baseFetch, isThrownErr, ReturnBaseFetch } from "../base";
 
-export type NumsChangePassword = 200 | 400 | 401 | 403 | 409 | 500;
+export type NumsChangePassword = 200 | 204 | 400 | 401 | 403 | 409 | 500;
 export type ReturnChangePassword = ReturnBaseFetch<NumsChangePassword>;
 export const fetchChangePassword = async (
   sessionID: string,
@@ -17,6 +17,7 @@ export const fetchChangePassword = async (
 
   if (
     status !== 200 &&
+    status !== 204 &&
     status !== 400 &&
     status !== 401 &&
     status !== 403 &&

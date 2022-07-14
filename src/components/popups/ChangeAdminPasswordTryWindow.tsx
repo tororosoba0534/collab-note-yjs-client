@@ -54,6 +54,8 @@ export const ChangeAdminPasswordTryWindow = () => {
         setSubmitMsg(`Thrown ERR: ${status}`);
       } else if (status === 200) {
         setPopupStatus("changeAdminPasswordOK");
+      } else if (status === 204) {
+        setSubmitMsg("new admin password is completely same as old one.");
       } else if (status === 401) {
         setPopupStatus("sessionTimeout");
       } else if (status === 403) {
