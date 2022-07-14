@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { isThrownErr } from "../../api/base";
-import { useDeleteAccount } from "../../api/hooks";
+import { useDeleteAccount } from "../../api/hooks/useDeleteAccount";
 import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PersonalContext } from "../personal/PersonalContext";

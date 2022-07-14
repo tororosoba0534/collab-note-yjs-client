@@ -13,7 +13,7 @@ import { YjsWS } from "../../yjs/YjsWS";
 import { PopupsInPersonal } from "./PopupsInPersonal";
 import { ConnStatusBox } from "./ConnStatusBox";
 import { PersonalContext } from "./PersonalContext";
-import { useCheckAuth } from "../../api/hooks";
+import { useCheckAuth } from "../../api/hooks/useCheckAuth";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   const { setPopupStatus } = useContext(PersonalContext);

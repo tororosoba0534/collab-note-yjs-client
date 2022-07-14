@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { isThrownErr } from "../../api/base";
-import { useChangeAdminPassword } from "../../api/hooks";
+import { useChangeAdminPassword } from "../../api/hooks/useChangeAdminPassword";
 import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";

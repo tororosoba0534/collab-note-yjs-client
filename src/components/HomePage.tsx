@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCheckAuth } from "../api/hooks";
+import { useCheckAuth } from "../api/hooks/useCheckAuth";
 import Loading from "./Loading";
 
 const HomePage = () => {

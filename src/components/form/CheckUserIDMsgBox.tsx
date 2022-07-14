@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import { isThrownErr } from "../../api/base";
-import { useCheckUserID } from "../../api/hooks";
+import { useCheckUserID } from "../../api/hooks/useCheckUserID";
 import { Validate } from "../../utils/validation";
 import { LoadingCircleSvg } from "../LoadingCircleSvg";
 import { CheckSvg } from "./CheckSvg";

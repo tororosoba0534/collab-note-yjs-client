@@ -1,7 +1,10 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import { isThrownErr, Status } from "../../api/base";
-import { NumsCreateAccount, ReturnCreateAccount } from "../../api/fetches";
-import { useCreateAccount } from "../../api/hooks";
+import {
+  NumsCreateAccount,
+  ReturnCreateAccount,
+} from "../../api/fetches/fetchLogout";
+import { useCreateAccount } from "../../api/hooks/useCreateAccount";
 import { Validate } from "../../utils/validation";
 
 export type CAStepNum = 1 | 2 | 3 | 4;

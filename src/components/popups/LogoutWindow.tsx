@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLogout } from "../../api/hooks";
+import { useLogout } from "../../api/hooks/useLogout";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import ErrorPage from "../errorPages/ErrorPage";
 import { PersonalContext } from "../personal/PersonalContext";

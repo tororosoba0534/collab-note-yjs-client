@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { useCheckAuth } from "../../api/hooks";
+import { useCheckAuth } from "../../api/hooks/useCheckAuth";
 import Loading from "../Loading";
 import { TiptapEditor } from "./TiptapEditor";
 

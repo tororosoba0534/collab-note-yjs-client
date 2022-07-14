@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { isThrownErr } from "../api/base";
-import { useCheckAuth } from "../api/hooks";
+import { useCheckAuth } from "../api/hooks/useCheckAuth";
 import ErrorPage from "../components/errorPages/ErrorPage";
 import Loading from "../components/Loading";
 
