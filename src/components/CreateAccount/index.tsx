@@ -374,10 +374,10 @@ const CreateAccount = () => {
         )}
       </div>
 
-      <div className="p-5 pt-0">
+      <div className="p-5  text-center">
         ... or already have an account?{" "}
         <Link
-          className="font-bold text-rose-500 hover:text-rose-400"
+          className="text-center font-bold text-rose-500 hover:text-rose-400"
           to="/login"
         >
           LOGIN
