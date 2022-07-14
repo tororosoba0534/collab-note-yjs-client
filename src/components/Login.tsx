@@ -76,7 +76,7 @@ const Login = () => {
 
   return (
     <FormBase>
-      <div className="text-2xl">Login</div>
+      <div className="text-4xl">Login</div>
       {status === 200 ? (
         <div>
           <p>Login succeeded!</p>
@@ -89,7 +89,7 @@ const Login = () => {
           {submitMsg}
         </div>
       )}
-      <div className="w-full">
+      <div className="w-full px-5">
         <FormFrame>
           <FloatingLabelInput
             ref={userIDRef}

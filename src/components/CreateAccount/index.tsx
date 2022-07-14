@@ -48,10 +48,27 @@ const CreateAccount = () => {
 
   return (
     <FormBase>
-      <h1 className="text-2xl">Create Account</h1>
+      <h1 className="text-4xl">Create Account</h1>
       <CASubmitMsg />
+      <div className="w-full px-8 md:px-14">
+        <p className="text-center">Please decide 3 values:</p>
+        <ul className="list-decimal pl-8">
+          <li className="mt-2 text-lg underline">user ID</li>
+          <li className="mt-3 ">
+            <span className="text-lg underline">password </span>
+            <span className="text-sm pl-1 no-underline">(for login)</span>
+          </li>
+
+          <li className="mt-3 text-lg underline">admin password</li>
+          <ul>
+            <li className="text-sm pl-1 md:pl-12">
+              (for administrator permission)
+            </li>
+          </ul>
+        </ul>
+      </div>
       <div className="w-full">
-        <FormFrame>
+        <FormFrame label="STEP 1">
           <UserIDInputWithMsg
             ref={userIDRef}
             label="UserID"
@@ -169,7 +186,7 @@ const CreateAccount = () => {
             // }}
           />
         ) : (
-          <FormFrame>
+          <FormFrame label="STEP 2">
             <PasswordInputWithMsg
               ref={passwordRef}
               label="Password"
@@ -269,7 +286,7 @@ const CreateAccount = () => {
             // }}
           />
         ) : (
-          <FormFrame>
+          <FormFrame label="STEP 3">
             <PasswordInputWithMsg
               ref={adminRef}
               label="Admin Password"
