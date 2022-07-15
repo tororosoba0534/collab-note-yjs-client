@@ -19,28 +19,31 @@ export const ConnStatusBox = (props: { provider: CustomWSProvider }) => {
 
   if (connStatus === "connected") {
     return (
-      <div className="flex items-center justify-center h-full w-full">
-        connection OK
+      <div className="flex flex-col items-center justify-center h-full w-full">
+        <span className="text-sm">connection</span>
+        <span>OK</span>
       </div>
     );
   }
 
   if (connStatus === "connecting") {
     return (
-      <div className="flex items-center justify-center h-full w-full">
-        <div className="w-5 h-5">
+      <div className="h-full w-full relative">
+        <div className="absolute left-6 top-1 w-8 h-8">
           <LoadingCircleSvg />
         </div>
-        Now connecting...
+        <div className="text-sm absolute bottom-2">connecting...</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full h-full bg-red-600 flex items-center justify-center flex-col">
-      <span className="text-white">Connection failed!</span>
+    <div className="w-full h-full bg-red-600 relative">
+      <span className="text-white text-sm absolute left-1 top-2">
+        Conn failed!
+      </span>
       <button
-        className="bg-red-300 px-3 rounded-md"
+        className="absolute bottom-1 bg-red-300 hover:bg-red-200 px-2 mx-1 rounded-md text-xs"
         onClick={() => window.location.reload()}
       >
         try reconnect

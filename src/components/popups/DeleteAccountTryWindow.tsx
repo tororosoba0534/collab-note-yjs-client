@@ -3,6 +3,7 @@ import { isThrownErr } from "../../api/base";
 import { useDeleteAccount } from "../../api/hooks/useDeleteAccount";
 import { Validate } from "../../utils/validation";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { FormFrame } from "../form/FormFrame";
 import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
@@ -69,7 +70,7 @@ export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
 
   return (
     <PopupTemplate handleClose={() => setPopupStatus(null)}>
-      <div className="text-center">Delete Account</div>
+      <div className="text-center text-2xl">Delete Account</div>
       {isLoading ? (
         <div>Now waiting response...</div>
       ) : !submitMsg ? null : (
@@ -77,22 +78,25 @@ export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
           {submitMsg}
         </div>
       )}
-      <div>
-        This is very dangerous operation. You can NOT recover your account. If
-        you'd like to delete this account, please fill in the below blank with
-        your user ID.
-      </div>
+      <p className="mt-5">
+        This is very <span className="bg-rose-200 px-1">dangerous</span>{" "}
+        operation. You <span className="bg-rose-200 px-1">can NOT recover</span>{" "}
+        your account. If you'd like to delete this account, please fill in the
+        below blank with your user ID.
+      </p>
       <input
-        className="border-2 border-gray-300 rounded-full px-3 focus:outline-none focus:border-rose-600"
+        className="border-2 border-gray-300 rounded-full px-3 focus:outline-none focus:border-rose-600 my-5"
         value={confirmUserID}
         onChange={(e) => setConfirmUserID(e.currentTarget.value)}
       />
-      <FloatingLabelInput
-        label="Admin Password"
-        type="password"
-        value={adminPassword}
-        onChange={(e) => setAdminPassword(e.currentTarget.value)}
-      />
+      <FormFrame>
+        <FloatingLabelInput
+          label="Admin Password"
+          type="password"
+          value={adminPassword}
+          onChange={(e) => setAdminPassword(e.currentTarget.value)}
+        />
+      </FormFrame>
 
       <div className="flex items-center justify-around h-20">
         <button

@@ -11,7 +11,7 @@ export const PopupTemplate = (props: {
         e.stopPropagation();
       }}
     >
-      <div className="bg-white rounded-lg relative flex items-center">
+      <div className="bg-gray-100 rounded-lg relative flex flex-col justify-center items-center w-72">
         {props.handleClose ? (
           <div
             className="absolute top-0 right-0 w-5 h-5 hover:font-bold cursor-pointer"
@@ -20,7 +20,7 @@ export const PopupTemplate = (props: {
             X
           </div>
         ) : null}
-        <div className="p-5 pt-10 flex flex-col justify-center">
+        <div className="p-5 pt-10 flex flex-col justify-center items-center">
           {props.children}
         </div>
       </div>

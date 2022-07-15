@@ -12,7 +12,7 @@ export const Menu = (props: { provider: CustomWSProvider; userID: string }) => {
   const { setPopupStatus } = useContext(PersonalContext);
 
   return (
-    <div className="flex-none w-32 h-16 bg-gray-400 relative">
+    <div className="flex-none w-20 h-16 bg-gray-400 relative">
       <div className="h-full w-full flex justify-center items-center">
         <TooltipButton
           img={MenuSvg}

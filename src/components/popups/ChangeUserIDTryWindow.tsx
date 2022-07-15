@@ -4,6 +4,7 @@ import { useChangeUserID } from "../../api/hooks/useChangeUserID";
 import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { FormFrame } from "../form/FormFrame";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
 import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
@@ -80,26 +81,30 @@ export const ChangeUserIDTryWindow = () => {
         </div>
       )}
 
-      <UserIDInputWithMsg
-        label="New User ID"
-        userID={newUserID}
-        setUserID={setNewUserID}
-      />
+      <FormFrame>
+        <UserIDInputWithMsg
+          label="New User ID"
+          userID={newUserID}
+          setUserID={setNewUserID}
+        />
 
-      <ConfirmInputWithMsg
-        label="Confirm new UserID"
-        type="text"
-        confirm={confirmUserID}
-        setConfirm={setConfirmUserID}
-        original={newUserID}
-      />
+        <ConfirmInputWithMsg
+          label="Confirm new UserID"
+          type="text"
+          confirm={confirmUserID}
+          setConfirm={setConfirmUserID}
+          original={newUserID}
+        />
+      </FormFrame>
 
-      <FloatingLabelInput
-        label="Admin Password"
-        type="password"
-        value={adminPassword}
-        onChange={(e) => setAdminPassword(e.currentTarget.value)}
-      />
+      <FormFrame>
+        <FloatingLabelInput
+          label="Admin Password"
+          type="password"
+          value={adminPassword}
+          onChange={(e) => setAdminPassword(e.currentTarget.value)}
+        />
+      </FormFrame>
 
       <div className="flex items-center justify-around h-20">
         <button

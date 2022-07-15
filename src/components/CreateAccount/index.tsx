@@ -53,13 +53,23 @@ const CreateAccount = () => {
       <div className="w-full px-8 md:px-14">
         <p className="text-center">Please decide 3 values:</p>
         <ul className="list-decimal pl-8">
-          <li className="mt-2 text-lg underline">user ID</li>
+          <li className="mt-2 ">
+            <span className="text-lg font-extrabold bg-lime-200 px-2">
+              user ID
+            </span>
+          </li>
           <li className="mt-3 ">
-            <span className="text-lg underline">password </span>
-            <span className="text-sm pl-1 no-underline">(for login)</span>
+            <span className="text-lg font-extrabold bg-lime-200 px-2">
+              password{" "}
+            </span>
+            <span className="text-sm pl-1">(for login)</span>
           </li>
 
-          <li className="mt-3 text-lg underline">admin password</li>
+          <li className="mt-3 ">
+            <span className="text-lg font-extrabold bg-lime-200 px-2">
+              admin password
+            </span>
+          </li>
           <ul>
             <li className="text-sm pl-1 md:pl-12">
               (for administrator permission)

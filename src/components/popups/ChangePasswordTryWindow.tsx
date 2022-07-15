@@ -4,6 +4,7 @@ import { useChangePassword } from "../../api/hooks/useChangePassword";
 import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { FormFrame } from "../form/FormFrame";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
@@ -92,7 +93,7 @@ export const ChangePasswordTryWindow = () => {
 
   return (
     <PopupTemplate handleClose={() => setPopupStatus(null)}>
-      <div className="text-center">Change Password</div>
+      <div className="text-center text-2xl">Change Password</div>
       {isLoading ? (
         <div>Now waiting response...</div>
       ) : !submitMsg ? null : (
@@ -100,26 +101,31 @@ export const ChangePasswordTryWindow = () => {
           {submitMsg}
         </div>
       )}
-      <PasswordInputWithMsg
-        label="new password"
-        password={password}
-        setPassword={setPassword}
-      />
 
-      <ConfirmInputWithMsg
-        confirm={confirmPassword}
-        setConfirm={setConfirmPassword}
-        original={password}
-        type="password"
-        label="Confirm Password"
-      />
+      <FormFrame>
+        <PasswordInputWithMsg
+          label="new password"
+          password={password}
+          setPassword={setPassword}
+        />
 
-      <FloatingLabelInput
-        label="Admin Password"
-        type="password"
-        value={adminPassword}
-        onChange={(e) => setAdminPassword(e.currentTarget.value)}
-      />
+        <ConfirmInputWithMsg
+          confirm={confirmPassword}
+          setConfirm={setConfirmPassword}
+          original={password}
+          type="password"
+          label="Confirm Password"
+        />
+      </FormFrame>
+
+      <FormFrame>
+        <FloatingLabelInput
+          label="Admin Password"
+          type="password"
+          value={adminPassword}
+          onChange={(e) => setAdminPassword(e.currentTarget.value)}
+        />
+      </FormFrame>
 
       <div className="flex items-center justify-around h-20">
         <button

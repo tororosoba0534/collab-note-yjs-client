@@ -4,6 +4,7 @@ import { useChangeAdminPassword } from "../../api/hooks/useChangeAdminPassword";
 import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { FormFrame } from "../form/FormFrame";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
@@ -76,15 +77,16 @@ export const ChangeAdminPasswordTryWindow = () => {
 
   return (
     <PopupTemplate handleClose={() => setPopupStatus(null)}>
-      <div className="flex flex-col justify-around gap-10">
-        <div className="text-center">Change User ID</div>
-        {isLoading ? (
-          <div>Now waiting response...</div>
-        ) : !submitMsg ? null : (
-          <div className="w-full rounded-md bg-red-400 text-white font-bold">
-            {submitMsg}
-          </div>
-        )}
+      <div className="text-center text-xl">Change Admin Password</div>
+      {isLoading ? (
+        <div>Now waiting response...</div>
+      ) : !submitMsg ? null : (
+        <div className="w-full rounded-md bg-red-400 text-white font-bold">
+          {submitMsg}
+        </div>
+      )}
+
+      <FormFrame>
         <PasswordInputWithMsg
           label="new admin password"
           password={newAdmin}
@@ -96,32 +98,34 @@ export const ChangeAdminPasswordTryWindow = () => {
           setConfirm={setConfirmNewAdmin}
           original={newAdmin}
           type="password"
-          label="new admin password again"
+          label="input again"
         />
+      </FormFrame>
 
+      <FormFrame>
         <FloatingLabelInput
           label="old admin password"
           type="password"
           value={oldAdmin}
           onChange={(e) => setOldAdmin(e.currentTarget.value)}
         />
+      </FormFrame>
 
-        <div className="flex items-center justify-around h-20">
-          <button
-            className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-            onClick={() => {
-              handleClickChange();
-            }}
-          >
-            Change
-          </button>
-          <button
-            className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
-            onClick={() => setPopupStatus(null)}
-          >
-            Cancel
-          </button>
-        </div>
+      <div className="flex items-center justify-around h-20">
+        <button
+          className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
+          onClick={() => {
+            handleClickChange();
+          }}
+        >
+          Change
+        </button>
+        <button
+          className="border-2 border-gray-400 rounded-md px-2 mx-4 hover:bg-rose-200"
+          onClick={() => setPopupStatus(null)}
+        >
+          Cancel
+        </button>
       </div>
     </PopupTemplate>
   );
