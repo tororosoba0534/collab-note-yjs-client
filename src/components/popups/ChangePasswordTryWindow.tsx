@@ -20,6 +20,8 @@ export const ChangePasswordTryWindow = () => {
 
   const { setPopupStatus } = useContext(PersonalContext);
 
+  const submitBtnElm = useRef<HTMLButtonElement | null>(null);
+
   // Prevent abusing too many fetches
   const canSubmit = useRef(true);
   useEffect(() => {
@@ -93,6 +95,7 @@ export const ChangePasswordTryWindow = () => {
 
   return (
     <ScrollPopupTemplate
+      submitBtnElm={submitBtnElm}
       handleClose={() => setPopupStatus(null)}
       isLoading={isLoading}
       submitMsg={submitMsg}
@@ -129,6 +132,7 @@ export const ChangePasswordTryWindow = () => {
           onClick={() => {
             handleClickChange();
           }}
+          ref={submitBtnElm}
         >
           Change
         </button>

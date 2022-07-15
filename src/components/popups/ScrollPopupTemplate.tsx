@@ -1,5 +1,20 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { PopupTemplate } from "./PopupTemplate";
+import { BounceArrow } from "../personal/icons/BounceArrow";
+
+const showBounceArrowHandler = (
+  submitBtnElm: React.MutableRefObject<HTMLButtonElement | null> | undefined,
+  scrollBoxElm: React.MutableRefObject<HTMLDivElement | null>,
+  setShownBounceArrow: React.Dispatch<React.SetStateAction<boolean>>
+): void => {
+  const btnElm = submitBtnElm?.current;
+  const boxElm = scrollBoxElm?.current;
+  if (!btnElm || !boxElm) return;
+  const boxBottom = boxElm.getBoundingClientRect().bottom;
+  const submitButtonBottom = btnElm.getBoundingClientRect().bottom;
+  setShownBounceArrow(() => {
+    return submitButtonBottom < boxBottom ? false : true;
+  });
+};
 
 export const ScrollPopupTemplate = (props: {
   isLoading: boolean;
@@ -7,8 +22,11 @@ export const ScrollPopupTemplate = (props: {
   title: string;
   children: ReactNode;
   handleClose: React.MouseEventHandler<HTMLDivElement> | null;
+  submitBtnElm: React.MutableRefObject<HTMLButtonElement | null>;
 }) => {
   const [titleHeight, setTitleHeight] = useState(40);
+  const [shownBounceArrow, setShownBounceArrow] = useState(false);
+  const boxElm = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     setTitleHeight(() => {
       if (!props.isLoading && !props.submitMsg) return 40;
@@ -17,6 +35,24 @@ export const ScrollPopupTemplate = (props: {
       return 88;
     });
   }, [props.isLoading, props.submitMsg]);
+
+  const showBounceArrowHandlerInner = () => {
+    showBounceArrowHandler(props.submitBtnElm, boxElm, setShownBounceArrow);
+  };
+
+  useEffect(() => {
+    showBounceArrowHandlerInner();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", showBounceArrowHandlerInner);
+
+    return () => {
+      window.removeEventListener("resize", showBounceArrowHandlerInner);
+    };
+  });
+
   return (
     <div
       className="fixed inset-0 bg-black/50 flex justify-center items-center z-20"
@@ -51,9 +87,28 @@ export const ScrollPopupTemplate = (props: {
             style={{ height: `calc(100% - ${titleHeight}px)` }}
           >
             <div className="w-full h-full flex flex-col p-1 pb-2 rounded-b-3xl rounded-t-sm  border-4 border-gray-500 ">
-              <div className="flex-1 overflow-auto">{props.children}</div>
+              <div
+                ref={boxElm}
+                className="flex-1 overflow-auto"
+                onScroll={(e) => {
+                  showBounceArrowHandler(
+                    props.submitBtnElm,
+                    boxElm,
+                    setShownBounceArrow
+                  );
+                }}
+              >
+                {props.children}
+              </div>
             </div>
           </div>
+          {!shownBounceArrow ? null : (
+            <div className="w-full relative">
+              <div className="absolute z-40 w-10 h-10 -top-24 left-1">
+                <BounceArrow />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

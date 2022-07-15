@@ -20,6 +20,8 @@ export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
 
   const { setPopupStatus } = useContext(PersonalContext);
 
+  const submitBtnElm = useRef<HTMLButtonElement | null>(null);
+
   // Prevent abusing too many fetches
   const canSubmit = useRef(true);
   useEffect(() => {
@@ -72,6 +74,7 @@ export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
 
   return (
     <ScrollPopupTemplate
+      submitBtnElm={submitBtnElm}
       handleClose={() => setPopupStatus(null)}
       title="Delete Account"
       isLoading={isLoading}
@@ -106,6 +109,7 @@ export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
           onClick={() => {
             handleClickDeleteAccount();
           }}
+          ref={submitBtnElm}
         >
           Delete
         </button>

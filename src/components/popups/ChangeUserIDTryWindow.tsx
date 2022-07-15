@@ -22,6 +22,8 @@ export const ChangeUserIDTryWindow = () => {
 
   const { setPopupStatus } = useContext(PersonalContext);
 
+  const submitBtnElm = useRef<HTMLButtonElement | null>(null);
+
   // Prevent abusing too many fetches
   const canSubmit = useRef(true);
   useEffect(() => {
@@ -78,6 +80,7 @@ export const ChangeUserIDTryWindow = () => {
       isLoading={isLoading}
       submitMsg={submitMsg}
       handleClose={() => setPopupStatus(null)}
+      submitBtnElm={submitBtnElm}
     >
       <ScrollPopupInner>
         <UserIDInputWithMsg
@@ -110,6 +113,7 @@ export const ChangeUserIDTryWindow = () => {
           onClick={() => {
             handleClickChange();
           }}
+          ref={submitBtnElm}
         >
           Change
         </button>

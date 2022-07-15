@@ -28,6 +28,8 @@ export const ChangeAdminPasswordTryWindow = () => {
     canSubmit.current = true;
   }, [newAdmin, oldAdmin]);
 
+  const submitBtnElm = useRef<HTMLButtonElement | null>(null);
+
   const handleClickChange = () => {
     if (!newAdmin || !confirmNewAdmin || !oldAdmin) {
       setSubmitMsg("Fill in all the blanks");
@@ -79,6 +81,7 @@ export const ChangeAdminPasswordTryWindow = () => {
 
   return (
     <ScrollPopupTemplate
+      submitBtnElm={submitBtnElm}
       title="Change Admin Password"
       isLoading={isLoading}
       submitMsg={submitMsg}
@@ -115,6 +118,7 @@ export const ChangeAdminPasswordTryWindow = () => {
           onClick={() => {
             handleClickChange();
           }}
+          ref={submitBtnElm}
         >
           Change
         </button>
