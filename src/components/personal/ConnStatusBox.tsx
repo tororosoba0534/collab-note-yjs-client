@@ -39,14 +39,15 @@ export const ConnStatusBox = (props: { provider: CustomWSProvider }) => {
 
   return (
     <div className="w-full h-full bg-red-600 relative">
-      <span className="text-white text-sm absolute left-1 top-2">
-        Conn failed!
+      <span className="text-white text-sm absolute top-0 left-1">
+        Connection
       </span>
+      <span className="text-white text-sm absolute top-4 left-5">failed!!</span>
       <button
-        className="absolute bottom-1 bg-red-300 hover:bg-red-200 px-2 mx-1 rounded-md text-xs"
+        className="absolute bottom-1 bg-red-300 hover:bg-red-200 px-2 mx-1 rounded-md text-xs leading-3"
         onClick={() => window.location.reload()}
       >
-        try reconnect
+        Try reconnect
       </button>
     </div>
   );

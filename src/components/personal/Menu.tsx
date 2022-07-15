@@ -5,6 +5,15 @@ import { MenuSvg } from "./icons/MenuSvg";
 import { PersonalContext } from "./PersonalContext";
 import { TooltipButton } from "./TooltipButton";
 
+const Tooltip = (props: { tooltip: string | null | undefined }) => {
+  if (!props.tooltip) return null;
+  return (
+    <div className="absolute top-10 bg-black text-white p-2 rounded-md opacity-0 peer-hover:opacity-100 transition pointer-events-none z-20">
+      {props.tooltip}
+    </div>
+  );
+};
+
 export const Menu = (props: { provider: CustomWSProvider; userID: string }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenTest, setIsOpenTest] = useState(false);
@@ -14,11 +23,25 @@ export const Menu = (props: { provider: CustomWSProvider; userID: string }) => {
   return (
     <div className="flex-none w-20 h-16 bg-gray-400 relative">
       <div className="h-full w-full flex justify-center items-center">
-        <TooltipButton
+        {/* <TooltipButton
           img={MenuSvg}
           tooltip="Menu"
           onClick={() => setIsOpenMenu((prev) => !prev)}
-        />
+        /> */}
+        <div className="relative">
+          <button
+            className="peer flex flex-col justify-center items-center rounded-lg px-[2px] bg-gray-100 shadow-md hover:bg-rose-100"
+            onClick={() => setIsOpenMenu((prev) => !prev)}
+          >
+            <div className="w-[62px] text-center text-xs truncate">
+              {props.userID}
+            </div>
+            <div className="h-5 w-8">
+              <MenuSvg />
+            </div>
+          </button>
+          <Tooltip tooltip="Menu" />
+        </div>
       </div>
 
       {/* <ConnStatusBox provider={props.provider} /> */}
@@ -31,7 +54,7 @@ export const Menu = (props: { provider: CustomWSProvider; userID: string }) => {
         }}
         onClick={() => console.log("Dropdown clicked!")}
       >
-        Hello {props.userID}
+        Hello {props.userID}!
         <TooltipButton
           label="LOGOUT"
           onClick={() => setPopupStatus("logout")}
