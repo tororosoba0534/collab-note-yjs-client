@@ -8,6 +8,8 @@ import { FormFrame } from "../form/FormFrame";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
+import { ScrollPopupInner } from "./ScrollPopupInner";
+import { ScrollPopupTemplate } from "./ScrollPopupTemplate";
 
 export const ChangeAdminPasswordTryWindow = () => {
   const { changeAdminPassword } = useChangeAdminPassword();
@@ -76,17 +78,13 @@ export const ChangeAdminPasswordTryWindow = () => {
   };
 
   return (
-    <PopupTemplate handleClose={() => setPopupStatus(null)}>
-      <div className="text-center text-xl">Change Admin Password</div>
-      {isLoading ? (
-        <div>Now waiting response...</div>
-      ) : !submitMsg ? null : (
-        <div className="w-full rounded-md bg-red-400 text-white font-bold">
-          {submitMsg}
-        </div>
-      )}
-
-      <FormFrame>
+    <ScrollPopupTemplate
+      title="Change Admin Password"
+      isLoading={isLoading}
+      submitMsg={submitMsg}
+      handleClose={() => setPopupStatus(null)}
+    >
+      <ScrollPopupInner>
         <PasswordInputWithMsg
           label="new admin password"
           password={newAdmin}
@@ -100,16 +98,16 @@ export const ChangeAdminPasswordTryWindow = () => {
           type="password"
           label="input again"
         />
-      </FormFrame>
+      </ScrollPopupInner>
 
-      <FormFrame>
+      <ScrollPopupInner>
         <FloatingLabelInput
           label="old admin password"
           type="password"
           value={oldAdmin}
           onChange={(e) => setOldAdmin(e.currentTarget.value)}
         />
-      </FormFrame>
+      </ScrollPopupInner>
 
       <div className="flex items-center justify-around h-20">
         <button
@@ -127,6 +125,6 @@ export const ChangeAdminPasswordTryWindow = () => {
           Cancel
         </button>
       </div>
-    </PopupTemplate>
+    </ScrollPopupTemplate>
   );
 };

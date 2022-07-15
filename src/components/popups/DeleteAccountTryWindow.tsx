@@ -6,6 +6,8 @@ import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { FormFrame } from "../form/FormFrame";
 import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
+import { ScrollPopupInner } from "./ScrollPopupInner";
+import { ScrollPopupTemplate } from "./ScrollPopupTemplate";
 
 export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
   const { deleteAccount } = useDeleteAccount();
@@ -69,34 +71,34 @@ export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
   };
 
   return (
-    <PopupTemplate handleClose={() => setPopupStatus(null)}>
-      <div className="text-center text-2xl">Delete Account</div>
-      {isLoading ? (
-        <div>Now waiting response...</div>
-      ) : !submitMsg ? null : (
-        <div className="w-full rounded-md bg-red-400 text-white font-bold">
-          {submitMsg}
-        </div>
-      )}
-      <p className="mt-5">
+    <ScrollPopupTemplate
+      handleClose={() => setPopupStatus(null)}
+      title="Delete Account"
+      isLoading={isLoading}
+      submitMsg={submitMsg}
+    >
+      <p className="m-1 text-sm">
         This is very <span className="bg-rose-200 px-1">dangerous</span>{" "}
         operation. You <span className="bg-rose-200 px-1">can NOT recover</span>{" "}
         your account. If you'd like to delete this account, please fill in the
         below blank with your user ID.
       </p>
-      <input
-        className="border-2 border-gray-300 rounded-full px-3 focus:outline-none focus:border-rose-600 my-5"
-        value={confirmUserID}
-        onChange={(e) => setConfirmUserID(e.currentTarget.value)}
-      />
-      <FormFrame>
+      <div className="w-full my-5 px-3">
+        <input
+          className="w-full border-2 border-gray-300 rounded-full px-3 focus:outline-none focus:border-rose-600"
+          value={confirmUserID}
+          onChange={(e) => setConfirmUserID(e.currentTarget.value)}
+        />
+      </div>
+
+      <ScrollPopupInner>
         <FloatingLabelInput
           label="Admin Password"
           type="password"
           value={adminPassword}
           onChange={(e) => setAdminPassword(e.currentTarget.value)}
         />
-      </FormFrame>
+      </ScrollPopupInner>
 
       <div className="flex items-center justify-around h-20">
         <button
@@ -114,6 +116,6 @@ export const DeleteAccountTryWindow = (props: { realUserID: string }) => {
           Cancel
         </button>
       </div>
-    </PopupTemplate>
+    </ScrollPopupTemplate>
   );
 };

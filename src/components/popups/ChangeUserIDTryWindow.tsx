@@ -8,6 +8,8 @@ import { FormFrame } from "../form/FormFrame";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
 import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
+import { ScrollPopupInner } from "./ScrollPopupInner";
+import { ScrollPopupTemplate } from "./ScrollPopupTemplate";
 
 export const ChangeUserIDTryWindow = () => {
   const { changeUserID } = useChangeUserID();
@@ -71,17 +73,13 @@ export const ChangeUserIDTryWindow = () => {
   };
 
   return (
-    <PopupTemplate handleClose={() => setPopupStatus(null)}>
-      <div className="text-2xl">Change User ID</div>
-      {isLoading ? (
-        <div>Now waiting response...</div>
-      ) : !submitMsg ? null : (
-        <div className="w-full rounded-md bg-red-400 text-white font-bold">
-          {submitMsg}
-        </div>
-      )}
-
-      <FormFrame>
+    <ScrollPopupTemplate
+      title="Change User ID"
+      isLoading={isLoading}
+      submitMsg={submitMsg}
+      handleClose={() => setPopupStatus(null)}
+    >
+      <ScrollPopupInner>
         <UserIDInputWithMsg
           label="New User ID"
           userID={newUserID}
@@ -95,16 +93,16 @@ export const ChangeUserIDTryWindow = () => {
           setConfirm={setConfirmUserID}
           original={newUserID}
         />
-      </FormFrame>
+      </ScrollPopupInner>
 
-      <FormFrame>
+      <ScrollPopupInner>
         <FloatingLabelInput
           label="Admin Password"
           type="password"
           value={adminPassword}
           onChange={(e) => setAdminPassword(e.currentTarget.value)}
         />
-      </FormFrame>
+      </ScrollPopupInner>
 
       <div className="flex items-center justify-around h-20">
         <button
@@ -122,6 +120,6 @@ export const ChangeUserIDTryWindow = () => {
           Cancel
         </button>
       </div>
-    </PopupTemplate>
+    </ScrollPopupTemplate>
   );
 };

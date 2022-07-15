@@ -4,10 +4,10 @@ import { useChangePassword } from "../../api/hooks/useChangePassword";
 import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
-import { FormFrame } from "../form/FormFrame";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
 import { PersonalContext } from "../personal/PersonalContext";
-import { PopupTemplate } from "./PopupTemplate";
+import { ScrollPopupTemplate } from "./ScrollPopupTemplate";
+import { ScrollPopupInner } from "./ScrollPopupInner";
 
 export const ChangePasswordTryWindow = () => {
   const { changePassword } = useChangePassword();
@@ -92,17 +92,13 @@ export const ChangePasswordTryWindow = () => {
   };
 
   return (
-    <PopupTemplate handleClose={() => setPopupStatus(null)}>
-      <div className="text-center text-2xl">Change Password</div>
-      {isLoading ? (
-        <div>Now waiting response...</div>
-      ) : !submitMsg ? null : (
-        <div className="w-full rounded-md bg-red-400 text-white font-bold">
-          {submitMsg}
-        </div>
-      )}
-
-      <FormFrame>
+    <ScrollPopupTemplate
+      handleClose={() => setPopupStatus(null)}
+      isLoading={isLoading}
+      submitMsg={submitMsg}
+      title="Change Password"
+    >
+      <ScrollPopupInner>
         <PasswordInputWithMsg
           label="new password"
           password={password}
@@ -116,16 +112,16 @@ export const ChangePasswordTryWindow = () => {
           type="password"
           label="Confirm Password"
         />
-      </FormFrame>
+      </ScrollPopupInner>
 
-      <FormFrame>
+      <ScrollPopupInner>
         <FloatingLabelInput
           label="Admin Password"
           type="password"
           value={adminPassword}
           onChange={(e) => setAdminPassword(e.currentTarget.value)}
         />
-      </FormFrame>
+      </ScrollPopupInner>
 
       <div className="flex items-center justify-around h-20">
         <button
@@ -143,6 +139,6 @@ export const ChangePasswordTryWindow = () => {
           Cancel
         </button>
       </div>
-    </PopupTemplate>
+    </ScrollPopupTemplate>
   );
 };
