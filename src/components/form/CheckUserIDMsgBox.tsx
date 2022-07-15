@@ -66,30 +66,32 @@ export const CheckUserIDMsgBox = memo(
             <div className="border-2">{props.errMsg}</div>
           )} */}
 
-          <div className="mx-3">
-            {boxStatus === "loading" ? (
-              <div className="flex">
-                <div className="w-5 h-5">
-                  <LoadingCircleSvg />
-                  checking...
-                </div>
+          {boxStatus === "loading" ? (
+            <div className="flex">
+              <div className="w-5 h-5">
+                <LoadingCircleSvg />
               </div>
-            ) : boxStatus === "NG" ? (
+              <div>checking...</div>
+            </div>
+          ) : boxStatus === "NG" ? (
+            <div className="mx-3">
               <ExclamationSvg />
-            ) : null}
-          </div>
+            </div>
+          ) : null}
         </div>
 
         <div className="pl-9">
-          {boxStatus !== "NG" || status === 200
-            ? null
-            : status === 409
-            ? "already used"
-            : isThrownErr(status)
-            ? status
-            : status === 500
-            ? "500 Internal Server Error"
-            : "400 Bad Request: If you see this message, please tell us!"}
+          {boxStatus !== "NG" || status === 200 ? (
+            <div className="w-full h-6"></div>
+          ) : status === 409 ? (
+            "already used"
+          ) : isThrownErr(status) ? (
+            status
+          ) : status === 500 ? (
+            "500 Internal Server Error"
+          ) : (
+            "400 Bad Request: If you see this message, please tell us!"
+          )}
         </div>
       </div>
     );
