@@ -155,7 +155,7 @@ const Login = () => {
         />
       </div>
 
-      <div className="p-5 pt-0">
+      <div className="pt-2">
         ... or{" "}
         <Link
           className="font-bold text-rose-500 hover:text-rose-400"
@@ -164,6 +164,15 @@ const Login = () => {
           CREATE ACCOUNT
         </Link>
         {"?"}
+      </div>
+      <div className="pb-5  text-center">
+        Go back{" "}
+        <Link
+          className="text-center font-bold text-rose-500 hover:text-rose-400"
+          to="/"
+        >
+          HOME
+        </Link>
       </div>
     </FormBase>
   );
