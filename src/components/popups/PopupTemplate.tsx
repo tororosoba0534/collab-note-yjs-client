@@ -11,7 +11,7 @@ export const PopupTemplate = (props: {
         e.stopPropagation();
       }}
     >
-      <div className="bg-white rounded-lg  w-72">
+      <div className="bg-white rounded-lg">
         {props.handleClose ? (
           <div className="relative w-full">
             <div
