@@ -101,6 +101,7 @@ export const TopToolBar = (props: { editor: Editor | null }) => {
               ? props.editor.isActive({ textAlign: "center" })
               : false
           }
+          disable={props.editor ? props.editor.isActive("codeBlock") : false}
         >
           <AlignCenterSvg
             isActive={
@@ -108,6 +109,7 @@ export const TopToolBar = (props: { editor: Editor | null }) => {
                 ? props.editor.isActive({ textAlign: "center" })
                 : false
             }
+            disable={props.editor ? props.editor.isActive("codeBlock") : false}
           />
         </ToggleToolButton>
       </div>
@@ -142,6 +144,7 @@ export const TopToolBar = (props: { editor: Editor | null }) => {
           isActive={
             props.editor ? props.editor.isActive({ textAlign: "right" }) : false
           }
+          disable={props.editor ? props.editor.isActive("codeBlock") : false}
         >
           <AlignRightSvg
             isActive={
@@ -149,6 +152,7 @@ export const TopToolBar = (props: { editor: Editor | null }) => {
                 ? props.editor.isActive({ textAlign: "right" })
                 : false
             }
+            disable={props.editor ? props.editor.isActive("codeBlock") : false}
           />
         </ToggleToolButton>
       </div>
