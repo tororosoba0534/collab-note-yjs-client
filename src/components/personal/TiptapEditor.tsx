@@ -53,6 +53,7 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       StarterKit.configure({
         // The Collaboration extension comes with its own history handling
         history: false,
+        // listItem: { HTMLAttributes: { class: "list-disc px-3" } },
       }),
       // Register the document with Tiptap
       Collaboration.configure({
