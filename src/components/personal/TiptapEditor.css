@@ -7,6 +7,13 @@
   padding-left: 4px;
   padding-right: 4px;
 }
+.ProseMirror h1 {
+  padding-left: 4px;
+  padding-right: 4px;
+  font-size: 1.6em;
+  letter-spacing: -0.03em;
+  font-weight: bold;
+}
 
 /* Give a remote user a caret */
 .collaboration-cursor__caret {

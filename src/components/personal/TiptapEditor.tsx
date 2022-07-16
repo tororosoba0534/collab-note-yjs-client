@@ -14,6 +14,7 @@ import { PopupsInPersonal } from "./PopupsInPersonal";
 import { ConnStatusBox } from "./ConnStatusBox";
 import { PersonalContext } from "./PersonalContext";
 import { useCheckAuth } from "../../api/hooks/useCheckAuth";
+import TextAlign from "@tiptap/extension-text-align";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   const { setPopupStatus } = useContext(PersonalContext);
@@ -62,6 +63,9 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       //     color: "#f783ac",
       //   },
       // }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
     ],
     editorProps: {
       attributes: {
@@ -90,9 +94,9 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
     <div className="relative">
       <div className="fixed top-0 w-full h-16 shadow-md bg-white z-10 flex items-center">
         <TopToolBar editor={editor} />
-        <div className="flex-none w-20 h-16">
+        {/* <div className="flex-none w-20 h-16">
           <ConnStatusBox provider={provider} />
-        </div>
+        </div> */}
         <Menu provider={provider} userID={userID} />
       </div>
       <div className="absolute inset-x-10 top-32 mb-10">

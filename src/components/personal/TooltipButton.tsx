@@ -21,10 +21,10 @@ export const TooltipButton = (props: {
     return (
       <div className="relative">
         <button
-          className="peer px-1 bg-gray-100 shadow-md rounded-md hover:bg-rose-100"
+          className="peer bg-gray-100 border-2 border-gray-300 rounded-md hover:bg-rose-100 h-10 flex flex-col justify-center items-center"
           onClick={props.onClick}
         >
-          <div className="w-8 h-8">
+          <div className="w-6 h-6">
             <props.img />
           </div>
         </button>
