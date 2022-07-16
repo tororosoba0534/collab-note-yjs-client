@@ -14,7 +14,7 @@ import { ListSvg } from "./icons/ListSvg";
 export const TopToolBar = (props: { editor: Editor | null }) => {
   return (
     <div className="flex items-center justify-around w-full h-16">
-      <div className="flex flex-col justify-around">
+      <div className="flex flex-col gap-1">
         <ToggleToolButton
           onClick={() => {
             props.editor?.chain().focus().toggleHeading({ level: 1 }).run();
@@ -45,7 +45,7 @@ export const TopToolBar = (props: { editor: Editor | null }) => {
         </ToggleToolButton>
       </div>
 
-      <div className="flex flex-col justify-around">
+      <div className="flex flex-col gap-1">
         <ToggleToolButton
           onClick={() => {
             if (!props.editor) return;
@@ -88,7 +88,7 @@ export const TopToolBar = (props: { editor: Editor | null }) => {
         </ToggleToolButton>
       </div>
 
-      <div className="flex flex-col justify-around">
+      <div className="flex flex-col gap-1">
         <ToggleToolButton
           onClick={() => {
             props.editor?.chain().focus().toggleBulletList().run();
@@ -102,39 +102,73 @@ export const TopToolBar = (props: { editor: Editor | null }) => {
           />
         </ToggleToolButton>
 
-        <div className="">
-          <button className=" bg-gray-100 border-2 border-gray-300 rounded-md hover:bg-rose-100">
-            <div className="w-6 h-6"></div>
-          </button>
-        </div>
+        <ToggleToolButton
+          onClick={() => {
+            props.editor?.chain().focus().toggleUnderline().run();
+          }}
+          isActive={props.editor ? props.editor.isActive("underline") : false}
+        >
+          <div
+            className="underline"
+            style={{
+              color: props.editor?.isActive("underline") ? "white" : "black",
+            }}
+          >
+            U
+          </div>
+        </ToggleToolButton>
       </div>
 
-      <div className="flex flex-col justify-around">
+      <div className="flex flex-col">
         <div className="">
           <button className=" bg-gray-100 border-2 border-gray-300 rounded-md hover:bg-rose-100">
             <div className="w-6 h-6"></div>
           </button>
         </div>
 
-        <div className="">
-          <button className=" bg-gray-100 border-2 border-gray-300 rounded-md hover:bg-rose-100">
-            <div className="w-6 h-6"></div>
-          </button>
-        </div>
+        <ToggleToolButton
+          onClick={() => {
+            props.editor?.chain().focus().toggleStrike().run();
+          }}
+          isActive={props.editor ? props.editor.isActive("strike") : false}
+        >
+          <div
+            className="line-through"
+            style={{
+              color: props.editor?.isActive("strike") ? "white" : "black",
+            }}
+          >
+            ab
+          </div>
+        </ToggleToolButton>
       </div>
 
-      <div className="flex flex-col justify-around">
-        <div className="">
-          <button className=" bg-gray-100 border-2 border-gray-300 rounded-md hover:bg-rose-100">
-            <div className="w-6 h-6"></div>
-          </button>
-        </div>
+      <div className="flex flex-col">
+        <ToggleToolButton
+          disable
+          isActive
+          onClick={() => {
+            return;
+          }}
+        >
+          <div></div>
+        </ToggleToolButton>
 
-        <div className="">
-          <button className=" bg-gray-100 border-2 border-gray-300 rounded-md hover:bg-rose-100">
-            <div className="w-6 h-6"></div>
-          </button>
-        </div>
+        <ToggleToolButton
+          onClick={() => {
+            props.editor?.chain().focus().toggleCode().run();
+          }}
+          isActive={props.editor ? props.editor.isActive("code") : false}
+        >
+          <div
+            className=""
+            style={{
+              color: props.editor?.isActive("code") ? "white" : "black",
+            }}
+          >
+            C
+          </div>
+        </ToggleToolButton>
       </div>
 
       <TooltipButton

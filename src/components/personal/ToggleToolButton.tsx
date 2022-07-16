@@ -7,9 +7,11 @@ export const ToggleToolButton = (props: {
   children: ReactNode;
 }) => {
   if (props.disable) {
-    <button className=" bg-white border-2 border-gray-400 rounded-md text-gray-400 cursor-not-allowed">
-      <div className="w-6 h-6">{props.children}</div>
-    </button>;
+    return (
+      <button className=" bg-gray-200 border-2 border-gray-200 rounded-md text-gray-400 cursor-not-allowed">
+        <div className="w-6 h-6">{props.children}</div>
+      </button>
+    );
   }
   if (props.isActive)
     return (
