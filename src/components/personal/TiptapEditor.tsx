@@ -111,40 +111,30 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
                 editor?.chain().focus().toggleBold().run();
               }}
               isActive={editor ? editor.isActive("bold") : false}
-              disable={editor ? editor.isActive("code") : false}
+              disable={
+                editor
+                  ? !editor.can().toggleBold() ||
+                    editor.isActive("code") ||
+                    editor.isActive("codeBlock")
+                  : false
+              }
             >
-              <div
-                className="font-extrabold"
-                style={{
-                  color: editor?.isActive("code")
-                    ? "#9ca3af"
-                    : editor?.isActive("bold")
-                    ? "white"
-                    : "black",
-                }}
-              >
-                B
-              </div>
+              <div className="font-extrabold">B</div>
             </ToggleToolButton>
             <ToggleToolButton
               onClick={() => {
                 editor?.chain().focus().toggleItalic().run();
               }}
               isActive={editor ? editor.isActive("italic") : false}
-              disable={editor ? editor.isActive("code") : false}
+              disable={
+                editor
+                  ? !editor.can().toggleItalic() ||
+                    editor.isActive("code") ||
+                    editor.isActive("codeBlock")
+                  : false
+              }
             >
-              <div
-                className="italic font-serif"
-                style={{
-                  color: editor?.isActive("code")
-                    ? "#9ca3af"
-                    : editor?.isActive("italic")
-                    ? "white"
-                    : "black",
-                }}
-              >
-                I
-              </div>
+              <div className="italic font-serif">I</div>
             </ToggleToolButton>
 
             <ToggleToolButton
@@ -152,20 +142,15 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
                 editor?.chain().focus().toggleUnderline().run();
               }}
               isActive={editor ? editor.isActive("underline") : false}
-              disable={editor ? editor.isActive("code") : false}
+              disable={
+                editor
+                  ? !editor.can().toggleUnderline() ||
+                    editor.isActive("code") ||
+                    editor.isActive("codeBlock")
+                  : false
+              }
             >
-              <div
-                className="underline"
-                style={{
-                  color: editor?.isActive("code")
-                    ? "#9ca3af"
-                    : editor?.isActive("underline")
-                    ? "white"
-                    : "black",
-                }}
-              >
-                U
-              </div>
+              <div className="underline">U</div>
             </ToggleToolButton>
 
             <ToggleToolButton
@@ -173,20 +158,15 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
                 editor?.chain().focus().toggleStrike().run();
               }}
               isActive={editor ? editor.isActive("strike") : false}
-              disable={editor ? editor.isActive("code") : false}
+              disable={
+                editor
+                  ? !editor.can().toggleStrike() ||
+                    editor.isActive("code") ||
+                    editor.isActive("codeBlock")
+                  : false
+              }
             >
-              <div
-                className="line-through"
-                style={{
-                  color: editor?.isActive("code")
-                    ? "#9ca3af"
-                    : editor?.isActive("strike")
-                    ? "white"
-                    : "black",
-                }}
-              >
-                ab
-              </div>
+              <div className="line-through">ab</div>
             </ToggleToolButton>
 
             <ToggleToolButton
@@ -194,15 +174,9 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
                 editor?.chain().focus().toggleCode().run();
               }}
               isActive={editor ? editor.isActive("code") : false}
+              disable={editor.isActive("codeBlock")}
             >
-              <div
-                className=""
-                style={{
-                  color: editor?.isActive("code") ? "white" : "black",
-                }}
-              >
-                C
-              </div>
+              <div className="">C</div>
             </ToggleToolButton>
           </BubbleMenu>
         )}

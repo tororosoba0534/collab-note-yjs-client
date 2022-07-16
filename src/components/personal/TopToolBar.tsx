@@ -10,11 +10,23 @@ import { ConnStatusBox } from "./ConnStatusBox";
 import { ToggleToolButton } from "./ToggleToolButton";
 import { AlignCenterSvg } from "./icons/AlignCenterSvg";
 import { ListSvg } from "./icons/ListSvg";
+import { AlignRightSvg } from "./icons/AlignRightSvg";
+import { SinkListItemSvg } from "./icons/SinkListItemSvg";
+import { LiftListItemSvg } from "./icons/LiftListItemSvg";
 
 export const TopToolBar = (props: { editor: Editor | null }) => {
   return (
     <div className="flex items-center justify-around w-full h-16">
       <div className="flex flex-col gap-1">
+        <ToggleToolButton
+          onClick={() => {
+            props.editor?.chain().focus().toggleCodeBlock().run();
+          }}
+          isActive={props.editor ? props.editor.isActive("codeBlock") : false}
+        >
+          <div className="text-sm font-bold tracking-[-0.06em]">{"</>"}</div>
+        </ToggleToolButton>
+
         <ToggleToolButton
           onClick={() => {
             props.editor?.chain().focus().toggleHeading({ level: 1 }).run();
@@ -25,27 +37,55 @@ export const TopToolBar = (props: { editor: Editor | null }) => {
               : false
           }
         >
-          H
-        </ToggleToolButton>
-
-        <ToggleToolButton
-          onClick={() => {
-            props.editor?.chain().focus().toggleBold().run();
-          }}
-          isActive={props.editor ? props.editor.isActive("bold") : false}
-        >
-          <div
-            className="font-extrabold"
-            style={{
-              color: props.editor?.isActive("bold") ? "white" : "black",
-            }}
-          >
-            B
-          </div>
+          h1
         </ToggleToolButton>
       </div>
 
       <div className="flex flex-col gap-1">
+        <ToggleToolButton
+          onClick={() => {
+            props.editor?.chain().focus().toggleBulletList().run();
+          }}
+          isActive={props.editor ? props.editor.isActive("bulletList") : false}
+        >
+          <ListSvg
+            isActive={
+              props.editor ? props.editor.isActive("bulletList") : false
+            }
+          />
+        </ToggleToolButton>
+
+        <ToggleToolButton
+          onClick={() => {
+            props.editor?.chain().focus().toggleHeading({ level: 2 }).run();
+          }}
+          isActive={
+            props.editor
+              ? props.editor.isActive("heading", { level: 2 })
+              : false
+          }
+        >
+          h2
+        </ToggleToolButton>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <ToggleToolButton
+          onClick={() => {
+            props.editor?.chain().focus().liftListItem("listItem").run();
+          }}
+          isActive={false}
+          disable={
+            props.editor ? !props.editor.can().liftListItem("listItem") : true
+          }
+        >
+          <LiftListItemSvg
+            disable={
+              props.editor ? !props.editor.can().liftListItem("listItem") : true
+            }
+          />
+        </ToggleToolButton>
+
         <ToggleToolButton
           onClick={() => {
             if (!props.editor) return;
@@ -70,104 +110,46 @@ export const TopToolBar = (props: { editor: Editor | null }) => {
             }
           />
         </ToggleToolButton>
-
-        <ToggleToolButton
-          onClick={() => {
-            props.editor?.chain().focus().toggleItalic().run();
-          }}
-          isActive={props.editor ? props.editor.isActive("italic") : false}
-        >
-          <div
-            className="italic font-serif"
-            style={{
-              color: props.editor?.isActive("italic") ? "white" : "black",
-            }}
-          >
-            I
-          </div>
-        </ToggleToolButton>
       </div>
 
       <div className="flex flex-col gap-1">
         <ToggleToolButton
           onClick={() => {
-            props.editor?.chain().focus().toggleBulletList().run();
+            props.editor?.chain().focus().sinkListItem("listItem").run();
           }}
-          isActive={props.editor ? props.editor.isActive("bulletList") : false}
+          isActive={false}
+          disable={
+            props.editor ? !props.editor.can().sinkListItem("listItem") : true
+          }
         >
-          <ListSvg
-            isActive={
-              props.editor ? props.editor.isActive("bulletList") : false
+          <SinkListItemSvg
+            disable={
+              props.editor ? !props.editor.can().sinkListItem("listItem") : true
             }
           />
         </ToggleToolButton>
 
         <ToggleToolButton
           onClick={() => {
-            props.editor?.chain().focus().toggleUnderline().run();
-          }}
-          isActive={props.editor ? props.editor.isActive("underline") : false}
-        >
-          <div
-            className="underline"
-            style={{
-              color: props.editor?.isActive("underline") ? "white" : "black",
-            }}
-          >
-            U
-          </div>
-        </ToggleToolButton>
-      </div>
+            if (!props.editor) return;
 
-      <div className="flex flex-col">
-        <div className="">
-          <button className=" bg-gray-100 border-2 border-gray-300 rounded-md hover:bg-rose-100">
-            <div className="w-6 h-6"></div>
-          </button>
-        </div>
-
-        <ToggleToolButton
-          onClick={() => {
-            props.editor?.chain().focus().toggleStrike().run();
+            if (props.editor.isActive({ textAlign: "right" })) {
+              props.editor.chain().focus().unsetTextAlign().run();
+              return;
+            }
+            props.editor.chain().focus().setTextAlign("right").run();
           }}
-          isActive={props.editor ? props.editor.isActive("strike") : false}
+          isActive={
+            props.editor ? props.editor.isActive({ textAlign: "right" }) : false
+          }
         >
-          <div
-            className="line-through"
-            style={{
-              color: props.editor?.isActive("strike") ? "white" : "black",
-            }}
-          >
-            ab
-          </div>
-        </ToggleToolButton>
-      </div>
-
-      <div className="flex flex-col">
-        <ToggleToolButton
-          disable
-          isActive
-          onClick={() => {
-            return;
-          }}
-        >
-          <div></div>
-        </ToggleToolButton>
-
-        <ToggleToolButton
-          onClick={() => {
-            props.editor?.chain().focus().toggleCode().run();
-          }}
-          isActive={props.editor ? props.editor.isActive("code") : false}
-        >
-          <div
-            className=""
-            style={{
-              color: props.editor?.isActive("code") ? "white" : "black",
-            }}
-          >
-            C
-          </div>
+          <AlignRightSvg
+            isActive={
+              props.editor
+                ? props.editor.isActive({ textAlign: "right" })
+                : false
+            }
+          />
         </ToggleToolButton>
       </div>
 
