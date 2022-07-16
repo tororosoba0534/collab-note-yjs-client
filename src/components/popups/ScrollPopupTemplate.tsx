@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
+import { LoadingCircleSvg } from "../LoadingCircleSvg";
 import { BounceArrow } from "../personal/icons/BounceArrow";
 
 const showBounceArrowHandler = (
@@ -75,7 +76,12 @@ export const ScrollPopupTemplate = (props: {
           <div className="w-full pb-2">
             <div className="text-center text-xl">{props.title}</div>
             {props.isLoading ? (
-              <div>Now waiting response...</div>
+              <div className="flex text-center w-full">
+                <span className="w-5 h-5 inline-block">
+                  <LoadingCircleSvg />
+                </span>
+                <span>Now waiting response...</span>
+              </div>
             ) : !props.submitMsg ? null : (
               <div className="w-full rounded-md bg-red-400 text-white font-bold py-1 px-2 leading-5">
                 {props.submitMsg}

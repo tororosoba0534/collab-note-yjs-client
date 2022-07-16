@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { WebsocketProvider } from "y-websocket";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { LoadingCircleSvg } from "../LoadingCircleSvg";
 export type ConnStatus = "connected" | "connecting" | "disconnected";
-export const ConnStatusBox = (props: { provider: CustomWSProvider }) => {
+export const ConnStatusBox = (props: {
+  provider: CustomWSProvider | WebsocketProvider;
+}) => {
   const [connStatus, setConnStatus] = useState<ConnStatus>("connecting");
   useEffect(() => {
     const interval = setInterval(() => {

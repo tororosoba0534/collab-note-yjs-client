@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { WebsocketProvider } from "y-websocket";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { YjsWS } from "../../yjs/YjsWS";
 import { MenuSvg } from "./icons/MenuSvg";
@@ -14,7 +15,10 @@ const Tooltip = (props: { tooltip: string | null | undefined }) => {
   );
 };
 
-export const Menu = (props: { provider: CustomWSProvider; userID: string }) => {
+export const Menu = (props: {
+  provider: CustomWSProvider | WebsocketProvider;
+  userID: string;
+}) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isOpenTest, setIsOpenTest] = useState(false);
 

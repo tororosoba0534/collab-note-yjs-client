@@ -4,15 +4,16 @@ import * as decoding from "lib0/decoding";
 import * as encoding from "lib0/encoding";
 import { yjsConsts } from "./yjsConsts";
 import { PopupStatus } from "../components/personal/PersonalContext";
+import { WebsocketProvider } from "y-websocket";
 
 export class YjsWS {
-  static sendTest = (provider: CustomWSProvider) => {
+  static sendTest = (provider: CustomWSProvider | WebsocketProvider) => {
     const encoder = encoding.createEncoder();
     encoding.writeVarUint(encoder, yjsConsts.MESSAGE_TEST);
     provider.ws?.send(encoding.toUint8Array(encoder));
   };
 
-  static sendTestClose = (provider: CustomWSProvider) => {
+  static sendTestClose = (provider: CustomWSProvider | WebsocketProvider) => {
     const encoder = encoding.createEncoder();
     encoding.writeVarUint(encoder, yjsConsts.MESSAGE_TEST_CLOSE);
     provider.ws?.send(encoding.toUint8Array(encoder));

@@ -1,12 +1,16 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { WebsocketProvider } from "y-websocket";
 import { useLogout } from "../../api/hooks/useLogout";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import ErrorPage from "../errorPages/ErrorPage";
+import { LoadingCircleSvg } from "../LoadingCircleSvg";
 import { PersonalContext } from "../personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const LogoutWindow = (props: { provider: CustomWSProvider }) => {
+export const LogoutWindow = (props: {
+  provider: CustomWSProvider | WebsocketProvider;
+}) => {
   const { logout, status } = useLogout();
 
   const navigate = useNavigate();
@@ -42,6 +46,15 @@ export const LogoutWindow = (props: { provider: CustomWSProvider }) => {
   return (
     <PopupTemplate handleClose={() => setPopupStatus(null)}>
       <div className="text-center">Really log out?</div>
+
+      {!isLoading ? null : (
+        <div className="flex text-center w-full">
+          <span className="w-5 h-5 inline-block">
+            <LoadingCircleSvg />
+          </span>
+          <span>Now Loading...</span>
+        </div>
+      )}
 
       <div className="flex  items-center justify-around h-20">
         <button

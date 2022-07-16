@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { WebsocketProvider } from "y-websocket";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { ChangeAdminPasswordOKWindow } from "../popups/ChangeAdminPasswordOKWindow";
 import { ChangeAdminPasswordTryWindow } from "../popups/ChangeAdminPasswordTryWindow";
@@ -14,7 +15,7 @@ import { TestWindow } from "../popups/TestWindow";
 import { PersonalContext } from "./PersonalContext";
 
 export const PopupsInPersonal = (props: {
-  provider: CustomWSProvider;
+  provider: CustomWSProvider | WebsocketProvider;
   userID: string;
 }) => {
   const { popupStatus } = useContext(PersonalContext);

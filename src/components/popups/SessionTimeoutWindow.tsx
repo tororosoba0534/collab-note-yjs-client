@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { WebsocketProvider } from "y-websocket";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { PopupTemplate } from "./PopupTemplate";
 
-export const SessionTimeoutWindow = (props: { provider: CustomWSProvider }) => {
+export const SessionTimeoutWindow = (props: {
+  provider: CustomWSProvider | WebsocketProvider;
+}) => {
   const navigate = useNavigate();
   return (
     <PopupTemplate handleClose={null}>
