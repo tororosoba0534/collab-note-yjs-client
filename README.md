@@ -1,10 +1,10 @@
 # Welcome to Collab-Note-YJS !!!
 
-Collab-Note-YJS is a multi-repo project which divided by two repositories (frontend and backend). This repository is the frontend part. [You can access deployed project from here!](https://collab-note-yjs.herokuapp.com/)
+Collab-Note-YJS is a multi-repo project which divided by two repositories (frontend and backend). This repository is the **_frontend_** part. [You can access deployed project from here!](https://collab-note-yjs.herokuapp.com/)
 
 ## Tech stack
 
-- Typescript
+- TypeScript
 - React
 - [Tailwind CSS](https://tailwindcss.com/) (styling)
   - partially using ordinary CSS
@@ -12,7 +12,7 @@ Collab-Note-YJS is a multi-repo project which divided by two repositories (front
   - implementation of CRDT(Conflict-free Replicated Data Type)
   - core technology of collaborative functionality
 - [Tip Tap](https://tiptap.dev/)
-  - text editor on javascript
+  - text editor on JavaScript
   - wrapper of [ProseMirror](https://prosemirror.net/)
 
 ## Related repositories
