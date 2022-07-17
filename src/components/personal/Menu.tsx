@@ -25,25 +25,28 @@ export const Menu = (props: {
   const { setPopupStatus } = useContext(PersonalContext);
 
   return (
-    <div className="flex-none w-20 h-16 bg-gray-400 relative">
+    <div className="flex-none w-20 xs:w-[20%]  h-16 bg-gray-400 relative">
       <div className="h-full w-full flex justify-center items-center">
         {/* <TooltipButton
           img={MenuSvg}
           tooltip="Menu"
           onClick={() => setIsOpenMenu((prev) => !prev)}
         /> */}
-        <div className="relative">
-          <button
-            className="peer flex flex-col justify-center items-center rounded-lg px-[2px] bg-gray-100 shadow-md hover:bg-rose-100"
-            onClick={() => setIsOpenMenu((prev) => !prev)}
-          >
-            <div className="w-[62px] text-center text-xs truncate">
-              {props.userID}
-            </div>
-            <div className="h-5 w-8">
-              <MenuSvg />
-            </div>
-          </button>
+        <div className="relative w-full">
+          <div className="peer w-full h-16 flex justify-center items-center">
+            <button
+              className="w-10/12 flex flex-col justify-center items-center rounded-lg bg-gray-100 shadow-md hover:bg-rose-100"
+              onClick={() => setIsOpenMenu((prev) => !prev)}
+            >
+              <div className="w-[60px] xs:w-3/4 text-center text-xs sm:text-sm truncate">
+                {props.userID}
+              </div>
+              <div className="h-8 w-12">
+                <MenuSvg />
+              </div>
+            </button>
+          </div>
+
           <Tooltip tooltip="Menu" />
         </div>
       </div>
@@ -58,7 +61,14 @@ export const Menu = (props: {
         }}
         onClick={() => console.log("Dropdown clicked!")}
       >
-        Hello {props.userID}!
+        <div>
+          Hello{" "}
+          <span className=" text-sm underline decoration-double">
+            {props.userID}
+          </span>{" "}
+          !
+        </div>
+
         <TooltipButton
           label="LOGOUT"
           onClick={() => setPopupStatus("logout")}

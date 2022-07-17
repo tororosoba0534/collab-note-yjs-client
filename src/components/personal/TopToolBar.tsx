@@ -63,17 +63,19 @@ export const TopToolBar = (props: {
   return (
     <div className="relative w-full h-16">
       {connStatus === "connecting" ? (
-        <div className="absolute w-full h-16 z-50 bg-white xs:hidden flex justify-center items-center">
+        <div className="absolute w-full h-16 z-50 bg-white  flex justify-center items-center">
           <div className="w-8 h-8">
             <LoadingCircleSvg />
           </div>
           <div className="text-xl">Now connecting...</div>
         </div>
       ) : connStatus === "disconnected" ? (
-        <div className="absolute w-full h-16 z-50 bg-white xs:hidden flex justify-center items-center">
-          <div className="">Connection failed!</div>
+        <div className="absolute w-full h-16 z-50 bg-red-600 text-white  flex justify-center items-center xs:gap-5">
+          <div className="py-2 pl-5 pr-0 w-fit">
+            <span className="w-24">Connection</span> <span>failed!</span>
+          </div>
           <button
-            className=" bg-red-300 hover:bg-red-200 px-2 mx-1 rounded-md"
+            className=" bg-red-300 hover:bg-red-200 px-2 mx-1 mr-5 rounded-md text-gray-800"
             onClick={() => window.location.reload()}
           >
             Try reconnect
@@ -272,9 +274,9 @@ export const TopToolBar = (props: {
               props.editor?.chain().focus().redo().run();
             }}
           />
-          <div className="flex-none w-20 h-16 hidden xs:block">
+          {/* <div className="flex-none w-20 h-16 hidden xs:block">
             <ConnStatusBox provider={props.provider} />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
