@@ -25,7 +25,7 @@ export const Menu = (props: {
   const { setPopupStatus } = useContext(PersonalContext);
 
   return (
-    <div className="flex-none w-20 xs:w-[20%]  h-16 bg-gray-400 relative">
+    <div className="flex-none w-20 xs:w-[20%]  h-20 bg-gray-400 relative">
       <div className="h-full w-full flex justify-center items-center">
         {/* <TooltipButton
           img={MenuSvg}
@@ -53,11 +53,11 @@ export const Menu = (props: {
 
       {/* <ConnStatusBox provider={props.provider} /> */}
       <div
-        className="absolute w-56  bg-gray-300 top-16 right-0 rounded-bl-2xl transition-all flex flex-col gap-5 items-center py-5 z-10"
+        className="absolute w-56  bg-gray-300 right-0 rounded-bl-2xl transition-all flex flex-col gap-5 items-center py-5 z-10"
         style={{
           opacity: isOpenMenu ? 1 : 0,
           visibility: isOpenMenu ? "visible" : "hidden",
-          top: isOpenMenu ? "64px" : "50px",
+          top: isOpenMenu ? "80px" : "50px",
         }}
         onClick={() => console.log("Dropdown clicked!")}
       >

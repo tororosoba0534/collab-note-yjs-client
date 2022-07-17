@@ -61,16 +61,16 @@ export const TopToolBar = (props: {
   // }
 
   return (
-    <div className="relative w-full h-16">
+    <div className="relative w-full h-20">
       {connStatus === "connecting" ? (
-        <div className="absolute w-full h-16 z-50 bg-white  flex justify-center items-center">
+        <div className="absolute w-full h-20 z-50 bg-white  flex justify-center items-center">
           <div className="w-8 h-8">
             <LoadingCircleSvg />
           </div>
           <div className="text-xl">Now connecting...</div>
         </div>
       ) : connStatus === "disconnected" ? (
-        <div className="absolute w-full h-16 z-50 bg-red-600 text-white  flex justify-center items-center xs:gap-5">
+        <div className="absolute w-full h-20 z-50 bg-red-600 text-white  flex justify-center items-center xs:gap-5">
           <div className="py-2 pl-5 pr-0 w-fit">
             <span className="w-24">Connection</span> <span>failed!</span>
           </div>
@@ -83,8 +83,8 @@ export const TopToolBar = (props: {
         </div>
       ) : null}
 
-      <div className="absolute w-full h-16">
-        <div className="flex items-center justify-around">
+      <div className="absolute w-full h-20">
+        <div className="h-20 w-full flex items-center justify-around">
           <div className="flex flex-col gap-1">
             <ToggleToolButton
               onClick={() => {
@@ -274,7 +274,7 @@ export const TopToolBar = (props: {
               props.editor?.chain().focus().redo().run();
             }}
           />
-          {/* <div className="flex-none w-20 h-16 hidden xs:block">
+          {/* <div className="flex-none w-20 h-20 hidden xs:block">
             <ConnStatusBox provider={props.provider} />
           </div> */}
         </div>
