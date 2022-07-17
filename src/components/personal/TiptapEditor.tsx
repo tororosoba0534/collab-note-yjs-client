@@ -49,6 +49,10 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
   }, [userID, ydoc]);
 
   const editor = useEditor({
+    // content: `
+    // <h1 style="text-align: center">WELCOME to <u>Collab-Note-YJS</u> !!!</h1>
+    // <h2>Yay</h2>
+    // `,
     extensions: [
       StarterKit.configure({
         // The Collaboration extension comes with its own history handling
