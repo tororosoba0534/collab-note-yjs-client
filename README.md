@@ -1,6 +1,6 @@
 # Welcome to Collab-Note-YJS !!!
 
-Collab-Note-YJS is a multi-repo project which divided by two repositories (frontend and backend). This repository is the frontend part. [You can access deployed project from here!](htts://collab-note-yjs.herokuapp.com/)
+Collab-Note-YJS is a multi-repo project which divided by two repositories (frontend and backend). This repository is the frontend part. [You can access deployed project from here!](https://collab-note-yjs.herokuapp.com/)
 
 ## Tech stack
 
@@ -19,5 +19,5 @@ Collab-Note-YJS is a multi-repo project which divided by two repositories (front
 
 - [collab-note-yjs-wsserver](https://github.com/tororosoba0534/collab-note-yjs-wsserver)
   - The backend of the entire project.
-- [sample-dnd]()
+- [sample-dnd](https://github.com/tororosoba0534/sample-dnd)
   - If possible, I'd like to combine it to this frontend code.
