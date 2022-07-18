@@ -46,12 +46,21 @@ export const LoginAndElseButtons = () => {
           ERR: {isThrownErr(status) ? status : `status code ${status}`}
         </div>
       )}
-      <button
-        className="w-60 h-14  py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block  focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
-        onClick={() => navigate("/login")}
-      >
-        Login
-      </button>
+      {!isLoading && status === 200 ? (
+        <button
+          className="w-60 h-14  py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block  focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
+          onClick={() => navigate("/login")}
+        >
+          Login another account
+        </button>
+      ) : (
+        <button
+          className="w-60 h-14  py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block  focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </button>
+      )}
       <button
         className="w-60 h-14  py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block  focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
         onClick={() => navigate("/create-account")}

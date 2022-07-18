@@ -7,7 +7,17 @@ module.exports = {
       xs: "400px",
       ...defaultTheme.screens,
     },
-    extend: {},
+    extend: {
+      keyframes: {
+        scrollIn: {
+          "0%": { transform: "translateX(40px)", opacity: 0 },
+          "100%": { transform: "", opacity: 1 },
+        },
+      },
+      animation: {
+        scrollIn: "scrollIn 1s",
+      },
+    },
   },
   plugins: [],
 };

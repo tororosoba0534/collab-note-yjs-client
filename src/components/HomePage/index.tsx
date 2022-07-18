@@ -15,9 +15,9 @@ const HomePage = () => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("bg-red-50");
+          entry.target.classList.add("animate-scrollIn");
         } else {
-          entry.target.classList.remove("bg-red-50");
+          entry.target.classList.remove("animate-scrollIn");
         }
       });
     });
@@ -31,9 +31,13 @@ const HomePage = () => {
     <div className="my-10 flex flex-col justify-center gap-10">
       <div className="w-full text-center">
         <h1 className="text-4xl">Collab-Note-YJS</h1>
-        <p className="text-sm">
+        <div className="text-xs xs:text-base flex flex-row items-center justify-center flex-wrap">
+          {/* <div className="w-[300px]">
+            enables realtime collaborative notetaking
+          </div>
+          <div className="w-[60px]"> with YJS</div> */}
           enables realtime collaborative notetaking with YJS
-        </p>
+        </div>
       </div>
       <LoginAndElseButtons />
 
