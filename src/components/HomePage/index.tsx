@@ -28,7 +28,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="my-10 flex flex-col  items-center gap-10">
+    <div className="my-10 flex flex-col  items-center gap-10 cursor-default">
       <div className="w-full text-center">
         <h1 className="text-4xl font-extrabold xs:text-5xl">Collab-Note-YJS</h1>
         <div className="text-xs xs:text-base flex flex-row items-center justify-center flex-wrap">

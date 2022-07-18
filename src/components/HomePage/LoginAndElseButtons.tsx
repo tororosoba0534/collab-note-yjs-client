@@ -11,9 +11,9 @@ const CustomButton = (props: {
 }) => {
   if (props.disable)
     return (
-      <button className="w-60 h-14 rounded border-4 border-gray-500  text-gray-500 font-semibold text-center flex items-center justify-center gap-1">
+      <div className="w-60 h-14 rounded border-4 border-gray-500  text-gray-500 font-semibold text-center flex items-center justify-center gap-1">
         {props.children}
-      </button>
+      </div>
     );
   return (
     <button
@@ -56,8 +56,10 @@ export const LoginAndElseButtons = () => {
         </CustomButton>
       ) : status === 401 ? (
         <CustomButton disable>
-          <div className="w-full">Please LOGIN</div>
-          <div className="w-full">or CREATE your account</div>
+          <div className="flex flex-col items-center justify-center">
+            <div className="w-full">Please LOGIN</div>
+            <div className="w-full">or CREATE your account</div>
+          </div>
         </CustomButton>
       ) : (
         <CustomButton disable>
