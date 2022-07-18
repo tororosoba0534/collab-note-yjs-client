@@ -9,7 +9,7 @@ import { TooltipButton } from "./TooltipButton";
 const Tooltip = (props: { tooltip: string | null | undefined }) => {
   if (!props.tooltip) return null;
   return (
-    <div className="absolute top-10 bg-black text-white p-2 rounded-md opacity-0 peer-hover:opacity-100 transition pointer-events-none z-20">
+    <div className="absolute top-10 bg-black text-white p-2 rounded-md opacity-0 peer-hover:opacity-100 transition pointer-events-none z-30">
       {props.tooltip}
     </div>
   );
@@ -53,11 +53,12 @@ export const Menu = (props: {
 
       {/* <ConnStatusBox provider={props.provider} /> */}
       <div
-        className="absolute w-56  bg-gray-300 right-0 rounded-bl-2xl transition-all flex flex-col gap-5 items-center py-5 z-10"
+        className="absolute w-60  bg-gray-300 right-0 rounded-bl-2xl transition-all flex flex-col gap-5 items-center py-5 z-0"
         style={{
           opacity: isOpenMenu ? 1 : 0,
           visibility: isOpenMenu ? "visible" : "hidden",
-          top: isOpenMenu ? "80px" : "50px",
+          // top: isOpenMenu ? "80px" : "50px",
+          top: "80px",
         }}
         onClick={() => console.log("Dropdown clicked!")}
       >

@@ -6,7 +6,7 @@ export const PopupTemplate = (props: {
 }) => {
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex justify-center items-center z-20"
+      className="fixed inset-0 bg-black/50 flex justify-center items-center z-40"
       onClick={(e) => {
         e.stopPropagation();
       }}

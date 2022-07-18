@@ -56,7 +56,7 @@ export const ScrollPopupTemplate = (props: {
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex justify-center items-center z-20"
+      className="fixed inset-0 bg-black/50 flex justify-center items-center z-40"
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -105,7 +105,7 @@ export const ScrollPopupTemplate = (props: {
           </div>
           {!shownBounceArrow ? null : (
             <div className="w-full relative">
-              <div className="absolute z-40 w-10 h-10 -top-24 left-1">
+              <div className="absolute z-50 w-10 h-10 -top-24 left-1">
                 <BounceArrow />
               </div>
             </div>
