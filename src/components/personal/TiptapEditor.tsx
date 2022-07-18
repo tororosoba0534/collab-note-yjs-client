@@ -49,10 +49,23 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
   }, [userID, ydoc]);
 
   const editor = useEditor({
-    // content: `
-    // <h1 style="text-align: center">WELCOME to <u>Collab-Note-YJS</u> !!!</h1>
-    // <h2>Yay</h2>
-    // `,
+    //     content: `
+    //     <h1 style="text-align: center">WELCOME to <u>Collab-Note-YJS</u> !!!</h1>
+    //     <h2 style="text-align: right">created by tororosoba0534</h2>
+    //     <p></p>
+    //     <p>This content is just an example, so you can freely overwrite it📝</p>
+    //     <p></p>
+    //     <p style="text-align: center">You can select some texts and change them <strong>bold</strong>, <em>italic</em>, <u>underlined</u>, and <code>codeLike</code>.</p>
+    //     <p></p>
+    //     <p>Also you may turn a paragraph into:</p>
+    //     <ul><li>bullet list like that!<ul><li>(and make nest deeper)</li></ul></li></ul>
+    //     <p></p>
+    //     <pre><code>// or code-like style.
+    // export const greeting = () => {
+    //   console.log("Hello world!")
+    // }</code></pre>
+    // <p></p>
+    //     `,
     extensions: [
       StarterKit.configure({
         // The Collaboration extension comes with its own history handling
