@@ -1,8 +1,29 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isThrownErr } from "../../api/base";
 import { useCheckAuth } from "../../api/hooks/useCheckAuth";
 import { LoadingCircleSvg } from "../LoadingCircleSvg";
+
+const CustomButton = (props: {
+  children: ReactNode;
+  disable?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+}) => {
+  if (props.disable)
+    return (
+      <button className="w-60 h-14 rounded border-4 border-gray-500  text-gray-500 font-semibold text-center flex items-center justify-center gap-1">
+        {props.children}
+      </button>
+    );
+  return (
+    <button
+      className="w-60 h-14 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block  focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
+      onClick={props.onClick}
+    >
+      {props.children}
+    </button>
+  );
+};
 
 export const LoginAndElseButtons = () => {
   const navigate = useNavigate();
@@ -16,57 +37,43 @@ export const LoginAndElseButtons = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center gap-5">
+    <div className="w-full lg:w-[1024px] flex flex-col sm:flex-row items-center justify-around gap-5 px-5">
       {isLoading ? (
-        <button className="w-60 h-14 rounded border-4 border-gray-500  text-gray-500 font-semibold text-center cursor-progress flex items-center justify-center gap-1">
+        <CustomButton disable>
           <div className="w-6 h-6">
             <LoadingCircleSvg />
           </div>
           <div className="">Checking...</div>
-        </button>
+        </CustomButton>
       ) : status === 200 ? (
-        <button
-          className="w-60 h-14 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block  focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
-          onClick={() => navigate("/personal")}
-        >
+        <CustomButton onClick={() => navigate("/personal")}>
           <div className="w-full text-sm">Collab as</div>
           <div className="w-full text-sm ">
             <span className="text-black px-1 bg-white rounded-sm">
               {userID}
             </span>
           </div>
-        </button>
+        </CustomButton>
       ) : status === 401 ? (
-        <div className="w-60 h-14 rounded border-4 border-gray-500  text-gray-500 font-semibold text-center">
-          <div className="w-full">Please login</div>
-          <div className="w-full">or create your account</div>
-        </div>
+        <CustomButton disable>
+          <div className="w-full">Please LOGIN</div>
+          <div className="w-full">or CREATE your account</div>
+        </CustomButton>
       ) : (
-        <div className="w-60 h-14 rounded border-4 border-gray-500  text-gray-500 font-semibold flex justify-center items-center text-sm">
+        <CustomButton disable>
           ERR: {isThrownErr(status) ? status : `status code ${status}`}
-        </div>
+        </CustomButton>
       )}
       {!isLoading && status === 200 ? (
-        <button
-          className="w-60 h-14  py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block  focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
-          onClick={() => navigate("/login")}
-        >
-          Login another account
-        </button>
+        <CustomButton onClick={() => navigate("/login")}>
+          LOGIN another account
+        </CustomButton>
       ) : (
-        <button
-          className="w-60 h-14  py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block  focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
-          onClick={() => navigate("/login")}
-        >
-          Login
-        </button>
+        <CustomButton onClick={() => navigate("/login")}>LOGIN</CustomButton>
       )}
-      <button
-        className="w-60 h-14  py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block  focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
-        onClick={() => navigate("/create-account")}
-      >
-        Create new account
-      </button>
+      <CustomButton onClick={() => navigate("/create-account")}>
+        CREATE new account
+      </CustomButton>
     </div>
   );
 };
