@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useCheckAuth } from "../../api/hooks/useCheckAuth";
-import Loading from "../Loading";
+import { LoadingPage } from "../LoadingPage";
 import { TiptapEditor } from "./TiptapEditor";
 
 export const EditorWrapper = () => {
@@ -17,7 +17,7 @@ export const EditorWrapper = () => {
     checkAuth().then(() => setIsLoading(false));
   }, [checkAuth, isLoading]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <LoadingPage />;
 
   if (status === 200 && userID !== "") return <TiptapEditor userID={userID} />;
 

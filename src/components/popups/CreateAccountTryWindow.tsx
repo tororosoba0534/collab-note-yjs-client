@@ -1,17 +1,32 @@
 import { useContext, useState } from "react";
 import { CreateAccountContext } from "../CreateAccount/CreateAccountContext";
 import { CheckBoxSvg } from "../form/CheckBoxSvg";
+import { LoadingBar } from "../LoadingBar";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const CreateAccountTryWindow = () => {
-  const { setStep, userID, password, adminPassword, handleSubmit } =
-    useContext(CreateAccountContext);
+  const {
+    setStep,
+    userID,
+    password,
+    adminPassword,
+    handleSubmit,
+    isLoading,
+    submitMsg,
+  } = useContext(CreateAccountContext);
 
   const [checked, setChecked] = useState(false);
   return (
     <PopupTemplate handleClose={() => setStep(3)}>
       <div className="flex flex-col items-center gap-5">
         <div className="text-2xl">Confirm</div>
+        {isLoading ? (
+          <LoadingBar text="Now waiting response" />
+        ) : !submitMsg ? null : (
+          <div className="w-full rounded-md bg-red-400 text-white font-bold py-1 px-2 leading-5">
+            {submitMsg}
+          </div>
+        )}
 
         <div className="flex flex-row gap-3 p-2 bg-lime-100">
           <div className="text-right">

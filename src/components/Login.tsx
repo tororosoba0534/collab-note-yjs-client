@@ -9,7 +9,7 @@ import { VividButton } from "./buttons/VividButton";
 import { FloatingLabelInput } from "./form/FloatingLabelInput";
 import { FormBase } from "./form/FormBase";
 import { FormFrame } from "./form/FormFrame";
-import { LoadingCircleSvg } from "./LoadingCircleSvg";
+import { LoadingBar } from "./LoadingBar";
 
 const Login = () => {
   const [userID, setUserID] = useState("");
@@ -85,12 +85,7 @@ const Login = () => {
           <p>Now redirecting...</p>
         </div>
       ) : isLoading ? (
-        <div className="w-full flex flex-row justify-center">
-          <span className="w-5 h-5 inline-block">
-            <LoadingCircleSvg />
-          </span>
-          <span>Now waiting response...</span>
-        </div>
+        <LoadingBar text="Now waiting response" />
       ) : !submitMsg ? null : (
         <div className="w-full rounded-md bg-red-400 text-white font-bold">
           {submitMsg}

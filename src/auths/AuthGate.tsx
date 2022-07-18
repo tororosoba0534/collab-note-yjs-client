@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { isThrownErr } from "../api/base";
 import { useCheckAuth } from "../api/hooks/useCheckAuth";
 import ErrorPage from "../components/errorPages/ErrorPage";
-import Loading from "../components/Loading";
+import { LoadingPage } from "../components/LoadingPage";
 
 const AuthGate = ({ children }: { children: JSX.Element }) => {
   console.log("RequireAuth rendered");
@@ -20,7 +20,7 @@ const AuthGate = ({ children }: { children: JSX.Element }) => {
     console.error(status);
   }
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <LoadingPage />;
 
   if (status === 200) return children;
 
