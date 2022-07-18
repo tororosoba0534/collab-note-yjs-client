@@ -78,13 +78,14 @@ const Login = () => {
   return (
     <FormBase>
       <div className="text-4xl">Login</div>
+
       {status === 200 ? (
         <div>
           <p>Login succeeded!</p>
           <p>Now redirecting...</p>
         </div>
       ) : isLoading ? (
-        <div className="flex text-center w-full">
+        <div className="w-full flex flex-row justify-center">
           <span className="w-5 h-5 inline-block">
             <LoadingCircleSvg />
           </span>

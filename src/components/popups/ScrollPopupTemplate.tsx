@@ -76,7 +76,7 @@ export const ScrollPopupTemplate = (props: {
           <div className="w-full pb-2">
             <div className="text-center text-xl">{props.title}</div>
             {props.isLoading ? (
-              <div className="flex text-center w-full">
+              <div className="w-full flex flex-row justify-center">
                 <span className="w-5 h-5 inline-block">
                   <LoadingCircleSvg />
                 </span>
