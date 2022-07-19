@@ -1,22 +1,21 @@
 import "./TiptapEditor.css";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import * as Y from "yjs";
 import config from "../../config";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { TopToolBar } from "./TopToolBar";
 import { Menu } from "./Menu";
 import { YjsWS } from "../../yjs/YjsWS";
 import { PopupsInPersonal } from "./PopupsInPersonal";
-import { ConnStatusBox } from "./ConnStatusBox";
 import { PersonalContext } from "./PersonalContext";
 import { useCheckAuth } from "../../api/hooks/useCheckAuth";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
 import { ToggleToolButton } from "./ToggleToolButton";
+import { CustomCollaboration } from "../../tiptap/CustomCollaboration";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   const { setPopupStatus } = useContext(PersonalContext);
@@ -73,9 +72,7 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
         // listItem: { HTMLAttributes: { class: "list-disc px-3" } },
       }),
       // Register the document with Tiptap
-      Collaboration.configure({
-        document: ydoc,
-      }),
+
       // CollaborationCursor.configure({
       //   provider: provider,
       //   user: {
@@ -87,6 +84,12 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
         types: ["heading", "paragraph"],
       }),
       Underline,
+
+      // https://github.com/ueberdosis/tiptap/issues/2761
+      // Fork Collaboration Plugin so that undo and redo work well with BubbleMenu.
+      CustomCollaboration.configure({
+        document: ydoc,
+      }),
     ],
     editorProps: {
       attributes: {
