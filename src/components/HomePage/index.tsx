@@ -1,6 +1,7 @@
 import { LoginAndElseButtons } from "./LoginAndElseButtons";
 import { useCallback, useEffect, useRef } from "react";
 import myGif from "../../recording3.gif";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const targets = useRef<(HTMLDivElement | HTMLUListElement)[]>([]);
@@ -29,8 +30,17 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="my-10 flex flex-col  items-center gap-16 cursor-default">
+    <div className=" flex flex-col  items-center gap-16 cursor-default mb-20">
       <div className="w-full text-center">
+        <div className="w-full h-20 lg:h-10 relative">
+          <a
+            href="https://github.com/tororosoba0534/collab-note-yjs-client"
+            target="_blank"
+            className="absolute right-5 top-5 text-xs rounded bg-gray-500 hover:bg-gray-400 text-white font-semibold flex items-center justify-center px-2 xs:py-1 cursor-pointer"
+          >
+            View source code
+          </a>
+        </div>
         <h1 className="text-4xl font-extrabold xs:text-5xl">Collab-Note-YJS</h1>
         <div className="text-xs xs:text-base flex flex-row items-center justify-center flex-wrap">
           {/* <div className="w-[300px]">
