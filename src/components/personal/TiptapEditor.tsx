@@ -90,6 +90,13 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
       CustomCollaboration.configure({
         document: ydoc,
       }),
+      CollaborationCursor.configure({
+        provider,
+        user: {
+          name: "someone in this room",
+          color: "rgba(255,0,0,0.2)",
+        },
+      }),
     ],
     editorProps: {
       attributes: {
