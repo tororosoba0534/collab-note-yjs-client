@@ -119,7 +119,14 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
 
     return () => {
       console.log("test useEffect return");
+
+      // Destroy websocket connection when webpage changes.
+      // But should ignore while development probably because of strange behavior of webpack hot reload.
+      if (config.NODE_ENV === "production") {
+        provider.destroy();
+      }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

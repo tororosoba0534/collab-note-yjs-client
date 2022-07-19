@@ -342,6 +342,8 @@ export class CustomWSProvider extends Observable<string> {
   }
 
   destroy() {
+    console.log("provider.destroy() called!");
+
     if (this._resyncInterval !== 0) {
       clearInterval(this._resyncInterval);
     }
