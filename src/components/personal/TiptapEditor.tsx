@@ -114,6 +114,14 @@ export const TiptapEditor = ({ userID }: { userID: string }) => {
     return () => clearInterval(interval);
   }, [checkAuth, provider, setPopupStatus]);
 
+  useEffect(() => {
+    console.log("test useEffect");
+
+    return () => {
+      console.log("test useEffect return");
+    };
+  }, []);
+
   return (
     <div className="relative">
       <div className="fixed top-0 w-full h-20 shadow-md bg-white z-20 flex items-center">
