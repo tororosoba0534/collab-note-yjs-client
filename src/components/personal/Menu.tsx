@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { WebsocketProvider } from "y-websocket";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import { YjsWS } from "../../yjs/YjsWS";
@@ -23,6 +24,7 @@ export const Menu = (props: {
   const [isOpenTest, setIsOpenTest] = useState(false);
 
   const { setPopupStatus } = useContext(PersonalContext);
+  const navigate = useNavigate();
 
   return (
     <div className="flex-none w-20 xs:w-[20%]  h-20 bg-gray-400 relative">
@@ -119,6 +121,13 @@ export const Menu = (props: {
               label="destroy"
               onClick={() => {
                 props.provider.destroy();
+              }}
+            />
+            <TooltipButton
+              label="throw err"
+              onClick={() => {
+                // throw new Error("error test for ErrorBoundary");
+                navigate("/throw");
               }}
             />
           </div>

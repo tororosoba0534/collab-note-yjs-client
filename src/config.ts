@@ -2,6 +2,12 @@ const NODE_ENV = process.env.NODE_ENV;
 
 const config = {
   NODE_ENV,
+  client: {
+    URL:
+      NODE_ENV === "production"
+        ? "https://collab-note-yjs.herokuapp.com/"
+        : "http://localhost:3000",
+  },
   wsserver: {
     // url: process.env.WS_SERVER_URI as string || "ws://localhost:3001"
     // url: "ws://localhost:3001"

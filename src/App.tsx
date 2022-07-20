@@ -8,6 +8,7 @@ import { EditorWrapper } from "./components/personal/EditorWrapper";
 import CreateAccount from "./components/CreateAccount";
 import { CreateAccountProvider } from "./components/CreateAccount/CreateAccountContext";
 import { PersonalProvider } from "./components/personal/PersonalContext";
+import { ThrowForTest } from "./ThrowForTest";
 
 function App() {
   console.log(`url: ${config.wsserver.URL}`);
@@ -35,6 +36,7 @@ function App() {
           }
         />
         <Route path="/test" element={<TestLinks />} />
+        <Route path="/throw" element={<ThrowForTest />} />
       </Routes>
     </div>
   );

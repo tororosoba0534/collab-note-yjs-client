@@ -16,6 +16,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
 import { ToggleToolButton } from "./ToggleToolButton";
 import { CustomCollaboration } from "../../tiptap/CustomCollaboration";
+import Collaboration from "@tiptap/extension-collaboration";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {
   const { setPopupStatus } = useContext(PersonalContext);
