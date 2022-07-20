@@ -66,7 +66,7 @@ export const Menu = (props: {
       >
         <div>
           Hello{" "}
-          <span className=" text-sm underline decoration-double">
+          <span className=" text-sm underline decoration-wavy underline-offset-2">
             {props.userID}
           </span>{" "}
           !
@@ -76,7 +76,7 @@ export const Menu = (props: {
           label="LOGOUT"
           onClick={() => setPopupStatus("logout")}
         />
-        <div className="relative w-full">
+        {/* <div className="relative w-full">
           <div className="flex items-center justify-center">
             <button
               className=" p-2 rounded-lg border-4 border-black bg-lime-400 hover:bg-lime-300"
@@ -131,7 +131,7 @@ export const Menu = (props: {
               }}
             />
           </div>
-        </div>
+        </div> */}
         <TooltipButton
           label="Delete Account"
           onClick={() => setPopupStatus("deleteAccountTry")}
