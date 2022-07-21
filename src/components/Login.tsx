@@ -6,6 +6,7 @@ import { useLogin } from "../api/hooks/useLogin";
 import { IsCmd } from "../utils/IsCmd";
 import { Validate } from "../utils/validation";
 import { VividButton } from "./buttons/VividButton";
+import { SubmitMsgBar } from "./ErrMsgBar";
 import { FloatingLabelInput } from "./form/FloatingLabelInput";
 import { FormBase } from "./form/FormBase";
 import { FormFrame } from "./form/FormFrame";
@@ -87,9 +88,10 @@ const Login = () => {
       ) : isLoading ? (
         <LoadingBar text="Now waiting response" />
       ) : !submitMsg ? null : (
-        <div className="w-full rounded-md bg-red-400 text-white font-bold">
-          {submitMsg}
-        </div>
+        <SubmitMsgBar submitMsg={submitMsg} />
+        // <div className="w-full rounded-md bg-red-400 text-white font-bold">
+        //   {submitMsg}
+        // </div>
       )}
       <div className="w-full px-5">
         <FormFrame>

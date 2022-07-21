@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { CreateAccountContext } from "../CreateAccount/CreateAccountContext";
+import { SubmitMsgBar } from "../ErrMsgBar";
 import { CheckBoxSvg } from "../form/CheckBoxSvg";
 import { LoadingBar } from "../LoadingBar";
 import { PopupTemplate } from "./PopupTemplate";
@@ -23,6 +24,7 @@ export const CreateAccountTryWindow = () => {
         {isLoading ? (
           <LoadingBar text="Now waiting response" />
         ) : !submitMsg ? null : (
+          // <SubmitMsgBar submitMsg={submitMsg} />
           <div className="w-full rounded-md bg-red-400 text-white font-bold py-1 px-2 leading-5">
             {submitMsg}
           </div>
