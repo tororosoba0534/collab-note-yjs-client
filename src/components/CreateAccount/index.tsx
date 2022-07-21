@@ -74,6 +74,9 @@ const CreateAccount = () => {
             <li className="text-sm pl-1 md:pl-12">
               (for administrator permission)
             </li>
+            <li className="text-sm pl-1 ">
+              You need adminPassword in changing account setting.
+            </li>
           </ul>
         </ul>
       </div>

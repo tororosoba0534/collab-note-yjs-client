@@ -43,7 +43,7 @@ const Login = () => {
       Validate.isNotValidUserID(userID) ||
       Validate.isNotValidPassword(password)
     ) {
-      setSubmitMsg("userID or password or both are wrong.");
+      setSubmitMsg("userID and/or password are wrong.");
       return;
     }
 
@@ -67,7 +67,7 @@ const Login = () => {
       }
 
       if (status === 400 || status === 401) {
-        setSubmitMsg("userID or password or both are wrong.");
+        setSubmitMsg("userID and/or password are wrong.");
         return;
       }
 
