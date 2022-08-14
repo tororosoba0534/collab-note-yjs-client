@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { CreateAccountContext } from "../CreateAccount/CreateAccountContext";
+import { CreateAccountContext } from "../pages/CreateAccount/CreateAccountContext";
 import { SubmitMsgBar } from "../ErrMsgBar";
 import { CheckBoxSvg } from "../form/CheckBoxSvg";
 import { LoadingBar } from "../LoadingBar";

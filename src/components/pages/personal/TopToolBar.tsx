@@ -3,9 +3,9 @@ import { SelectParagraphSvg } from "./icons/SelectParagraphSvg";
 import { UndoSvg } from "./icons/UndoSvg";
 import { TooltipButton } from "./TooltipButton";
 import * as encoding from "lib0/encoding";
-import { yjsConsts } from "../../yjs/yjsConsts";
+import { yjsConsts } from "../../../yjs/yjsConsts";
 import { Editor } from "@tiptap/react";
-import { CustomWSProvider } from "../../yjs/CustomWSProvider";
+import { CustomWSProvider } from "../../../yjs/CustomWSProvider";
 import { ConnStatus, ConnStatusBox } from "./ConnStatusBox";
 import { ToggleToolButton } from "./ToggleToolButton";
 import { AlignCenterSvg } from "./icons/AlignCenterSvg";
@@ -15,7 +15,7 @@ import { SinkListItemSvg } from "./icons/SinkListItemSvg";
 import { LiftListItemSvg } from "./icons/LiftListItemSvg";
 import { WebsocketProvider } from "y-websocket";
 import { useEffect, useState } from "react";
-import { LoadingCircleSvg } from "../LoadingCircleSvg";
+import { LoadingCircleSvg } from "../../LoadingCircleSvg";
 
 export const TopToolBar = (props: {
   editor: Editor | null;

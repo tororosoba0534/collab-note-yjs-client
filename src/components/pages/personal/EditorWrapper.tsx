@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { useCheckAuth } from "../../api/hooks/useCheckAuth";
-import { LoadingPage } from "../LoadingPage";
+import { useCheckAuth } from "../../../api/hooks/useCheckAuth";
+import { LoadingPage } from "../../LoadingPage";
 import { TiptapEditor } from "./TiptapEditor";
 
 export const EditorWrapper = () => {

@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { LoadingBar } from "../LoadingBar";
-import { BounceArrow } from "../personal/icons/BounceArrow";
+import { BounceArrow } from "../pages/personal/icons/BounceArrow";
 
 const showBounceArrowHandler = (
   submitBtnElm: React.MutableRefObject<HTMLButtonElement | null> | undefined,

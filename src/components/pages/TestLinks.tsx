@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LoadingCircleSvg } from "./LoadingCircleSvg";
+import { LoadingCircleSvg } from "../LoadingCircleSvg";
 import { BounceArrow } from "./personal/icons/BounceArrow";
 
 const TestLinks = () => {

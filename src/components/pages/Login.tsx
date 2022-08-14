@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { isThrownErr } from "../api/base";
-import { useLogin } from "../api/hooks/useLogin";
-import { IsCmd } from "../utils/IsCmd";
-import { Validate } from "../utils/validation";
-import { VividButton } from "./buttons/VividButton";
-import { SubmitMsgBar } from "./ErrMsgBar";
-import { FloatingLabelInput } from "./form/FloatingLabelInput";
-import { FormBase } from "./form/FormBase";
-import { FormFrame } from "./form/FormFrame";
-import { LoadingBar } from "./LoadingBar";
+import { isThrownErr } from "../../api/base";
+import { useLogin } from "../../api/hooks/useLogin";
+import { IsCmd } from "../../utils/IsCmd";
+import { Validate } from "../../utils/validation";
+import { VividButton } from "../buttons/VividButton";
+import { SubmitMsgBar } from "../ErrMsgBar";
+import { FloatingLabelInput } from "../form/FloatingLabelInput";
+import { FormBase } from "../form/FormBase";
+import { FormFrame } from "../form/FormFrame";
+import { LoadingBar } from "../LoadingBar";
 
 const Login = () => {
   const [userID, setUserID] = useState("");

@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { isThrownErr } from "../../api/base";
-import { useCheckAuth } from "../../api/hooks/useCheckAuth";
-import { LoadingCircleSvg } from "../LoadingCircleSvg";
+import { isThrownErr } from "../../../api/base";
+import { useCheckAuth } from "../../../api/hooks/useCheckAuth";
+import { LoadingCircleSvg } from "../../LoadingCircleSvg";
 
 const CustomButton = (props: {
   children: ReactNode;
