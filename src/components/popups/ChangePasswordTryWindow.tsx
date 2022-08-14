@@ -5,7 +5,7 @@ import { Validate } from "../../utils/validation";
 import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { PasswordInputWithMsg } from "../form/PasswordInputWithMsg";
-import { PersonalContext } from "../personal/PersonalContext";
+import { PersonalContext } from "../pages/personal/PersonalContext";
 import { ScrollPopupTemplate } from "./ScrollPopupTemplate";
 import { ScrollPopupInner } from "./ScrollPopupInner";
 

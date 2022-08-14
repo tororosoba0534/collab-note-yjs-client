@@ -1,7 +1,6 @@
 import { LoginAndElseButtons } from "./LoginAndElseButtons";
 import { useCallback, useEffect, useRef } from "react";
-import myGif from "../../recording3.gif";
-import { Link } from "react-router-dom";
+import myGif from "./recording3.gif";
 
 const HomePage = () => {
   const targets = useRef<(HTMLDivElement | HTMLUListElement)[]>([]);

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { PersonalContext } from "../personal/PersonalContext";
+import { PersonalContext } from "../pages/personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const TestWindow = () => {

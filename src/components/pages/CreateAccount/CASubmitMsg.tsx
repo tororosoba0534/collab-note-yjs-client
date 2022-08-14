@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { SubmitMsgBar } from "../ErrMsgBar";
+import { SubmitMsgBar } from "../../ErrMsgBar";
 import { CreateAccountContext } from "./CreateAccountContext";
 
 export const CASubmitMsg = () => {

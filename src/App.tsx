@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import HomePage from "./components/HomePage";
-import Login from "./components/Login";
-import TestLinks from "./components/TestLinks";
+import HomePage from "./components/pages/HomePage";
+import Login from "./components/pages/Login";
+import TestLinks from "./components/pages/TestLinks";
 import config from "./config";
-import { EditorWrapper } from "./components/personal/EditorWrapper";
-import CreateAccount from "./components/CreateAccount";
-import { CreateAccountProvider } from "./components/CreateAccount/CreateAccountContext";
-import { PersonalProvider } from "./components/personal/PersonalContext";
+import { EditorWrapper } from "./components/pages/personal/EditorWrapper";
+import CreateAccount from "./components/pages/CreateAccount";
+import { CreateAccountProvider } from "./components/pages/CreateAccount/CreateAccountContext";
+import { PersonalProvider } from "./components/pages/personal/PersonalContext";
 import { ThrowForTest } from "./ThrowForTest";
 
 function App() {

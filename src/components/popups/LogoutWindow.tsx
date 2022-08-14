@@ -5,7 +5,7 @@ import { useLogout } from "../../api/hooks/useLogout";
 import { CustomWSProvider } from "../../yjs/CustomWSProvider";
 import ErrorPage from "../errorPages/ErrorPage";
 import { LoadingCircleSvg } from "../LoadingCircleSvg";
-import { PersonalContext } from "../personal/PersonalContext";
+import { PersonalContext } from "../pages/personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 
 export const LogoutWindow = (props: {

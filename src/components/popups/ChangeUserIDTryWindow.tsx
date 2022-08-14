@@ -6,7 +6,7 @@ import { ConfirmInputWithMsg } from "../form/ConfirmInputWithMsg";
 import { FloatingLabelInput } from "../form/FloatingLabelInput";
 import { FormFrame } from "../form/FormFrame";
 import { UserIDInputWithMsg } from "../form/UserIDInputWithMsg";
-import { PersonalContext } from "../personal/PersonalContext";
+import { PersonalContext } from "../pages/personal/PersonalContext";
 import { PopupTemplate } from "./PopupTemplate";
 import { ScrollPopupInner } from "./ScrollPopupInner";
 import { ScrollPopupTemplate } from "./ScrollPopupTemplate";

@@ -3,7 +3,7 @@ import { CustomWSProvider } from "./CustomWSProvider";
 import * as decoding from "lib0/decoding";
 import * as encoding from "lib0/encoding";
 import { yjsConsts } from "./yjsConsts";
-import { PopupStatus } from "../components/personal/PersonalContext";
+import { PopupStatus } from "../components/pages/personal/PersonalContext";
 import { WebsocketProvider } from "y-websocket";
 
 export class YjsWS {

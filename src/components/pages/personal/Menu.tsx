@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { WebsocketProvider } from "y-websocket";
-import { CustomWSProvider } from "../../yjs/CustomWSProvider";
-import { YjsWS } from "../../yjs/YjsWS";
+import { CustomWSProvider } from "../../../yjs/CustomWSProvider";
+import { YjsWS } from "../../../yjs/YjsWS";
 import { MenuSvg } from "./icons/MenuSvg";
 import { PersonalContext } from "./PersonalContext";
 import { TooltipButton } from "./TooltipButton";

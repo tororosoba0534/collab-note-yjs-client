@@ -3,19 +3,19 @@ import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import * as Y from "yjs";
-import config from "../../config";
+import config from "../../../config";
 import { useContext, useEffect, useMemo } from "react";
-import { CustomWSProvider } from "../../yjs/CustomWSProvider";
+import { CustomWSProvider } from "../../../yjs/CustomWSProvider";
 import { TopToolBar } from "./TopToolBar";
 import { Menu } from "./Menu";
-import { YjsWS } from "../../yjs/YjsWS";
+import { YjsWS } from "../../../yjs/YjsWS";
 import { PopupsInPersonal } from "./PopupsInPersonal";
 import { PersonalContext } from "./PersonalContext";
-import { useCheckAuth } from "../../api/hooks/useCheckAuth";
+import { useCheckAuth } from "../../../api/hooks/useCheckAuth";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
 import { ToggleToolButton } from "./ToggleToolButton";
-import { CustomCollaboration } from "../../tiptap/CustomCollaboration";
+import { CustomCollaboration } from "../../../tiptap/CustomCollaboration";
 import Collaboration from "@tiptap/extension-collaboration";
 
 export const TiptapEditor = ({ userID }: { userID: string }) => {

@@ -1,5 +1,5 @@
 import { forwardRef, useContext } from "react";
-import { VividButton } from "../buttons/VividButton";
+import { VividButton } from "../../buttons/VividButton";
 import { CreateAccountContext } from "./CreateAccountContext";
 
 type Props = {
